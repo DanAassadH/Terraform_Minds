@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -105,6 +106,67 @@ namespace TerraformMinds.Controllers
             {
                 context.Remove(GetCourseByID(courseID));
                 context.SaveChanges();
+            }
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("ID,UserID,CourseName,Subject,CourseDescription,GradeLevel,StartDate,EndDate,CurrentCapacity,MaxCapacity")] Course course)
+        {
+            using (LearningManagementContext context = new LearningManagementContext())
+            {
+
+                if (id != course.ID)
+                {
+                    return NotFound();
+                }
+
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        context.Update(course);
+                        await context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                    }
+                    return RedirectToAction(nameof(List));
+                }
+                return View(course);
+            }
+        }
+
+        public async Task<IActionResult> Edit(int? id)
+        {
+            using (LearningManagementContext context = new LearningManagementContext())
+            {
+                if (id == null)
+                {
+                return NotFound();
+                }
+
+                var course = await context.Courses.FindAsync(id);
+                if (course == null)
+                {
+                    return NotFound();
+                }
+
+                var instructors = new SelectList(context.Users.Where(x => x.Role == 2)
+                    .OrderBy(y => y.FirstName)
+                    .ToDictionary(us => us.ID, us => us.FirstName), "Key", "Value", course.UserID);
+                ViewBag.Instructors = instructors;
+                ViewBag.CourseName = course.CourseName;
+                ViewBag.Subject = course.Subject;
+                ViewBag.StartDate = course.StartDate;
+                ViewBag.EndDate = course.EndDate;
+                ViewBag.CourseDescription = course.CourseDescription;
+                ViewBag.GradeLevel = course.GradeLevel;
+                ViewBag.CurrentCapacity = course.CurrentCapacity;
+                ViewBag.MaxCapacity = course.MaxCapacity;
+
+                return View();
             }
         }
     }

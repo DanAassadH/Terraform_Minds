@@ -32,13 +32,13 @@
                 <tr>
                     <td>@(course.ID)</td>
                     @*<td><a href="/Book/Details?id=@(book.ID)">@(book.Title)</a></td>*@
-                    <td>@(course.User.FirstName + " " + course.User.LastName)</td>
+                    <td>@(course.User == null ? "TBA" : (course.User.FirstName + " " + course.User.LastName))</td>
                     <td>@(course.CourseName)</td>
                     <td>@(course.Subject)</td>
                     <td>@(course.CourseDescription)</td>
                     <td>@(course.GradeLevel)</td>
-                    <td>@(course.StartDate)</td>
-                    <td>@(course.EndDate)</td>
+                    <td>@((course.StartDate == null ? "TBA" : ((DateTime)course.StartDate).ToLongDateString()))</td>
+                    <td>@((course.EndDate == null ? "TBA" : ((DateTime)course.EndDate).ToLongDateString()))</td>
                     @if (course.CurrentCapacity == course.MaxCapacity)
                     {
                         <td>FULL</td>
@@ -47,6 +47,7 @@
                     {
                         <td>@(course.CurrentCapacity + "/" + course.MaxCapacity)</td>
                     }
+                    <td><a href="/Administrator/Edit?id=@(course.ID)">Edit</a> | <a>Delete</a></td>
 
                 </tr>
             }
