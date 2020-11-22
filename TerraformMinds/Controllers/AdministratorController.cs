@@ -27,7 +27,7 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
-        public IActionResult Create(string instructor, string courseName, string subject, string courseDescription, string gradeLevel, DateTime startDate, DateTime endDate, int currentCapacity, int maxCapacity)
+        public IActionResult CourseCreate(string instructor, string courseName, string subject, string courseDescription, string gradeLevel, DateTime startDate, DateTime endDate, int currentCapacity, int maxCapacity)
         {
             using(LearningManagementContext context = new LearningManagementContext())
             {
@@ -55,39 +55,19 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
-        public IActionResult List()
+        public IActionResult CourseList()
         {
             ViewBag.Courses = GetCourses();
 
             return View();
         }
 
-        //public void CreateCourse(string userID, string courseName, string subject, string courseDescription, string gradeLevel, DateTime startDate, DateTime endDate, int currentCapacity, int maxCapacity)
-        //{
-        //    using (LearningManagementContext context = new LearningManagementContext())
-        //    {
-        //        context.Courses.Add(new Course()
-        //        {
-        //            UserID = int.Parse(userID),
-        //            CourseName = courseName,
-        //            Subject = subject,
-        //            CourseDescription = courseDescription,
-        //            GradeLevel = gradeLevel,
-        //            StartDate = startDate,
-        //            EndDate = endDate,
-        //            CurrentCapacity = currentCapacity,
-        //            MaxCapacity = maxCapacity
-        //        });
-        //        context.SaveChanges();
-        //    }
-        //}
-
-        // POST: Author/Create
+        // POST: Course/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,UserID,CourseName,Subject,CourseDescription,GradeLevel,StartDate,EndDate,CurrentCapacity,MaxCapacity")] Course course)
+        public async Task<IActionResult> CourseCreate([Bind("ID,UserID,CourseName,Subject,CourseDescription,GradeLevel,StartDate,EndDate,CurrentCapacity,MaxCapacity")] Course course)
         {
             using (LearningManagementContext context = new LearningManagementContext())
             {
@@ -95,7 +75,7 @@ namespace TerraformMinds.Controllers
                 {
                     context.Add(course);
                     await context.SaveChangesAsync();
-                    return RedirectToAction(nameof(List));
+                    return RedirectToAction(nameof(CourseList));
                 }
             }
             return View(course);
@@ -133,7 +113,7 @@ namespace TerraformMinds.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,UserID,CourseName,Subject,CourseDescription,GradeLevel,StartDate,EndDate,CurrentCapacity,MaxCapacity")] Course course)
+        public async Task<IActionResult> CourseEdit(int id, [Bind("ID,UserID,CourseName,Subject,CourseDescription,GradeLevel,StartDate,EndDate,CurrentCapacity,MaxCapacity")] Course course)
         {
             using (LearningManagementContext context = new LearningManagementContext())
             {
@@ -161,13 +141,13 @@ namespace TerraformMinds.Controllers
                             throw;
                         }
                     }
-                    return RedirectToAction(nameof(List));
+                    return RedirectToAction(nameof(CourseList));
                 }
                 return View(course);
             }
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> CourseEdit(int? id)
         {
             using (LearningManagementContext context = new LearningManagementContext())
             {
@@ -206,7 +186,7 @@ namespace TerraformMinds.Controllers
             }
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> CourseDelete(int? id)
         {
             using (LearningManagementContext context = new LearningManagementContext())
             {
@@ -236,7 +216,7 @@ namespace TerraformMinds.Controllers
                 course.UserID = null;
                 context.Courses.Remove(course);
                 await context.SaveChangesAsync();
-                return RedirectToAction(nameof(List));
+                return RedirectToAction(nameof(CourseList));
             }
         }
     }

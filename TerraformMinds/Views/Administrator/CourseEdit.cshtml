@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="CourseEdit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ID" />
             <div class="form-group">
@@ -69,7 +69,7 @@
 </div>
 
 <div>
-    <a asp-action="List">Back to List</a>
+    <a asp-action="CourseList">Back to List</a>
 </div>
 
 @section Scripts {
