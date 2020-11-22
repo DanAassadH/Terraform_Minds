@@ -16,7 +16,7 @@ namespace TerraformMinds.Models
         public int ID { get; set; }
 
         [Column(TypeName = "int(10)")]
-        public int UserID { get; set; }
+        public int? UserID { get; set; }
 
         [Column(TypeName = "varchar(50)")]
         public string CourseName { get; set; }

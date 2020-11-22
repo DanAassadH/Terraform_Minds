@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TerraformMinds.Controllers
 {
-    public class sCourseController : Controller
+    public class CourseController : Controller
     {
         public IActionResult Index()
         {

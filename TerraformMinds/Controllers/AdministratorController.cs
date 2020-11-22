@@ -31,24 +31,24 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
-        public IActionResult Delete(string courseID)
-        {
-            try
-            {
-                DeleteCourseByID(courseID);
-            }
-            catch (ValidationException e)
-            {
-                ViewBag.Courses = GetCourseByID(courseID);
-                ViewBag.Message = "Could not delete course, there exist problem(s) with your submission, see below.";
-                ViewBag.Exception = e;
-                ViewBag.Error = true;
+        //public IActionResult Delete(string courseID)
+        //{
+        //    try
+        //    {
+        //        DeleteCourseByID(courseID);
+        //    }
+        //    catch (ValidationException e)
+        //    {
+        //        ViewBag.Courses = GetCourseByID(courseID);
+        //        ViewBag.Message = "Could not delete course, there exist problem(s) with your submission, see below.";
+        //        ViewBag.Exception = e;
+        //        ViewBag.Error = true;
 
-                return View("Details", new Dictionary<string, string>() { { "courseID", courseID } });
-            }
+        //        return View("Details", new Dictionary<string, string>() { { "courseID", courseID } });
+        //    }
 
-            return RedirectToAction("List");
-        }
+        //    return RedirectToAction("List");
+        //}
 
         public void CreateCourse(string userID, string courseName, string subject, string courseDescription, string gradeLevel, DateTime startDate, DateTime endDate, int currentCapacity, int maxCapacity)
         {
@@ -100,14 +100,14 @@ namespace TerraformMinds.Controllers
             }
         }
 
-        public void DeleteCourseByID(string courseID)
-        {
-            using (LearningManagementContext context = new LearningManagementContext())
-            {
-                context.Remove(GetCourseByID(courseID));
-                context.SaveChanges();
-            }
-        }
+        //public void DeleteCourseByID(string courseID)
+        //{
+        //    using (LearningManagementContext context = new LearningManagementContext())
+        //    {
+        //        context.Remove(GetCourseByID(courseID));
+        //        context.SaveChanges();
+        //    }
+        //}
 
 
         [HttpPost]
@@ -131,6 +131,14 @@ namespace TerraformMinds.Controllers
                     }
                     catch (DbUpdateConcurrencyException)
                     {
+                        if (!(context.Courses.Any(x => x.ID == id)))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
                     return RedirectToAction(nameof(List));
                 }
@@ -154,8 +162,8 @@ namespace TerraformMinds.Controllers
                 }
 
                 var instructors = new SelectList(context.Users.Where(x => x.Role == 2)
-                    .OrderBy(y => y.FirstName)
-                    .ToDictionary(us => us.ID, us => us.FirstName), "Key", "Value", course.UserID);
+                    .OrderBy(y => y.LastName)
+                    .ToDictionary(us => us.ID, us => us.FirstName + " " + us.LastName), "Key", "Value", course.UserID);
                 ViewBag.Instructors = instructors;
                 ViewBag.CourseName = course.CourseName;
                 ViewBag.Subject = course.Subject;
@@ -167,6 +175,41 @@ namespace TerraformMinds.Controllers
                 ViewBag.MaxCapacity = course.MaxCapacity;
 
                 return View();
+            }
+        }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            using (LearningManagementContext context = new LearningManagementContext())
+            {
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var course = await context.Courses
+                    .FirstOrDefaultAsync(m => m.ID == id);
+                if (course == null)
+                {
+                    return NotFound();
+                }
+
+                return View(course);
+            }
+        }
+
+        // POST: Author/Delete
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            using (LearningManagementContext context = new LearningManagementContext())
+            {
+                var course = await context.Courses.FindAsync(id);
+                course.UserID = null;
+                context.Courses.Remove(course);
+                await context.SaveChangesAsync();
+                return RedirectToAction(nameof(List));
             }
         }
     }
