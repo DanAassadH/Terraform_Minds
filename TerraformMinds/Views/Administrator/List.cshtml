@@ -31,8 +31,7 @@
             {
                 <tr>
                     <td>@(course.ID)</td>
-                    @*<td><a href="/Book/Details?id=@(book.ID)">@(book.Title)</a></td>*@
-                    <td>@(course.User == null ? "TBA" : (course.User.FirstName + " " + course.User.LastName))</td>
+                    <td>@(course.UserID == null ? "TBA" : (course.User.FirstName + " " + course.User.LastName))</td>
                     <td>@(course.CourseName)</td>
                     <td>@(course.Subject)</td>
                     <td>@(course.CourseDescription)</td>
