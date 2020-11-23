@@ -15,10 +15,11 @@ namespace TerraformMinds.Migrations
                     ID = table.Column<int>(type: "int(10)", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Role = table.Column<int>(type: "int(1)", nullable: false),
-                    EMail = table.Column<string>(type: "varchar(50)", nullable: true)
+                    EMail = table.Column<string>(type: "varchar(50)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                         .Annotation("MySql:Collation", "utf8mb4_general_ci"),
-                    FirstName = table.Column<string>(type: "varchar(50)", nullable: true)
+                    Password = table.Column<string>(type: "varchar(50)", nullable: false),
+                    FirstName = table.Column<string>(type: "varchar(50)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                         .Annotation("MySql:Collation", "utf8mb4_general_ci"),
                     LastName = table.Column<string>(type: "varchar(50)", nullable: true)
@@ -37,19 +38,19 @@ namespace TerraformMinds.Migrations
                 {
                     ID = table.Column<int>(type: "int(10)", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UserID = table.Column<int>(type: "int(10)", nullable: false),
-                    CourseName = table.Column<string>(type: "varchar(50)", nullable: true)
+                    UserID = table.Column<int>(type: "int(10)", nullable: true),
+                    CourseName = table.Column<string>(type: "varchar(50)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                         .Annotation("MySql:Collation", "utf8mb4_general_ci"),
-                    Subject = table.Column<string>(type: "varchar(50)", nullable: true)
+                    Subject = table.Column<string>(type: "varchar(50)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                         .Annotation("MySql:Collation", "utf8mb4_general_ci"),
                     StartDate = table.Column<DateTime>(type: "date", nullable: true),
                     EndDate = table.Column<DateTime>(type: "date", nullable: true),
-                    CourseDescription = table.Column<string>(type: "varchar(500)", nullable: true)
+                    CourseDescription = table.Column<string>(type: "varchar(500)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                         .Annotation("MySql:Collation", "utf8mb4_general_ci"),
-                    GradeLevel = table.Column<string>(type: "varchar(20)", nullable: true),
+                    GradeLevel = table.Column<string>(type: "varchar(20)", nullable: false),
                     CurrentCapacity = table.Column<int>(type: "int(3)", nullable: false),
                     MaxCapacity = table.Column<int>(type: "int(3)", nullable: false)
                 },
@@ -71,7 +72,7 @@ namespace TerraformMinds.Migrations
                     ID = table.Column<int>(type: "int(10)", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     CourseID = table.Column<int>(type: "int(10)", nullable: false),
-                    Question = table.Column<string>(type: "varchar(500)", nullable: true)
+                    Question = table.Column<string>(type: "varchar(500)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                         .Annotation("MySql:Collation", "utf8mb4_general_ci"),
                     DueDate = table.Column<DateTime>(type: "date", nullable: true),
@@ -175,18 +176,14 @@ namespace TerraformMinds.Migrations
 
             migrationBuilder.InsertData(
                 table: "user",
-                columns: new[] { "ID", "EMail", "FirstName", "JoinDate", "LastName", "Role" },
-                values: new object[] { -1, "admin.adminson@test.com", "Admin", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Adminson", 1 });
-
-            migrationBuilder.InsertData(
-                table: "user",
-                columns: new[] { "ID", "EMail", "FirstName", "JoinDate", "LastName", "Role" },
-                values: new object[] { -2, "instructor.instructorson@test.com", "Instructor", new DateTime(2020, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Instructorson", 2 });
-
-            migrationBuilder.InsertData(
-                table: "user",
-                columns: new[] { "ID", "EMail", "FirstName", "JoinDate", "LastName", "Role" },
-                values: new object[] { -3, "student.studentson@test.com", "Student", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Studentson", 3 });
+                columns: new[] { "ID", "EMail", "FirstName", "JoinDate", "LastName", "Password", "Role" },
+                values: new object[,]
+                {
+                    { -1, "admin.adminson@test.com", "Admin", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Adminson", "Test123!", 1 },
+                    { -2, "instructor.instructorson@test.com", "Instructor", new DateTime(2020, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Instructorson", "Test123!", 2 },
+                    { -3, "student.studentson@test.com", "Student", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Studentson", "Test123!", 3 },
+                    { -4, "John.Smith@test.com", "John", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Smith", "Test123!", 2 }
+                });
 
             migrationBuilder.InsertData(
                 table: "course",

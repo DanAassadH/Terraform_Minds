@@ -9,7 +9,7 @@ using TerraformMinds.Models;
 namespace TerraformMinds.Migrations
 {
     [DbContext(typeof(LearningManagementContext))]
-    [Migration("20201121181141_InitialMigration")]
+    [Migration("20201123060346_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,7 @@ namespace TerraformMinds.Migrations
                         .HasColumnType("date");
 
                     b.Property<string>("Question")
+                        .IsRequired()
                         .HasColumnType("varchar(500)")
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
@@ -63,11 +64,13 @@ namespace TerraformMinds.Migrations
                         .HasColumnType("int(10)");
 
                     b.Property<string>("CourseDescription")
+                        .IsRequired()
                         .HasColumnType("varchar(500)")
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
 
                     b.Property<string>("CourseName")
+                        .IsRequired()
                         .HasColumnType("varchar(50)")
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
@@ -79,6 +82,7 @@ namespace TerraformMinds.Migrations
                         .HasColumnType("date");
 
                     b.Property<string>("GradeLevel")
+                        .IsRequired()
                         .HasColumnType("varchar(20)");
 
                     b.Property<int>("MaxCapacity")
@@ -88,11 +92,12 @@ namespace TerraformMinds.Migrations
                         .HasColumnType("date");
 
                     b.Property<string>("Subject")
+                        .IsRequired()
                         .HasColumnType("varchar(50)")
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
 
-                    b.Property<int>("UserID")
+                    b.Property<int?>("UserID")
                         .HasColumnType("int(10)");
 
                     b.HasKey("ID");
@@ -280,11 +285,13 @@ namespace TerraformMinds.Migrations
                         .HasColumnType("int(10)");
 
                     b.Property<string>("EMail")
+                        .IsRequired()
                         .HasColumnType("varchar(50)")
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("varchar(50)")
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
@@ -296,6 +303,10 @@ namespace TerraformMinds.Migrations
                         .HasColumnType("varchar(50)")
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)");
 
                     b.Property<int>("Role")
                         .HasColumnType("int(1)");
@@ -312,6 +323,7 @@ namespace TerraformMinds.Migrations
                             FirstName = "Admin",
                             JoinDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "Adminson",
+                            Password = "Test123!",
                             Role = 1
                         },
                         new
@@ -321,6 +333,7 @@ namespace TerraformMinds.Migrations
                             FirstName = "Instructor",
                             JoinDate = new DateTime(2020, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "Instructorson",
+                            Password = "Test123!",
                             Role = 2
                         },
                         new
@@ -330,7 +343,18 @@ namespace TerraformMinds.Migrations
                             FirstName = "Student",
                             JoinDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "Studentson",
+                            Password = "Test123!",
                             Role = 3
+                        },
+                        new
+                        {
+                            ID = -4,
+                            EMail = "John.Smith@test.com",
+                            FirstName = "John",
+                            JoinDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastName = "Smith",
+                            Password = "Test123!",
+                            Role = 2
                         });
                 });
 
@@ -350,8 +374,7 @@ namespace TerraformMinds.Migrations
                         .WithMany("Courses")
                         .HasForeignKey("UserID")
                         .HasConstraintName("FK_Course_User")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("TerraformMinds.Models.Resource", b =>
