@@ -2,7 +2,7 @@
 
 namespace TerraformMinds.Migrations
 {
-    public partial class UpdateInstructorFK_NN : Migration
+    public partial class UpdatedMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

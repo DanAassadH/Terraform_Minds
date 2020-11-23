@@ -308,7 +308,6 @@ namespace TerraformMinds.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-
                         .HasColumnType("varchar(50)")
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");

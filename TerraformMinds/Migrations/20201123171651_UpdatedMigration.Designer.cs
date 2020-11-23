@@ -9,8 +9,8 @@ using TerraformMinds.Models;
 namespace TerraformMinds.Migrations
 {
     [DbContext(typeof(LearningManagementContext))]
-    [Migration("20201123163738_UpdateInstructorFK_NN")]
-    partial class UpdateInstructorFK_NN
+    [Migration("20201123171651_UpdatedMigration")]
+    partial class UpdatedMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -98,7 +98,7 @@ namespace TerraformMinds.Migrations
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
 
-                    b.Property<int>("UserID")
+                    b.Property<int?>("UserID")
                         .HasColumnType("int(10)");
 
                     b.HasKey("ID");
@@ -329,7 +329,7 @@ namespace TerraformMinds.Migrations
                             FirstName = "Admin",
                             JoinDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "Adminson",
-                            Password = "admin",
+                            Password = "Test123!",
                             Role = 1
                         },
                         new
@@ -339,7 +339,7 @@ namespace TerraformMinds.Migrations
                             FirstName = "Instructor",
                             JoinDate = new DateTime(2020, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "Instructorson",
-                            Password = "1234",
+                            Password = "Test123!",
                             Role = 2
                         },
                         new
@@ -349,8 +349,18 @@ namespace TerraformMinds.Migrations
                             FirstName = "Student",
                             JoinDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "Studentson",
-                            Password = "student",
+                            Password = "Test123!",
                             Role = 3
+                        },
+                        new
+                        {
+                            ID = -4,
+                            EMail = "John.Smith@test.com",
+                            FirstName = "John",
+                            JoinDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastName = "Smith",
+                            Password = "Test123!",
+                            Role = 2
                         });
                 });
 
@@ -370,8 +380,7 @@ namespace TerraformMinds.Migrations
                         .WithMany("Courses")
                         .HasForeignKey("UserID")
                         .HasConstraintName("FK_Course_User")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("TerraformMinds.Models.Resource", b =>

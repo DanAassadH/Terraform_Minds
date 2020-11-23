@@ -24,16 +24,10 @@ namespace TerraformMinds.Models
         [Required]
         public int Role { get; set; }
 
-        [Required]
         [Column(TypeName = "varchar(50)")]
         [Required]
         public string EMail { get; set; }
 
-        [Required]
-        [Column(TypeName = "varchar(50)")]
-        public string Password { get; set; }
-
-        [Required]
         [Column(TypeName = "varchar(50)")]
         [Required]
         public string Password { get; set; }

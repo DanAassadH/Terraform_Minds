@@ -18,12 +18,10 @@ namespace TerraformMinds.Models
         [Column(TypeName = "int(10)")]
         public int CourseID { get; set; }
 
-        [Required]
         [Column(TypeName = "varchar(500)")]
         [Required]
         public string Question { get; set; }
 
-        [Required]
         [Column(TypeName = "date")]
         public DateTime DueDate { get; set; }
 
