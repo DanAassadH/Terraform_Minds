@@ -54,6 +54,8 @@ namespace TerraformMinds.Controllers
                 ViewBag.GradeLevel = gradeLevel;
                 ViewBag.CurrentCapacity = currentCapacity;
                 ViewBag.MaxCapacity = maxCapacity;
+
+                
             }
 
             return View();
@@ -168,6 +170,22 @@ namespace TerraformMinds.Controllers
 
                 if (ModelState.IsValid)
                 {
+                    //if(course.CurrentCapacity > course.MaxCapacity)
+                    //{
+                    //    exception.ValidationExceptions.Add(new Exception("Error: Current Capacity cannot exceed Max Capacity."));
+                    //}
+                    //else
+                    //{
+                    //    if (course.StartDate > course.EndDate)
+                    //    {
+                    //        exception.ValidationExceptions.Add(new Exception("Error: Course Start Date cannot be after End Date."));
+                    //    }
+
+                    //    if (exception.ValidationExceptions.Count > 0)
+                    //    {
+                    //        throw exception;
+                    //    }
+
                     try
                     {
                         context.Update(course);
@@ -181,13 +199,13 @@ namespace TerraformMinds.Controllers
                         }
                         else
                         {
-                            throw;
+                            throw exception;
                         }
                     }
                     return RedirectToAction(nameof(CourseList));
-                }
-                return View(course);
+                }   
             }
+                return View(course);
         }
 
         public async Task<IActionResult> CourseDelete(int? id)
@@ -227,6 +245,24 @@ namespace TerraformMinds.Controllers
         /************************************
          * ADMINISTRATOR INSTRUCTOR COMMANDS
          ************************************/
+
+        public IActionResult InstructorList()
+        {
+            // SHOULD DO ALL USERS AND FILTER BY STUDENTS AND INSTRUCTORS
+            ViewBag.Instructors = GetInstructors();
+
+            return View();
+        }
+
+        public List<User> GetInstructors()
+        {
+            List<User> instructorList;
+            using (LearningManagementContext context = new LearningManagementContext())
+            {
+                instructorList = context.Users.ToList();
+            }
+            return instructorList;
+        }
 
         /************************************
          * ADMINISTRATOR STUDENT COMMANDS

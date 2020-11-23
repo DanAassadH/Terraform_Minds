@@ -6,6 +6,22 @@
 
 <h1>Edit</h1>
 
+@if (ViewBag.Message != null)
+{
+    @*TERNARY EXPRESSION*@
+    <p class="alert-@(ViewBag.Error != null ? "danger" : "success")">@(ViewBag.Message)</p>
+
+    if (ViewBag.Error != null)
+    {
+        <ul>
+            @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+            {
+                <li class="alert-danger">@(e.Message)</li>
+            }
+        </ul>
+    }
+}
+
 <h4>Course</h4>
 <hr />
 <div class="row">
@@ -15,8 +31,8 @@
             <input type="hidden" asp-for="ID" />
             <div class="form-group">
                 <label asp-for="UserID" class="control-label">Instructor</label>
-                <select asp-for="UserID" class="form-control" asp-items="ViewBag.Instructors" >
-                    <option value = null>None</option>
+                <select asp-for="UserID" class="form-control" asp-items="ViewBag.Instructors">
+                    <option value=null>None</option>
                 </select>
                 <span asp-validation-for="UserID" class="text-danger"></span>
             </div>
@@ -27,22 +43,22 @@
             </div>
             <div class="form-group">
                 <label asp-for="Subject" class="control-label"></label>
-                <input asp-for="Subject" class="form-control" value="@(ViewBag.Subject)"/>
+                <input asp-for="Subject" class="form-control" value="@(ViewBag.Subject)" />
                 <span asp-validation-for="Subject" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" type="date" value="@(ViewBag.StartDate)"/>
+                <input asp-for="StartDate" class="form-control" type="date" value="@(ViewBag.StartDate)" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" type="date" value="@(ViewBag.EndDate)"/>
+                <input asp-for="EndDate" class="form-control" type="date" value="@(ViewBag.EndDate)" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CourseDescription" class="control-label"></label>
-                <input asp-for="CourseDescription" class="form-control" value="@(ViewBag.CourseDescription)"/>
+                <input asp-for="CourseDescription" class="form-control" value="@(ViewBag.CourseDescription)" />
                 <span asp-validation-for="CourseDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -53,16 +69,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="CurrentCapacity" class="control-label"></label>
-                <input asp-for="CurrentCapacity" class="form-control" value="@(ViewBag.CurrentCapacity)"/>
+                <input asp-for="CurrentCapacity" class="form-control" value="@(ViewBag.CurrentCapacity)" />
                 <span asp-validation-for="CurrentCapacity" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="MaxCapacity" class="control-label"></label>
-                <input asp-for="MaxCapacity" class="form-control" value="@(ViewBag.MaxCapacity)"/>
+                <input asp-for="MaxCapacity" class="form-control" value="@(ViewBag.MaxCapacity)" />
                 <span asp-validation-for="MaxCapacity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="CourseEdit" class="btn btn-primary" />
+                <input type="submit" value="Submit" class="btn btn-primary" />
             </div>
         </form>
     </div>

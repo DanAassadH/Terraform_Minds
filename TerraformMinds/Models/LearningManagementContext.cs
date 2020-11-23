@@ -81,6 +81,16 @@ namespace TerraformMinds.Models
                         FirstName = "Student",
                         LastName = "Studentson",
                         JoinDate = new DateTime(2020, 01, 01)
+                    },
+                    new User()
+                    {
+                        ID = -4,
+                        Role = 2,
+                        EMail = "John.Smith@test.com",
+                        Password = "Test123!",
+                        FirstName = "John",
+                        LastName = "Smith",
+                        JoinDate = new DateTime(2020, 01, 01)
                     }
                     );
             });

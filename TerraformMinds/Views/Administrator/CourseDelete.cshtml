@@ -26,8 +26,9 @@
         <dt class = "col-sm-2">
             Start Date:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StartDate)
+            @*@((Html.DisplayFor(model => model.StartDate) == null ? "TBA" : Html.DisplayFor(model => model.StartDate)))*@
         </dd>
         <dt class = "col-sm-2">
             End Date:
@@ -63,7 +64,7 @@
     
     <form asp-action="CourseDelete">
         <input type="hidden" asp-for="ID" />
-        <input type="submit" value="CourseDelete" class="btn btn-danger" /> |
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="CourseList">Back to List</a>
     </form>
 </div>
