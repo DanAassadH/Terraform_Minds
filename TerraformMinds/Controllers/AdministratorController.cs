@@ -55,7 +55,6 @@ namespace TerraformMinds.Controllers
                 ViewBag.CurrentCapacity = currentCapacity;
                 ViewBag.MaxCapacity = maxCapacity; 
             }
-
             return View();
         }
 
@@ -64,15 +63,60 @@ namespace TerraformMinds.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("CourseCreate")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CourseCreate([Bind("ID,UserID,CourseName,Subject,CourseDescription,GradeLevel,StartDate,EndDate,CurrentCapacity,MaxCapacity")] Course course)
+        public async Task<IActionResult> CourseCreate(string instructor, string courseName, string subject, string courseDescription, string gradeLevel, DateTime startDate, DateTime endDate, int currentCapacity, int maxCapacity, [Bind("ID,UserID,CourseName,Subject,CourseDescription,GradeLevel,StartDate,EndDate,CurrentCapacity,MaxCapacity")] Course course)
         {
             using (LearningManagementContext context = new LearningManagementContext())
             {
                 if (ModelState.IsValid)
                 {
-                    context.Add(course);
-                    await context.SaveChangesAsync();
-                    return RedirectToAction(nameof(CourseList));
+                    try
+                    {
+                        if (course.CurrentCapacity > course.MaxCapacity)
+                        {
+                            exception.ValidationExceptions.Add(new Exception("Error: Current Capacity cannot exceed Max Capacity."));
+                        }
+                        else
+                        {
+                            if (course.StartDate > course.EndDate)
+                            {
+                                exception.ValidationExceptions.Add(new Exception("Error: Course Start Date cannot be after End Date."));
+                            }
+                        }
+
+                        if (exception.ValidationExceptions.Count > 0)
+                        {
+                            throw exception;
+                        }
+                        context.Add(course);
+                        await context.SaveChangesAsync();
+                        return RedirectToAction(nameof(CourseList));
+                    }
+                    catch (ValidationException e)
+                    {
+                        ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                        ViewBag.Exception = e;
+                        ViewBag.Error = true;
+                    }
+
+                    var instructors = new SelectList(context.Users.Where(x => x.Role == 2)
+                    .OrderBy(y => y.LastName)
+                    .ToDictionary(us => us.ID, us => us.FirstName + " " + us.LastName), "Key", "Value", instructor);
+                    ViewBag.Instructors = instructors;
+                    ViewBag.CourseName = courseName;
+                    ViewBag.Subject = subject;
+                    ViewBag.StartDate = startDate;
+                    ViewBag.EndDate = endDate;
+                    ViewBag.CourseDescription = courseDescription;
+
+                    // Create list if GradeLevels 
+                    var gradeLevels = new List<string>() { "Kindergarten", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12" };
+                    // Populate dropdown list for grade levels.
+                    var gradeLevelList = new SelectList(gradeLevels.ToDictionary(g => g, g => g), "Key", "Value", gradeLevel);
+                    ViewBag.GradeLevels = gradeLevelList;
+
+                    ViewBag.GradeLevel = gradeLevel;
+                    ViewBag.CurrentCapacity = currentCapacity;
+                    ViewBag.MaxCapacity = maxCapacity;
                 }
             }
             return View(course);
@@ -111,7 +155,6 @@ namespace TerraformMinds.Controllers
 
                     return course;
                 }
-
             }
         }
 
@@ -160,7 +203,6 @@ namespace TerraformMinds.Controllers
         {
             using (LearningManagementContext context = new LearningManagementContext())
             {
-
                 if (id != course.ID)
                 {
                     return NotFound();
@@ -168,26 +210,28 @@ namespace TerraformMinds.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    //if(course.CurrentCapacity > course.MaxCapacity)
-                    //{
-                    //    exception.ValidationExceptions.Add(new Exception("Error: Current Capacity cannot exceed Max Capacity."));
-                    //}
-                    //else
-                    //{
-                    //    if (course.StartDate > course.EndDate)
-                    //    {
-                    //        exception.ValidationExceptions.Add(new Exception("Error: Course Start Date cannot be after End Date."));
-                    //    }
-
-                    //    if (exception.ValidationExceptions.Count > 0)
-                    //    {
-                    //        throw exception;
-                    //    }
-
                     try
                     {
+                        if (course.CurrentCapacity > course.MaxCapacity)
+                        {
+                            exception.ValidationExceptions.Add(new Exception("Error: Current Capacity cannot exceed Max Capacity."));
+                        }
+                        else
+                        {
+                            if (course.StartDate > course.EndDate)
+                            {
+                                exception.ValidationExceptions.Add(new Exception("Error: Course Start Date cannot be after End Date."));
+                            }
+                        }
+
+                        if (exception.ValidationExceptions.Count > 0)
+                        {
+                            throw exception;
+                        }
+
                         context.Update(course);
                         await context.SaveChangesAsync();
+                        ViewBag.Message = $"Successfully updated course!";
                     }
                     catch (DbUpdateConcurrencyException)
                     {
@@ -200,10 +244,36 @@ namespace TerraformMinds.Controllers
                             throw exception;
                         }
                     }
-                    return RedirectToAction(nameof(CourseList));
+                    catch (ValidationException e)
+                    {
+                        ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                        ViewBag.Exception = e;
+                        ViewBag.Error = true;
+                    }
+
+                    var instructors = new SelectList(context.Users.Where(x => x.Role == 2)
+                    .OrderBy(y => y.LastName)
+                    .ToDictionary(us => us.ID, us => us.FirstName + " " + us.LastName), "Key", "Value", course.UserID);
+                    ViewBag.Instructors = instructors;
+                    ViewBag.CourseName = course.CourseName;
+                    ViewBag.Subject = course.Subject;
+                    ViewBag.StartDate = course.StartDate;
+                    ViewBag.EndDate = course.EndDate;
+                    ViewBag.CourseDescription = course.CourseDescription;
+
+                    // Create list if GradeLevels 
+                    var gradeLevels = new List<string>() { "Kindergarten", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12" };
+                    // Populate dropdown list for grade levels.
+                    var gradeLevelList = new SelectList(gradeLevels.ToDictionary(g => g, g => g), "Key", "Value", course.GradeLevel);
+                    ViewBag.GradeLevels = gradeLevelList;
+
+                    ViewBag.GradeLevel = course.GradeLevel;
+                    ViewBag.CurrentCapacity = course.CurrentCapacity;
+                    ViewBag.MaxCapacity = course.MaxCapacity;
+                    //return RedirectToAction(nameof(CourseList));
                 }   
             }
-                return View(course);
+            return View(course);
         }
 
         public async Task<IActionResult> CourseDelete(int? id)
@@ -245,7 +315,6 @@ namespace TerraformMinds.Controllers
 
         public IActionResult InstructorList()
         {
-            // SHOULD DO ALL USERS AND FILTER BY STUDENTS AND INSTRUCTORS
             ViewBag.Instructors = GetInstructors();
 
             return View();
@@ -256,7 +325,7 @@ namespace TerraformMinds.Controllers
             List<User> instructorList;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                instructorList = context.Users.ToList();
+                instructorList = context.Users.Where(x => x.Role == 2).ToList();
             }
             return instructorList;
         }
@@ -264,5 +333,22 @@ namespace TerraformMinds.Controllers
         /************************************
          * ADMINISTRATOR STUDENT COMMANDS
          ************************************/
+
+        public IActionResult StudentList()
+        {
+            ViewBag.Instructors = GetStudents();
+
+            return View();
+        }
+
+        public List<User> GetStudents()
+        {
+            List<User> studentList;
+            using (LearningManagementContext context = new LearningManagementContext())
+            {
+                studentList = context.Users.Where(x => x.Role == 3).ToList();
+            }
+            return studentList;
+        }
     }
 }
