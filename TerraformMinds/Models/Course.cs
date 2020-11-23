@@ -17,14 +17,20 @@ namespace TerraformMinds.Models
         public int ID { get; set; }
 
         [Column(TypeName = "int(10)")]
-        public int? UserID { get; set; }
+        public int UserID { get; set; }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c5ce74241268a71ac6e499066727f94fbf6f0f70
         [Column(TypeName = "varchar(50)")]
         [Required]
         public string CourseName { get; set; }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c5ce74241268a71ac6e499066727f94fbf6f0f70
         [Column(TypeName = "varchar(50)")]
         [Required]
         public string Subject { get; set; }
@@ -35,12 +41,18 @@ namespace TerraformMinds.Models
         [Column(TypeName = "date")]
         public DateTime? EndDate { get; set; }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c5ce74241268a71ac6e499066727f94fbf6f0f70
         [Column(TypeName = "varchar(500)")]
         [Required]
         public string CourseDescription { get; set; }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c5ce74241268a71ac6e499066727f94fbf6f0f70
         [Column(TypeName = "varchar(20)")]
         [Required]
         public string GradeLevel { get; set; }

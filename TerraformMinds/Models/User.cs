@@ -29,10 +29,12 @@ namespace TerraformMinds.Models
         [Column(TypeName = "varchar(50)")]
         public string Password { get; set; }
 
+
         [Column(TypeName = "varchar(50)")]
         public string FirstName { get; set; }
 
         [Column(TypeName = "varchar(50)")]
+        [Required]
         public string LastName { get; set; }
 
         [Column(TypeName = "date")]

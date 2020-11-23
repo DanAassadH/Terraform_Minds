@@ -9,8 +9,8 @@ using TerraformMinds.Models;
 namespace TerraformMinds.Migrations
 {
     [DbContext(typeof(LearningManagementContext))]
-    [Migration("20201123163738_UpdateInstructorFK_NN")]
-    partial class UpdateInstructorFK_NN
+    [Migration("20201123175558_UpdateDeleteBehaviourToCascade")]
+    partial class UpdateDeleteBehaviourToCascade
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -253,7 +253,7 @@ namespace TerraformMinds.Migrations
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
 
-                    b.Property<int>("ScoreObtained")
+                    b.Property<int?>("ScoreObtained")
                         .HasColumnType("int(5)");
 
                     b.Property<int>("StudentID")
@@ -304,6 +304,7 @@ namespace TerraformMinds.Migrations
                         .HasColumnType("date");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("varchar(50)")
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
@@ -329,7 +330,7 @@ namespace TerraformMinds.Migrations
                             FirstName = "Admin",
                             JoinDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "Adminson",
-                            Password = "admin",
+                            Password = "Test123!",
                             Role = 1
                         },
                         new
@@ -339,7 +340,7 @@ namespace TerraformMinds.Migrations
                             FirstName = "Instructor",
                             JoinDate = new DateTime(2020, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "Instructorson",
-                            Password = "1234",
+                            Password = "Test123!",
                             Role = 2
                         },
                         new
@@ -349,8 +350,18 @@ namespace TerraformMinds.Migrations
                             FirstName = "Student",
                             JoinDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "Studentson",
-                            Password = "student",
+                            Password = "Test123!",
                             Role = 3
+                        },
+                        new
+                        {
+                            ID = -4,
+                            EMail = "John.Smith@test.com",
+                            FirstName = "John",
+                            JoinDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastName = "Smith",
+                            Password = "Test123!",
+                            Role = 2
                         });
                 });
 
@@ -380,7 +391,7 @@ namespace TerraformMinds.Migrations
                         .WithMany("Resources")
                         .HasForeignKey("CourseID")
                         .HasConstraintName("FK_Resource_Course")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -390,14 +401,14 @@ namespace TerraformMinds.Migrations
                         .WithMany("Students")
                         .HasForeignKey("CourseID")
                         .HasConstraintName("FK_Student_Course")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TerraformMinds.Models.User", "User")
                         .WithMany("Students")
                         .HasForeignKey("UserID")
                         .HasConstraintName("FK_Student_User")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

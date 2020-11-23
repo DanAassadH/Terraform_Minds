@@ -53,9 +53,7 @@ namespace TerraformMinds.Controllers
 
                 ViewBag.GradeLevel = gradeLevel;
                 ViewBag.CurrentCapacity = currentCapacity;
-                ViewBag.MaxCapacity = maxCapacity;
-
-                
+                ViewBag.MaxCapacity = maxCapacity; 
             }
 
             return View();
@@ -235,7 +233,6 @@ namespace TerraformMinds.Controllers
             using (LearningManagementContext context = new LearningManagementContext())
             {
                 var course = await context.Courses.FindAsync(id);
-                course.UserID = null;
                 context.Courses.Remove(course);
                 await context.SaveChangesAsync();
                 return RedirectToAction(nameof(CourseList));

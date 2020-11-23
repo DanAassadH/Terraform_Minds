@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TerraformMinds.Models;
 
 namespace TerraformMinds.Migrations
 {
     [DbContext(typeof(LearningManagementContext))]
-    partial class LearningManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20201123171651_UpdatedMigration")]
+    partial class UpdatedMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,7 +98,7 @@ namespace TerraformMinds.Migrations
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
 
-                    b.Property<int>("UserID")
+                    b.Property<int?>("UserID")
                         .HasColumnType("int(10)");
 
                     b.HasKey("ID");
@@ -251,7 +253,7 @@ namespace TerraformMinds.Migrations
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
 
-                    b.Property<int?>("ScoreObtained")
+                    b.Property<int>("ScoreObtained")
                         .HasColumnType("int(5)");
 
                     b.Property<int>("StudentID")
@@ -302,7 +304,6 @@ namespace TerraformMinds.Migrations
                         .HasColumnType("date");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("varchar(50)")
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
@@ -379,8 +380,7 @@ namespace TerraformMinds.Migrations
                         .WithMany("Courses")
                         .HasForeignKey("UserID")
                         .HasConstraintName("FK_Course_User")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("TerraformMinds.Models.Resource", b =>
@@ -389,7 +389,7 @@ namespace TerraformMinds.Migrations
                         .WithMany("Resources")
                         .HasForeignKey("CourseID")
                         .HasConstraintName("FK_Resource_Course")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -399,14 +399,14 @@ namespace TerraformMinds.Migrations
                         .WithMany("Students")
                         .HasForeignKey("CourseID")
                         .HasConstraintName("FK_Student_Course")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("TerraformMinds.Models.User", "User")
                         .WithMany("Students")
                         .HasForeignKey("UserID")
                         .HasConstraintName("FK_Student_User")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
