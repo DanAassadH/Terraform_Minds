@@ -27,6 +27,10 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
+        /********************************
+         * ADMINISTRATOR COURSE COMMANDS
+         ********************************/
+
         public IActionResult CourseCreate(string instructor, string courseName, string subject, string courseDescription, string gradeLevel, DateTime startDate, DateTime endDate, int currentCapacity, int maxCapacity)
         {
             using(LearningManagementContext context = new LearningManagementContext())
@@ -55,17 +59,10 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
-        public IActionResult CourseList()
-        {
-            ViewBag.Courses = GetCourses();
-
-            return View();
-        }
-
         // POST: Course/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost, ActionName("CourseCreate")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CourseCreate([Bind("ID,UserID,CourseName,Subject,CourseDescription,GradeLevel,StartDate,EndDate,CurrentCapacity,MaxCapacity")] Course course)
         {
@@ -79,6 +76,13 @@ namespace TerraformMinds.Controllers
                 }
             }
             return View(course);
+        }
+
+        public IActionResult CourseList()
+        {
+            ViewBag.Courses = GetCourses();
+
+            return View();
         }
 
         public List<Course> GetCourses()
@@ -108,42 +112,6 @@ namespace TerraformMinds.Controllers
                     return course;
                 }
 
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CourseEdit(int id, [Bind("ID,UserID,CourseName,Subject,CourseDescription,GradeLevel,StartDate,EndDate,CurrentCapacity,MaxCapacity")] Course course)
-        {
-            using (LearningManagementContext context = new LearningManagementContext())
-            {
-
-                if (id != course.ID)
-                {
-                    return NotFound();
-                }
-
-                if (ModelState.IsValid)
-                {
-                    try
-                    {
-                        context.Update(course);
-                        await context.SaveChangesAsync();
-                    }
-                    catch (DbUpdateConcurrencyException)
-                    {
-                        if (!(context.Courses.Any(x => x.ID == id)))
-                        {
-                            return NotFound();
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
-                    return RedirectToAction(nameof(CourseList));
-                }
-                return View(course);
             }
         }
 
@@ -185,6 +153,42 @@ namespace TerraformMinds.Controllers
                 return View();
             }
         }
+        
+        [HttpPost, ActionName("CourseEdit")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CourseEdit(int id, [Bind("ID,UserID,CourseName,Subject,CourseDescription,GradeLevel,StartDate,EndDate,CurrentCapacity,MaxCapacity")] Course course)
+        {
+            using (LearningManagementContext context = new LearningManagementContext())
+            {
+
+                if (id != course.ID)
+                {
+                    return NotFound();
+                }
+
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        context.Update(course);
+                        await context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!(context.Courses.Any(x => x.ID == id)))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                    return RedirectToAction(nameof(CourseList));
+                }
+                return View(course);
+            }
+        }
 
         public async Task<IActionResult> CourseDelete(int? id)
         {
@@ -206,7 +210,7 @@ namespace TerraformMinds.Controllers
             }
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("CourseDelete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -219,5 +223,13 @@ namespace TerraformMinds.Controllers
                 return RedirectToAction(nameof(CourseList));
             }
         }
+
+        /************************************
+         * ADMINISTRATOR INSTRUCTOR COMMANDS
+         ************************************/
+
+        /************************************
+         * ADMINISTRATOR STUDENT COMMANDS
+         ************************************/
     }
 }
