@@ -22,18 +22,22 @@ namespace TerraformMinds.Models
 
         [Column(TypeName = "int(1)")]
         public int Role { get; set; }
+        [Required]
 
         [Column(TypeName = "varchar(50)")]
         public string EMail { get; set; }
+        [Required]
 
         [Column(TypeName = "varchar(50)")]
         public string FirstName { get; set; }
+        [Required]
 
         [Column(TypeName = "varchar(50)")]
         public string LastName { get; set; }
 
         [Column(TypeName = "date")]
         public DateTime JoinDate { get; set; }
+        [Required]
 
         //****************
         // Course Link
