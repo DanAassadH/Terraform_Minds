@@ -21,8 +21,8 @@ namespace TerraformMinds.Models
         [Column(TypeName = "int(10)")]
         public int CourseID { get; set; }
 
-        [Column(TypeName = "int(10)")]
-        public int SubmitID { get; set; }
+/*        [Column(TypeName = "int(10)")]
+        public int SubmitID { get; set; }*/
 
         //***********************
         // User ForeignKey
@@ -36,14 +36,20 @@ namespace TerraformMinds.Models
         //***********************
         [ForeignKey(nameof(CourseID))]
         [InverseProperty(nameof(Models.Course.Students))] 
-        public virtual Course Course { get; set; } 
+        public virtual Course Course { get; set; }
 
-        //***********************
-        // Submit ForeignKey
-        //***********************
-        [ForeignKey(nameof(SubmitID))]
-        [InverseProperty(nameof(Models.Submit.Students))] 
-        public virtual Submit Submit { get; set; } 
+        //****************
+        // Submitted Link
+        //****************
+        [InverseProperty(nameof(Submit.Student))]
+        public virtual ICollection<Submit> Submissions { get; set; }
 
+        /*        //***********************
+                // Submit ForeignKey
+                //***********************
+                [ForeignKey(nameof(SubmitID))]
+                [InverseProperty(nameof(Models.Submit.Students))] 
+                public virtual Submit Submit { get; set; } 
+        */
     }
 }

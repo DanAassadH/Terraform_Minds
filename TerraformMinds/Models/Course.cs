@@ -18,9 +18,11 @@ namespace TerraformMinds.Models
         [Column(TypeName = "int(10)")]
         public int UserID { get; set; }
 
+        [Required]
         [Column(TypeName = "varchar(50)")]
         public string CourseName { get; set; }
 
+        [Required]
         [Column(TypeName = "varchar(50)")]
         public string Subject { get; set; }
 
@@ -30,9 +32,11 @@ namespace TerraformMinds.Models
         [Column(TypeName = "date")]
         public DateTime? EndDate { get; set; }
 
+        [Required]
         [Column(TypeName = "varchar(500)")]
         public string CourseDescription { get; set; }
 
+        [Required]
         [Column(TypeName = "varchar(20)")]
         public string GradeLevel { get; set; }
 

@@ -42,6 +42,10 @@ namespace TerraformMinds.Models
                 .HasCharSet("utf8mb4")
                 .HasCollation("utf8mb4_general_ci");
 
+                entity.Property(e => e.Password)
+              .HasCharSet("utf8mb4")
+              .HasCollation("utf8mb4_general_ci");
+
                 entity.Property(e => e.FirstName)
                 .HasCharSet("utf8mb4")
                 .HasCollation("utf8mb4_general_ci");
@@ -57,6 +61,7 @@ namespace TerraformMinds.Models
                         ID = -1,
                         Role = 1,
                         EMail = "admin.adminson@test.com",
+                        Password = "admin",
                         FirstName = "Admin",
                         LastName = "Adminson",
                         JoinDate = new DateTime(2020, 01, 01)
@@ -66,6 +71,7 @@ namespace TerraformMinds.Models
                         ID = -2,
                         Role = 2,
                         EMail = "instructor.instructorson@test.com",
+                        Password = "1234",
                         FirstName = "Instructor",
                         LastName = "Instructorson",
                         JoinDate = new DateTime(2020, 05, 05)
@@ -75,6 +81,7 @@ namespace TerraformMinds.Models
                         ID = -3,
                         Role = 3,
                         EMail = "student.studentson@test.com",
+                        Password = "student",
                         FirstName = "Student",
                         LastName = "Studentson",
                         JoinDate = new DateTime(2020, 01, 01)
@@ -88,6 +95,8 @@ namespace TerraformMinds.Models
                     "_" + nameof(User);
 
                 // Collation
+
+
                 entity.Property(e => e.CourseName)
                 .HasCharSet("utf8mb4")
                 .HasCollation("utf8mb4_general_ci");
@@ -197,8 +206,8 @@ namespace TerraformMinds.Models
                    {
                        ID = -1,
                        CourseID = -1,
-                       UserID = -3,
-                       SubmitID = -1
+                       UserID = -3/*,
+                       SubmitID = -1*/
                    });
             });
 
@@ -269,7 +278,13 @@ namespace TerraformMinds.Models
                 string submitKeyName = "FK_" + nameof(Submit) +
                     "_" + nameof(Assignment);
 
+                string submitKeyStudent = "FK_" + nameof(Submit) +
+                    "_" + nameof(Student);
+
                 // Collation
+
+               
+
                 entity.Property(e => e.Answer)
                 .HasCharSet("utf8mb4")
                 .HasCollation("utf8mb4_general_ci");
@@ -281,17 +296,27 @@ namespace TerraformMinds.Models
                 entity.HasIndex(e => e.AssignmentID)
                 .HasName(submitKeyName);
 
+                entity.HasIndex(e => e.StudentID)
+               .HasName(submitKeyStudent);
+
                 entity.HasOne(thisEntity => thisEntity.Assignment)
                 .WithMany(parent => parent.Submissions)
                 .HasForeignKey(thisEntity => thisEntity.AssignmentID)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName(submitKeyName);
 
+                entity.HasOne(thisEntity => thisEntity.Student)
+                .WithMany(parent => parent.Submissions)
+                .HasForeignKey(thisEntity => thisEntity.StudentID)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName(submitKeyStudent);
+
                 entity.HasData(
                    new Submit()
                    {
                        ID = -1,
                        AssignmentID = -1,
+                       StudentID = -1,
                        Answer = "Submit: Answer Test",
                        ScoreObtained = 6,
                        Remarks = "Submit: Remarks Test"

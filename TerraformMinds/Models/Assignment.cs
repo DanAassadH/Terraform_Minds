@@ -18,11 +18,13 @@ namespace TerraformMinds.Models
         [Column(TypeName = "int(10)")]
         public int CourseID { get; set; }
 
+        [Required]
         [Column(TypeName = "varchar(500)")]
         public string Question { get; set; }
 
+        [Required]
         [Column(TypeName = "date")]
-        public DateTime? DueDate { get; set; }
+        public DateTime DueDate { get; set; }
 
         [Column(TypeName = "int(5)")]
         public int TotalScore { get; set; }
@@ -32,13 +34,13 @@ namespace TerraformMinds.Models
         //***********************
         [ForeignKey(nameof(CourseID))]
         [InverseProperty(nameof(Models.Course.Assignments))] 
-        public virtual Course Course { get; set; } 
+        public virtual Course Course { get; set; }
 
         //****************
         // Submit Link
         //****************
         [InverseProperty(nameof(Submit.Assignment))]
-        public virtual ICollection<Submit> Submissions { get; set; } 
+        public virtual ICollection<Submit> Submissions { get; set; }
 
     }
 }
