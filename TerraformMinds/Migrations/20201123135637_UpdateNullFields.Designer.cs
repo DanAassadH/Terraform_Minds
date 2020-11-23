@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TerraformMinds.Models;
 
 namespace TerraformMinds.Migrations
 {
     [DbContext(typeof(LearningManagementContext))]
-    partial class LearningManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20201123135637_UpdateNullFields")]
+    partial class UpdateNullFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,7 +98,7 @@ namespace TerraformMinds.Migrations
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
 
-                    b.Property<int?>("UserID")
+                    b.Property<int>("UserID")
                         .HasColumnType("int(10)");
 
                     b.HasKey("ID");
@@ -308,7 +310,6 @@ namespace TerraformMinds.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-
                         .HasColumnType("varchar(50)")
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
@@ -328,7 +329,7 @@ namespace TerraformMinds.Migrations
                             FirstName = "Admin",
                             JoinDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "Adminson",
-                            Password = "Test123!",
+                            Password = "admin",
                             Role = 1
                         },
                         new
@@ -338,7 +339,7 @@ namespace TerraformMinds.Migrations
                             FirstName = "Instructor",
                             JoinDate = new DateTime(2020, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "Instructorson",
-                            Password = "Test123!",
+                            Password = "1234",
                             Role = 2
                         },
                         new
@@ -348,18 +349,8 @@ namespace TerraformMinds.Migrations
                             FirstName = "Student",
                             JoinDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "Studentson",
-                            Password = "Test123!",
+                            Password = "student",
                             Role = 3
-                        },
-                        new
-                        {
-                            ID = -4,
-                            EMail = "John.Smith@test.com",
-                            FirstName = "John",
-                            JoinDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LastName = "Smith",
-                            Password = "Test123!",
-                            Role = 2
                         });
                 });
 
@@ -379,7 +370,8 @@ namespace TerraformMinds.Migrations
                         .WithMany("Courses")
                         .HasForeignKey("UserID")
                         .HasConstraintName("FK_Course_User")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TerraformMinds.Models.Resource", b =>

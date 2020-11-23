@@ -18,9 +18,14 @@ namespace TerraformMinds.Models
         [Column(TypeName = "int(10)")]
         public int AssignmentID { get; set; }
 
-        [Column(TypeName = "date")]
-        public DateTime? DateSubmitted { get; set; }
+        [Column(TypeName = "int(10)")]
+        public int StudentID { get; set; }
 
+        [Required]
+        [Column(TypeName = "date")]
+        public DateTime DateSubmitted { get; set; }
+
+        [Required]
         [Column(TypeName = "varchar(2000)")]
         public string Answer { get; set; }
 
@@ -35,12 +40,19 @@ namespace TerraformMinds.Models
         //***********************
         [ForeignKey(nameof(AssignmentID))]
         [InverseProperty(nameof(Models.Assignment.Submissions))]
-        public virtual Assignment Assignment { get; set; } 
+        public virtual Assignment Assignment { get; set; }
 
-        //****************
-        // Student Link
-        //****************
-        [InverseProperty(nameof(Student.Submit))]
-        public virtual ICollection<Student> Students { get; set; } 
+        //***********************
+        // Student ForeignKey
+        //***********************
+        [ForeignKey(nameof(StudentID))]
+        [InverseProperty(nameof(Models.Student.Submissions))]
+        public virtual Student Student { get; set; }
+
+        /*        //****************
+                // Student Link
+                //****************
+                [InverseProperty(nameof(Student.Submit))]
+                public virtual ICollection<Student> Students { get; set; } */
     }
 }

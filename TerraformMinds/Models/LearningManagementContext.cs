@@ -42,6 +42,10 @@ namespace TerraformMinds.Models
                 .HasCharSet("utf8mb4")
                 .HasCollation("utf8mb4_general_ci");
 
+                entity.Property(e => e.Password)
+              .HasCharSet("utf8mb4")
+              .HasCollation("utf8mb4_general_ci");
+
                 entity.Property(e => e.FirstName)
                 .HasCharSet("utf8mb4")
                 .HasCollation("utf8mb4_general_ci");
@@ -101,6 +105,8 @@ namespace TerraformMinds.Models
                     "_" + nameof(User);
 
                 // Collation
+
+
                 entity.Property(e => e.CourseName)
                 .HasCharSet("utf8mb4")
                 .HasCollation("utf8mb4_general_ci");
@@ -210,8 +216,8 @@ namespace TerraformMinds.Models
                    {
                        ID = -1,
                        CourseID = -1,
-                       UserID = -3,
-                       SubmitID = -1
+                       UserID = -3/*,
+                       SubmitID = -1*/
                    });
             });
 
@@ -282,7 +288,13 @@ namespace TerraformMinds.Models
                 string submitKeyName = "FK_" + nameof(Submit) +
                     "_" + nameof(Assignment);
 
+                string submitKeyStudent = "FK_" + nameof(Submit) +
+                    "_" + nameof(Student);
+
                 // Collation
+
+               
+
                 entity.Property(e => e.Answer)
                 .HasCharSet("utf8mb4")
                 .HasCollation("utf8mb4_general_ci");
@@ -294,17 +306,27 @@ namespace TerraformMinds.Models
                 entity.HasIndex(e => e.AssignmentID)
                 .HasName(submitKeyName);
 
+                entity.HasIndex(e => e.StudentID)
+               .HasName(submitKeyStudent);
+
                 entity.HasOne(thisEntity => thisEntity.Assignment)
                 .WithMany(parent => parent.Submissions)
                 .HasForeignKey(thisEntity => thisEntity.AssignmentID)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName(submitKeyName);
 
+                entity.HasOne(thisEntity => thisEntity.Student)
+                .WithMany(parent => parent.Submissions)
+                .HasForeignKey(thisEntity => thisEntity.StudentID)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName(submitKeyStudent);
+
                 entity.HasData(
                    new Submit()
                    {
                        ID = -1,
                        AssignmentID = -1,
+                       StudentID = -1,
                        Answer = "Submit: Answer Test",
                        ScoreObtained = 6,
                        Remarks = "Submit: Remarks Test"
