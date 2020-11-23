@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -16,14 +17,16 @@ namespace TerraformMinds.Models
         public int ID { get; set; }
 
         [Column(TypeName = "int(10)")]
-        public int UserID { get; set; }
+        public int? UserID { get; set; }
 
         [Required]
         [Column(TypeName = "varchar(50)")]
+        [Required]
         public string CourseName { get; set; }
 
         [Required]
         [Column(TypeName = "varchar(50)")]
+        [Required]
         public string Subject { get; set; }
 
         [Column(TypeName = "date")]
@@ -34,16 +37,20 @@ namespace TerraformMinds.Models
 
         [Required]
         [Column(TypeName = "varchar(500)")]
+        [Required]
         public string CourseDescription { get; set; }
 
         [Required]
         [Column(TypeName = "varchar(20)")]
+        [Required]
         public string GradeLevel { get; set; }
 
         [Column(TypeName = "int(3)")]
+        [DefaultValue(0)]
         public int CurrentCapacity { get; set; }
 
         [Column(TypeName = "int(3)")]
+        [Required]
         public int MaxCapacity { get; set; }
 
         //****************

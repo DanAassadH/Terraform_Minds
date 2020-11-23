@@ -20,6 +20,7 @@ namespace TerraformMinds.Models
 
         [Required]
         [Column(TypeName = "varchar(500)")]
+        [Required]
         public string Question { get; set; }
 
         [Required]
