@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TerraformMinds.Models;
 
 namespace TerraformMinds.Migrations
 {
     [DbContext(typeof(LearningManagementContext))]
-    partial class LearningManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20201123175558_UpdateDeleteBehaviourToCascade")]
+    partial class UpdateDeleteBehaviourToCascade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

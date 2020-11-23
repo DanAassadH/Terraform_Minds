@@ -196,7 +196,7 @@ namespace TerraformMinds.Models
                 entity.HasOne(thisEntity => thisEntity.User)
                 .WithMany(parent => parent.Students)
                 .HasForeignKey(thisEntity => thisEntity.UserID)
-                .OnDelete(DeleteBehavior.Restrict)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName(studentUserKeyName);
 
                 string studentCourseKeyName = "FK_" + nameof(Student) +
@@ -208,7 +208,7 @@ namespace TerraformMinds.Models
                 entity.HasOne(thisEntity => thisEntity.Course)
                 .WithMany(parent => parent.Students)
                 .HasForeignKey(thisEntity => thisEntity.CourseID)
-                .OnDelete(DeleteBehavior.Restrict)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName(studentCourseKeyName);
 
                 entity.HasData(
@@ -241,7 +241,7 @@ namespace TerraformMinds.Models
                 entity.HasOne(thisEntity => thisEntity.Course)
                 .WithMany(parent => parent.Resources)
                 .HasForeignKey(thisEntity => thisEntity.CourseID)
-                .OnDelete(DeleteBehavior.Restrict)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName(resourceKeyName);
 
                 entity.HasData(
@@ -292,9 +292,6 @@ namespace TerraformMinds.Models
                     "_" + nameof(Student);
 
                 // Collation
-
-               
-
                 entity.Property(e => e.Answer)
                 .HasCharSet("utf8mb4")
                 .HasCollation("utf8mb4_general_ci");

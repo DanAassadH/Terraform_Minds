@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TerraformMinds.Models;
 
 namespace TerraformMinds.Migrations
 {
     [DbContext(typeof(LearningManagementContext))]
-    partial class LearningManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20201123173048_UpdateNotNullFields")]
+    partial class UpdateNotNullFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,7 +98,7 @@ namespace TerraformMinds.Migrations
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
 
-                    b.Property<int>("UserID")
+                    b.Property<int?>("UserID")
                         .HasColumnType("int(10)");
 
                     b.HasKey("ID");
@@ -206,6 +208,9 @@ namespace TerraformMinds.Migrations
                     b.Property<int>("CourseID")
                         .HasColumnType("int(10)");
 
+                    b.Property<int>("SubmitID")
+                        .HasColumnType("int(10)");
+
                     b.Property<int>("UserID")
                         .HasColumnType("int(10)");
 
@@ -213,6 +218,8 @@ namespace TerraformMinds.Migrations
 
                     b.HasIndex("CourseID")
                         .HasName("FK_Student_Course");
+
+                    b.HasIndex("SubmitID");
 
                     b.HasIndex("UserID")
                         .HasName("FK_Student_User");
@@ -224,6 +231,7 @@ namespace TerraformMinds.Migrations
                         {
                             ID = -1,
                             CourseID = -1,
+                            SubmitID = -1,
                             UserID = -3
                         });
                 });
@@ -251,19 +259,13 @@ namespace TerraformMinds.Migrations
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
 
-                    b.Property<int?>("ScoreObtained")
+                    b.Property<int>("ScoreObtained")
                         .HasColumnType("int(5)");
-
-                    b.Property<int>("StudentID")
-                        .HasColumnType("int(10)");
 
                     b.HasKey("ID");
 
                     b.HasIndex("AssignmentID")
                         .HasName("FK_Submit_Assignment");
-
-                    b.HasIndex("StudentID")
-                        .HasName("FK_Submit_Student");
 
                     b.ToTable("submitted");
 
@@ -275,8 +277,7 @@ namespace TerraformMinds.Migrations
                             AssignmentID = -1,
                             DateSubmitted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Remarks = "Submit: Remarks Test",
-                            ScoreObtained = 6,
-                            StudentID = -1
+                            ScoreObtained = 6
                         });
                 });
 
@@ -302,16 +303,13 @@ namespace TerraformMinds.Migrations
                         .HasColumnType("date");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("varchar(50)")
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("varchar(50)")
-                        .HasAnnotation("MySql:CharSet", "utf8mb4")
-                        .HasAnnotation("MySql:Collation", "utf8mb4_general_ci");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<int>("Role")
                         .HasColumnType("int(1)");
@@ -379,8 +377,7 @@ namespace TerraformMinds.Migrations
                         .WithMany("Courses")
                         .HasForeignKey("UserID")
                         .HasConstraintName("FK_Course_User")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("TerraformMinds.Models.Resource", b =>
@@ -389,7 +386,7 @@ namespace TerraformMinds.Migrations
                         .WithMany("Resources")
                         .HasForeignKey("CourseID")
                         .HasConstraintName("FK_Resource_Course")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -399,6 +396,12 @@ namespace TerraformMinds.Migrations
                         .WithMany("Students")
                         .HasForeignKey("CourseID")
                         .HasConstraintName("FK_Student_Course")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TerraformMinds.Models.Submit", "Submit")
+                        .WithMany("Students")
+                        .HasForeignKey("SubmitID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -406,7 +409,7 @@ namespace TerraformMinds.Migrations
                         .WithMany("Students")
                         .HasForeignKey("UserID")
                         .HasConstraintName("FK_Student_User")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -416,13 +419,6 @@ namespace TerraformMinds.Migrations
                         .WithMany("Submissions")
                         .HasForeignKey("AssignmentID")
                         .HasConstraintName("FK_Submit_Assignment")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TerraformMinds.Models.Student", "Student")
-                        .WithMany("Submissions")
-                        .HasForeignKey("StudentID")
-                        .HasConstraintName("FK_Submit_Student")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

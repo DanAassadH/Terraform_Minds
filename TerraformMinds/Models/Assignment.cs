@@ -23,6 +23,7 @@ namespace TerraformMinds.Models
         public string Question { get; set; }
 
         [Column(TypeName = "date")]
+        [Required]
         public DateTime DueDate { get; set; }
 
         [Column(TypeName = "int(5)")]

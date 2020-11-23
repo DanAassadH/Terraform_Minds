@@ -21,16 +21,16 @@ namespace TerraformMinds.Models
         [Column(TypeName = "int(10)")]
         public int StudentID { get; set; }
 
-        [Required]
         [Column(TypeName = "date")]
+        [Required]
         public DateTime DateSubmitted { get; set; }
 
-        [Required]
         [Column(TypeName = "varchar(2000)")]
+        [Required]
         public string Answer { get; set; }
 
         [Column(TypeName = "int(5)")]
-        public int ScoreObtained { get; set; }
+        public int? ScoreObtained { get; set; }
 
         [Column(TypeName = "varchar(500)")]
         public string Remarks { get; set; }

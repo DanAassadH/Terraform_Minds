@@ -37,6 +37,7 @@ namespace TerraformMinds.Models
         public string FirstName { get; set; }
 
         [Column(TypeName = "varchar(50)")]
+        [Required]
         public string LastName { get; set; }
 
         [Column(TypeName = "date")]
