@@ -21,32 +21,21 @@ namespace TerraformMinds.Models
         public int ID { get; set; }
 
         [Column(TypeName = "int(1)")]
-        [Required]
         public int Role { get; set; }
 
-        [Required]
         [Column(TypeName = "varchar(50)")]
-        [Required]
         public string EMail { get; set; }
 
-        [Required]
         [Column(TypeName = "varchar(50)")]
         public string Password { get; set; }
 
-        [Required]
         [Column(TypeName = "varchar(50)")]
-        [Required]
-        public string Password { get; set; }
-        
-        [Column(TypeName = "varchar(50)")]
-        [Required]
         public string FirstName { get; set; }
 
         [Column(TypeName = "varchar(50)")]
         public string LastName { get; set; }
 
         [Column(TypeName = "date")]
-        [Required]
         public DateTime JoinDate { get; set; }
 
         //****************
@@ -60,8 +49,5 @@ namespace TerraformMinds.Models
         //****************
         [InverseProperty(nameof(Models.Student.User))]
         public virtual ICollection<Student> Students { get; set; }
-
-
-
     }
 }
