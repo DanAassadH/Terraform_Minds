@@ -57,6 +57,7 @@ namespace TerraformMinds.Models
                         ID = -1,
                         Role = 1,
                         EMail = "admin.adminson@test.com",
+                        Password = "Test123!",
                         FirstName = "Admin",
                         LastName = "Adminson",
                         JoinDate = new DateTime(2020, 01, 01)
@@ -66,6 +67,7 @@ namespace TerraformMinds.Models
                         ID = -2,
                         Role = 2,
                         EMail = "instructor.instructorson@test.com",
+                        Password = "Test123!",
                         FirstName = "Instructor",
                         LastName = "Instructorson",
                         JoinDate = new DateTime(2020, 05, 05)
@@ -75,6 +77,7 @@ namespace TerraformMinds.Models
                         ID = -3,
                         Role = 3,
                         EMail = "student.studentson@test.com",
+                        Password = "Test123!",
                         FirstName = "Student",
                         LastName = "Studentson",
                         JoinDate = new DateTime(2020, 01, 01)
