@@ -24,7 +24,23 @@ namespace TerraformMinds.Controllers
             /* If else to check if register new user button clicked*/
             if (Request.Method == "POST")
             {
-                Register(firstName, lastName, email, password, role);
+                try
+                {
+                    Register(firstName, lastName, email, password, role);
+                    ViewBag.Message = $"Successfully Registered User!";
+                }
+                catch (ValidationException e)
+                {
+/*                    ViewBag.AuthorId = authorId;
+                    ViewBag.BookTitle = title;
+                    ViewBag.PublicationDate = publicationDate;*/
+
+                    ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                    ViewBag.Exception = e;
+                    ViewBag.Error = true;
+                }
+
+                
             }
                 
 
@@ -46,10 +62,21 @@ namespace TerraformMinds.Controllers
             role = role != null ? role.Trim() : null;
 
 
+            if (string.IsNullOrWhiteSpace(firstName))
+            {
+                exception.ValidationExceptions.Add(new Exception("First Name Not Provided"));
+            }
 
             using (LearningManagementContext context = new LearningManagementContext())
             {
 
+                if (exception.ValidationExceptions.Count > 0)
+                {
+                    throw exception;
+                }
+
+
+                // Add Values in user Table if all validations are passed
                 context.Users.Add(new User()
                 {
                     FirstName = firstName,
@@ -72,7 +99,7 @@ namespace TerraformMinds.Controllers
 
             // https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/consumer-apis/password-hashing?view=aspnetcore-5.0
             // Generate a SALT
-            // Convert string to a byte array Using a known salt insted of random . for proper security there should be a SALT field in database, and every password should have a different SALT but for this application we are using a combination of email+password as a SALT 
+            // Convert string to a byte array Using a known salt insted of random . for proper security there should be a SALT field in database, and every password should have a different SALT(generated through random function) , but for this application we are using a combination of email+password to generate SALT 
 
             byte[] salt = Encoding.ASCII.GetBytes(email + password);
 
