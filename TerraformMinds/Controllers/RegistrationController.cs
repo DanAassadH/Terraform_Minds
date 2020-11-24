@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TerraformMinds.Models;
 using TerraformMinds.Models.Exceptions;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.Text;
 
 namespace TerraformMinds.Controllers
 {
@@ -53,7 +55,7 @@ namespace TerraformMinds.Controllers
                     FirstName = firstName,
                     LastName = lastName,
                     EMail = email,
-                    Password = password,
+                    Password = HashAndSaltPassowrd(password,email),
                     Role = int.Parse(role),
                     JoinDate = DateTime.Now
                 }) ;
@@ -63,6 +65,27 @@ namespace TerraformMinds.Controllers
 
 
 
+        }
+
+        public string HashAndSaltPassowrd(string password , string email)
+        {
+
+            // https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/consumer-apis/password-hashing?view=aspnetcore-5.0
+            // Generate a SALT
+            // Convert string to a byte array Using a known salt insted of random . for proper security there should be a SALT field in database, and every password should have a different SALT but for this application we are using a combination of email+password as a SALT 
+
+            byte[] salt = Encoding.ASCII.GetBytes(email + password);
+
+            // derive a 256-bit subkey (use HMACSHA1 with 10,000 iterations)
+            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA1,
+                iterationCount: 10000,
+                numBytesRequested: 256 / 8));
+
+
+            return hashed;
         }
    }
 }
