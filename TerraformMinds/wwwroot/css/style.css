@@ -1,0 +1,23 @@
+﻿/*---------------------------------------- General Styles-------------------------------------------*/
+
+
+/* --- Yellow Button---*/
+
+.tm-yellow-button {
+    width: auto;
+    height: auto;
+    background: #FFDA53;
+    border-radius: 40px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 21px;
+    color: #2F2F75;
+}
+
+.test-font{
+    font-size:300px;
+    color:aqua;
+
+}
