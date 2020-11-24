@@ -62,9 +62,29 @@ namespace TerraformMinds.Controllers
             role = role != null ? role.Trim() : null;
 
 
-            if (string.IsNullOrWhiteSpace(firstName))
+/*            if (string.IsNullOrWhiteSpace(firstName))
             {
                 exception.ValidationExceptions.Add(new Exception("First Name Not Provided"));
+            }*/
+
+            if (string.IsNullOrWhiteSpace(lastName))
+            {
+                exception.ValidationExceptions.Add(new Exception("Last Name Not Provided"));
+            }
+
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                exception.ValidationExceptions.Add(new Exception("Email Not Provided"));
+            }
+
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                exception.ValidationExceptions.Add(new Exception("Password Not Provided"));
+            }
+
+            if (string.IsNullOrWhiteSpace(role))
+            {
+                exception.ValidationExceptions.Add(new Exception("Please Select a Role"));
             }
 
             using (LearningManagementContext context = new LearningManagementContext())
