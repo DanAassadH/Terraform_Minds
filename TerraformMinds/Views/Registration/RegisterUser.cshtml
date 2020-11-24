@@ -3,5 +3,47 @@
     ViewData["Title"] = "RegisterUser";
 }
 
-<h1>RegisterUser</h1>
+<h1>Register User</h1>
 
+
+
+
+<section>
+    <h2>Register User</h2>
+
+    <form action="" method="POST">
+
+        <div class="form-group">
+            <label for="firstName"></label>
+            <input id="firstName" type="text" name="firstName" value="" class="form-control" placeholder="First Name"/>
+        </div>
+
+        <div class="form-group">
+            <label for="lastName"></label>
+            <input id="lastName" type="text" name="lastName" value="" class="form-control" placeholder="Last Name"/>
+        </div>
+
+        <div class="form-group">
+            <label for="email"></label>
+            <input id="email" type="text" name="email" value="" class="form-control" placeholder="Email"/>
+        </div>
+
+        <div class="form-group">
+            <label for="password"></label>
+            <input id="password" type="text" name="password" value="" class="form-control" placeholder="Password" />
+        </div>
+
+        <div class="form-group">
+            <input type="radio" value="3" id="role" name="role" />Student<br />
+            <input type="radio" value="2" id="role" name="role" />Instructor<br />
+        </div>
+
+
+
+        <div class="form-group">
+            <input type="submit" value="Submit" class="btn btn-primary" />
+        </div>
+
+    </form>
+
+</section>
