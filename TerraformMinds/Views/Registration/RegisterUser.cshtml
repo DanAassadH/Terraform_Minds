@@ -1,4 +1,4 @@
-﻿
+﻿@model TerraformMinds.Models.User
 @{
     ViewData["Title"] = "RegisterUser";
 }
@@ -28,12 +28,25 @@
     <h2>Register User</h2>
 
     <form action="/Registration/RegisterUser" method="POST">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <div class="form-group">
-            <label for="firstName"></label>
-            <input id="firstName" type="text" name="firstName" class="form-control" placeholder="First Name"  data-val="true" 
-             data-val-required="Name is Required."  />
+        @*    <label for="FirstName"></label>*@
+            @*         <input id="FirstName" type="text" name="FirstName" value="" class="form-control" placeholder="First Name" d />*@
+
+            @*           @Html.EditorFor(m => m.FirstName)
+        @Html.ValidationMessageFor(m => m.FirstName, "Please enter student name.", new { @class = "text-danger" })*@
+
+            @*            <label asp-for="FirstName"></label>*@
+
+            <label for="FirstName"></label>
+            <input asp-for="FirstName" class="form-control" placeholder="First Name" data-val="true" data-val-required="First Name is required" data-val-maxlength-max="50" data-val-maxlength="Name Cannot exceed 50 characters" />
+            <span asp-validation-for="FirstName" class="text-danger" data-valmsg-for="FirstName"
+                  data-valmsg-replace="true"></span>
+
         </div>
+
+
 
         <div class="form-group">
             <label for="lastName"></label>
@@ -64,3 +77,8 @@
     </form>
 
 </section>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

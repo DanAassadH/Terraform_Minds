@@ -19,14 +19,14 @@ namespace TerraformMinds.Controllers
            
         }
 
-        public IActionResult RegisterUser(string firstName, string lastName, string email, string password, string role)
+        public IActionResult RegisterUser(string FirstName, string lastName, string email, string password, string role)
         {
             /* If else to check if register new user button clicked*/
             if (Request.Method == "POST")
             {
                 try
                 {
-                    Register(firstName, lastName, email, password, role);
+                    Register(FirstName, lastName, email, password, role);
                     ViewBag.Message = $"Successfully Registered User!";
                 }
                 catch (ValidationException e)
@@ -62,10 +62,10 @@ namespace TerraformMinds.Controllers
             role = role != null ? role.Trim() : null;
 
 
-/*            if (string.IsNullOrWhiteSpace(firstName))
+            if (string.IsNullOrWhiteSpace(firstName))
             {
                 exception.ValidationExceptions.Add(new Exception("First Name Not Provided"));
-            }*/
+            }
 
             if (string.IsNullOrWhiteSpace(lastName))
             {
