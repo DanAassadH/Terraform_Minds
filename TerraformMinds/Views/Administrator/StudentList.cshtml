@@ -3,13 +3,7 @@
     ViewData["Title"] = "Student List";
 }
 
-<h1>List</h1>
-
-@*<form action="/Administrator/List" method="get">
-        <label for="filter">Filter Overdue Books</label>
-        <input type="checkbox" id="filter" name="filter" value="overdue" @(ViewBag.Filter ? "checked" : "") />
-        <input type="submit" value="Go!" />
-    </form>*@
+<h1>Student List</h1>
 
 @if (ViewBag.Students != null && ViewBag.Students.Count > 0)
 {
@@ -37,6 +31,6 @@
 
 else
 {
-    <p>There are no courses found</p>
+    <p>There are no students found</p>
 }
 
