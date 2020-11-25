@@ -31,19 +31,13 @@ namespace TerraformMinds.Controllers
                 }
                 catch (ValidationException e)
                 {
-/*                    ViewBag.AuthorId = authorId;
-                    ViewBag.BookTitle = title;
-                    ViewBag.PublicationDate = publicationDate;*/
-
                     ViewBag.Message = "There exist problem(s) with your submission, see below.";
                     ViewBag.Exception = e;
                     ViewBag.Error = true;
                 }
-
                 
             }
                 
-
             return View();
         }
 
@@ -55,11 +49,11 @@ namespace TerraformMinds.Controllers
             ValidationException exception = new ValidationException();
 
             // Trim the values 
-            firstName = firstName != null ? firstName.Trim() : null;
-            lastName = lastName != null ? lastName.Trim() : null;
-            email = email != null ? email.Trim() : null;
-            password = password != null ? password.Trim() : null;
-            role = role != null ? role.Trim() : null;
+            firstName = firstName?.Trim();
+            lastName = lastName?.Trim();
+            email = email?.Trim();
+            password = password?.Trim();
+            role = role?.Trim();
 
 
             if (string.IsNullOrWhiteSpace(firstName))
@@ -70,6 +64,7 @@ namespace TerraformMinds.Controllers
             if (string.IsNullOrWhiteSpace(lastName))
             {
                 exception.ValidationExceptions.Add(new Exception("Last Name Not Provided"));
+
             }
 
             if (string.IsNullOrWhiteSpace(email))
@@ -89,12 +84,16 @@ namespace TerraformMinds.Controllers
 
             using (LearningManagementContext context = new LearningManagementContext())
             {
+                // Checking for Email duplication
+                if ((context.Users.Where(x => (x.EMail.Trim().ToUpper()) == email.ToUpper()).Count()) > 0)
+                {
+                    exception.ValidationExceptions.Add(new Exception("Email already exist, Try again with a new one"));
+                }
 
                 if (exception.ValidationExceptions.Count > 0)
                 {
                     throw exception;
                 }
-
 
                 // Add Values in user Table if all validations are passed
                 context.Users.Add(new User()
@@ -109,8 +108,6 @@ namespace TerraformMinds.Controllers
                 context.SaveChanges();
 
             }
-
-
 
         }
 
