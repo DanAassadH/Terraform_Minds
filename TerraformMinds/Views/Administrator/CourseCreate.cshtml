@@ -36,44 +36,49 @@
             </div>
             <div class="form-group">
                 <label asp-for="CourseName" class="control-label">Course Name:</label>
-                <input asp-for="CourseName" class="form-control" />
-                <span asp-validation-for="CourseName" class="text-danger"></span>
+                <input asp-for="CourseName" name="CourseName" class="form-control" value="@(ViewBag.CourseName)" data-val="true" data-val-required="A course name is required" />
+                <span asp-validation-for="CourseName" class="text-danger" data-valmsg-for="CourseName"
+                      data-valmsg-replace="true"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Subject" class="control-label">Subject:</label>
-                <input asp-for="Subject" class="form-control" />
-                <span asp-validation-for="Subject" class="text-danger"></span>
+                <input asp-for="Subject" name="Subject" class="form-control" value="@(ViewBag.Subject)" data-val="true" data-val-required="A course subject is required" />
+                <span asp-validation-for="Subject" class="text-danger" data-valmsg-for="Subject"
+                      data-valmsg-replace="true"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label">Start Date:</label>
-                <input asp-for="StartDate" class="form-control" type="date" />
+                <input asp-for="StartDate" class="form-control" type="date" value="@(ViewBag.StartDate)" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EndDate" class="control-label">End Date:</label>
-                <input asp-for="EndDate" class="form-control" type="date" />
+                <input asp-for="EndDate" class="form-control" type="date" value="@(ViewBag.EndDate)" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CourseDescription" class="control-label">Course Description</label>
-                <input asp-for="CourseDescription" class="form-control" />
-                <span asp-validation-for="CourseDescription" class="text-danger"></span>
+                <label asp-for="CourseDescription" class="control-label">Course Description:</label>
+                <input asp-for="CourseDescription" name="CourseDescription" class="form-control" value="@(ViewBag.CourseDescription)" data-val="true" data-val-required="A course description is required" />
+                <span asp-validation-for="CourseDescription" class="text-danger" data-valmsg-for="CourseDescription"
+                      data-valmsg-replace="true"></span>
             </div>
             <div class="form-group">
-                <label asp-for="GradeLevel" class="control-label">Grade Level</label>
+                <label asp-for="GradeLevel" class="control-label">Grade Level:</label>
                 <select asp-for="GradeLevel" class="form-control" asp-items="ViewBag.GradeLevels">
                 </select>
                 <span asp-validation-for="GradeLevel" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CurrentCapacity" class="control-label">Current Capacity</label>
-                <input asp-for="CurrentCapacity" class="form-control" />
-                <span asp-validation-for="CurrentCapacity" class="text-danger"></span>
+                <label asp-for="CurrentCapacity" class="control-label">Current Capacity:</label>
+                <input asp-for="CurrentCapacity" name="CurrentCapacity" class="form-control" value="@(ViewBag.CurrentCapacity)" data-val="true" data-val-required="Current capacity is required" />
+                <span asp-validation-for="CurrentCapacity" class="text-danger" data-valmsg-for="CurrentCapacity"
+                      data-valmsg-replace="true"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MaxCapacity" class="control-label">Max Capacity</label>
-                <input asp-for="MaxCapacity" class="form-control" />
-                <span asp-validation-for="MaxCapacity" class="text-danger"></span>
+                <label asp-for="MaxCapacity" class="control-label">Max Capacity:</label>
+                <input asp-for="MaxCapacity" name="MaxCapacity" class="form-control" value="@(ViewBag.MaxCapacity)" data-val="true" data-val-required="Max capacity is required" />
+                <span asp-validation-for="MaxCapacity" class="text-danger" data-valmsg-for="MaxCapacity"
+                      data-valmsg-replace="true"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
