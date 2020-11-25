@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewData["Title"] = "Instructors List";
+}
+
+<h1>List</h1>
+
+@*<form action="/Administrator/List" method="get">
+        <label for="filter">Filter Overdue Books</label>
+        <input type="checkbox" id="filter" name="filter" value="overdue" @(ViewBag.Filter ? "checked" : "") />
+        <input type="submit" value="Go!" />
+    </form>*@
+
+@if (ViewBag.Instructors != null && ViewBag.Instructors.Count > 0)
+{
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Student ID</th>
+                <th>Full Name</th>
+                <th>E-Mail</th>
+                <th>Join Date</th>
+                <th>Action</th>
+            </tr>
+            @foreach (User user in ViewBag.Instructors)
+            {
+                <tr>
+                    <td>@(user.ID)</td>
+                    <td>@(user.FirstName + " " + user.LastName)</td>
+                    <td>@(user.EMail)</td>
+                    <td>@(user.JoinDate.ToLongDateString())</td>
+                    @*<td><a href="/Administrator/CourseEdit?id=@(course.ID)">Edit</a> | <a href="/Administrator/CourseDelete?id=@(course.ID)">Delete</a></td>*@
+                    <td>View Courses</td>
+                </tr>
+            }
+    </table>
+}
+
+else
+{
+    <p>There are no courses found</p>
+}
+

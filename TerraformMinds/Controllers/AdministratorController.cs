@@ -20,6 +20,8 @@ namespace TerraformMinds.Controllers
 
     public class AdministratorController : Controller
     {
+
+        
         ValidationException exception = new ValidationException();
 
         public IActionResult Index()
@@ -30,11 +32,26 @@ namespace TerraformMinds.Controllers
         /********************************
          * ADMINISTRATOR COURSE COMMANDS
          ********************************/
-
+        /// <summary>
+        /// This CourseCreate is a GET function that will do two things:
+        ///     1) Assign an instructor value based on the database
+        ///     2) If an exception is encountered the values that were entered prior to submission will remain in the respect fields
+        /// </summary>
+        /// <param name="instructor"></param>
+        /// <param name="courseName"></param>
+        /// <param name="subject"></param>
+        /// <param name="courseDescription"></param>
+        /// <param name="gradeLevel"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="currentCapacity"></param>
+        /// <param name="maxCapacity"></param>
+        /// <returns></returns>
         public IActionResult CourseCreate(string instructor, string courseName, string subject, string courseDescription, string gradeLevel, DateTime startDate, DateTime endDate, int currentCapacity, int maxCapacity)
         {
             using(LearningManagementContext context = new LearningManagementContext())
             {
+                // Create a list based on first name and last name from the User table that has a role equal to 2 (which is "Instructor")
                 var instructors = new SelectList(context.Users.Where(x => x.Role == 2)
                 .OrderBy(y => y.LastName)
                 .ToDictionary(us => us.ID, us => us.FirstName + " " + us.LastName), "Key", "Value", instructor);
@@ -45,7 +62,7 @@ namespace TerraformMinds.Controllers
                 ViewBag.EndDate = endDate;
                 ViewBag.CourseDescription = courseDescription;
 
-                // Create list if GradeLevels 
+                // Create list of GradeLevels 
                 var gradeLevels = new List<string>() { "Kindergarten", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12" };
                 // Populate dropdown list for grade levels.
                 var gradeLevelList = new SelectList(gradeLevels.ToDictionary(g => g, g => g), "Key", "Value", gradeLevel);
@@ -58,7 +75,26 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
-        // POST: Course/Create
+        /// <summary>
+        /// This CourseCreate is a POST function that will add the properties to the database
+        /// 
+        /// Validation occurs to check:
+        /// 1) Current Capacity is LESS THAN Max Capacity
+        /// 2) Start Date cannot be past the End Date
+        /// 3) Cannot have a duplicate Course Name
+        /// </summary>
+        /// <param name="instructor"></param>
+        /// <param name="courseName"></param>
+        /// <param name="subject"></param>
+        /// <param name="courseDescription"></param>
+        /// <param name="gradeLevel"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="currentCapacity"></param>
+        /// <param name="maxCapacity"></param>
+        /// <param name="course"></param>
+        /// <returns></returns>
+        // POST: Course/CourseCreate
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("CourseCreate")]
@@ -73,13 +109,21 @@ namespace TerraformMinds.Controllers
                     {
                         if (course.CurrentCapacity > course.MaxCapacity)
                         {
-                            exception.ValidationExceptions.Add(new Exception("Error: Current Capacity cannot exceed Max Capacity."));
+                            exception.ValidationExceptions.Add(new Exception("Invalid: Current Capacity cannot exceed Max Capacity."));
                         }
                         else
                         {
                             if (course.StartDate > course.EndDate)
                             {
-                                exception.ValidationExceptions.Add(new Exception("Error: Course Start Date cannot be after End Date."));
+                                exception.ValidationExceptions.Add(new Exception("Invalid: Course Start Date cannot be set past End Date."));
+                            }
+
+                            else
+                            {
+                                if(context.Courses.Any(x => x.CourseName == course.CourseName))
+                                {
+                                    exception.ValidationExceptions.Add(new Exception("Invalid: That course already exists."));
+                                }
                             }
                         }
 
@@ -108,7 +152,7 @@ namespace TerraformMinds.Controllers
                     ViewBag.EndDate = endDate;
                     ViewBag.CourseDescription = courseDescription;
 
-                    // Create list if GradeLevels 
+                    // Create list of GradeLevels 
                     var gradeLevels = new List<string>() { "Kindergarten", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12" };
                     // Populate dropdown list for grade levels.
                     var gradeLevelList = new SelectList(gradeLevels.ToDictionary(g => g, g => g), "Key", "Value", gradeLevel);
@@ -122,6 +166,10 @@ namespace TerraformMinds.Controllers
             return View(course);
         }
 
+        /// <summary>
+        /// Populates a list of courses in View/CourseList 
+        /// </summary>
+        /// <returns>Showcases a list of courses in View.CourseList</returns>
         public IActionResult CourseList()
         {
             ViewBag.Courses = GetCourses();
@@ -129,6 +177,11 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Creates a list of courses using LINQ queries to select information from the database.
+        /// Used Include to join User table
+        /// </summary>
+        /// <returns> A list of Courses based on data from the database</returns>
         public List<Course> GetCourses()
         {
             List<Course> courseList;
@@ -139,6 +192,11 @@ namespace TerraformMinds.Controllers
             return courseList;
         }
 
+        /// <summary>
+        /// Gets a Course based on its unique ID
+        /// </summary>
+        /// <param name="courseID"></param>
+        /// <returns>Returns a course based on its unique ID</returns>
         public Course GetCourseByID(string courseID)
         {
             int parsedCourseID = int.Parse(courseID);
@@ -158,6 +216,12 @@ namespace TerraformMinds.Controllers
             }
         }
 
+        /// <summary>
+        /// GET command that checks if the courseID is valid, if it is pre-populate input fields found in Views/CourseEdit
+        /// based on database information
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Pre-populated fields in Views/CourseEdit with database information </returns>
         public async Task<IActionResult> CourseEdit(int? id)
         {
             using (LearningManagementContext context = new LearningManagementContext())
@@ -173,6 +237,7 @@ namespace TerraformMinds.Controllers
                     return NotFound();
                 }
 
+                // Create a list based on first name and last name from the User table that has a role equal to 2 (which is "Instructor")
                 var instructors = new SelectList(context.Users.Where(x => x.Role == 2)
                     .OrderBy(y => y.LastName)
                     .ToDictionary(us => us.ID, us => us.FirstName + " " + us.LastName), "Key", "Value", course.UserID);
@@ -183,7 +248,7 @@ namespace TerraformMinds.Controllers
                 ViewBag.EndDate = course.EndDate;
                 ViewBag.CourseDescription = course.CourseDescription;
 
-                // Create list if GradeLevels 
+                // Create list of GradeLevels 
                 var gradeLevels = new List<string>() { "Kindergarten", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12" };
                 // Populate dropdown list for grade levels.
                 var gradeLevelList = new SelectList(gradeLevels.ToDictionary(g => g, g => g), "Key", "Value", course.GradeLevel);
@@ -196,7 +261,16 @@ namespace TerraformMinds.Controllers
                 return View();
             }
         }
-        
+        /// <summary>
+        /// POST Command that will update the database with the changes to the course.
+        /// Validation is include that checks:
+        /// 1) Currenct Capacity cannot be greater than Max Capacity
+        /// 2) Course Start Date cannot be ahead of Course End Date
+        /// 3) Course Name is unique
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="course"></param>
+        /// <returns>Updates the values for course in the database</returns>
         [HttpPost, ActionName("CourseEdit")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CourseEdit(int id, [Bind("ID,UserID,CourseName,Subject,CourseDescription,GradeLevel,StartDate,EndDate,CurrentCapacity,MaxCapacity")] Course course)
@@ -251,6 +325,7 @@ namespace TerraformMinds.Controllers
                         ViewBag.Error = true;
                     }
 
+                    // Create a list based on first name and last name from the User table that has a role equal to 2 (which is "Instructor")
                     var instructors = new SelectList(context.Users.Where(x => x.Role == 2)
                     .OrderBy(y => y.LastName)
                     .ToDictionary(us => us.ID, us => us.FirstName + " " + us.LastName), "Key", "Value", course.UserID);
@@ -261,7 +336,7 @@ namespace TerraformMinds.Controllers
                     ViewBag.EndDate = course.EndDate;
                     ViewBag.CourseDescription = course.CourseDescription;
 
-                    // Create list if GradeLevels 
+                    // Create list of GradeLevels 
                     var gradeLevels = new List<string>() { "Kindergarten", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12" };
                     // Populate dropdown list for grade levels.
                     var gradeLevelList = new SelectList(gradeLevels.ToDictionary(g => g, g => g), "Key", "Value", course.GradeLevel);
@@ -276,6 +351,11 @@ namespace TerraformMinds.Controllers
             return View(course);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> CourseDelete(int? id)
         {
             using (LearningManagementContext context = new LearningManagementContext())
@@ -336,7 +416,7 @@ namespace TerraformMinds.Controllers
 
         public IActionResult StudentList()
         {
-            ViewBag.Instructors = GetStudents();
+            ViewBag.Students = GetStudents();
 
             return View();
         }
