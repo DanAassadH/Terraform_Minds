@@ -21,7 +21,9 @@
     }
 }
 
-@* Client Side Validarion https://www.blinkingcaret.com/2016/03/23/manually-use-mvc-client-side-validation/*@
+@* Client Side Validarion https://www.blinkingcaret.com/2016/03/23/manually-use-mvc-client-side-validation/
+    Regex Validation https://regexr.com/3e48o *@
+
 
 <section>
     <h2>Register User</h2>
@@ -43,7 +45,7 @@
 
         <div class="form-group">
             <label for="EMail"></label>
-            <input asp-for="EMail" class="form-control" placeholder="Email" data-val-required="Email is required" data-val-maxlength-max="50" data-val-maxlength="Email Cannot exceed 50 characters" data-val-regex="Incorrect Email Adress" data-val-regex-pattern="^(([^<>()\[\]\\.,;:\s@@]+(\.[^<>()\[\]\\.,;:\s@@]+)*)|(.+))@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$" />
+            <input asp-for="EMail" class="form-control" placeholder="Email" data-val-required="Email is required" data-val-maxlength-max="50" data-val-maxlength="Email Cannot exceed 50 characters" data-val-regex="Incorrect Email Adress" data-val-regex-pattern="^[\w-!$*%^\.]+@@([\w-]+\.)+[\w-]{2,4}$" />
             <span asp-validation-for="EMail" class="text-danger" data-valmsg-for="EMail" data-valmsg-replace="true"></span>
         </div>
 

@@ -1,9 +1,44 @@
-﻿
+﻿@model TerraformMinds.Models.User
 @{
     ViewData["Title"] = "SignIn";
 }
 
-<h1>Welcome to SignIn Page</h1>
+<h1>Sign In To Your Terraform Minds Account</h1>
+
+<section>
+
+    <form action="/Registration/RegisterUser" method="POST">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+        <div class="form-group">
+            <label for="EMail"></label>
+            <input asp-for="EMail" class="form-control" placeholder="Email" data-val-required="Email is required" data-val-maxlength-max="50" data-val-maxlength="Email Cannot exceed 50 characters" data-val-regex="Incorrect Email Adress" data-val-regex-pattern="^[\w-!$*%^\.]+@@([\w-]+\.)+[\w-]{2,4}$" />
+            <span asp-validation-for="EMail" class="text-danger" data-valmsg-for="EMail" data-valmsg-replace="true"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Password"></label>
+            <input asp-for="Password" type="password" class="form-control" placeholder="Password" data-val-required="Password is required" data-val-maxlength-max="50" data-val-maxlength="Password Cannot exceed 50 characters" />
+            <span asp-validation-for="Password" class="text-danger" data-valmsg-for="Password" data-valmsg-replace="true"></span>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Submit" class="btn btn-primary" />
+        </div>
+
+    </form>
+</section>
+
+<p> Dont have an account yet</p>
+
+<p>
+    <a asp-controller="Registration" asp-action="RegisterUser">Click Here to Register</a>
+</p>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
 
 
 
