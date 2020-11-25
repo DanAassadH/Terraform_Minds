@@ -19,14 +19,14 @@ namespace TerraformMinds.Controllers
            
         }
 
-        public IActionResult RegisterUser(string FirstName, string lastName, string email, string password, string role)
+        public IActionResult RegisterUser(string FirstName, string LastName, string EMail, string Password, string Role)
         {
             /* If else to check if register new user button clicked*/
             if (Request.Method == "POST")
             {
                 try
                 {
-                    Register(FirstName, lastName, email, password, role);
+                    Register(FirstName, LastName, EMail, Password, Role);
                     ViewBag.Message = $"Successfully Registered User!";
                 }
                 catch (ValidationException e)
