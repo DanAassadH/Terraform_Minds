@@ -5,20 +5,37 @@
 
 <h1>Sign In To Your Terraform Minds Account</h1>
 
+
+@if (ViewBag.Message != null)
+{
+    <p>Success</p>
+    <p class="alert-@(ViewBag.Error != null ? "danger" : "success")">@(ViewBag.Message)</p>
+
+@*    if (ViewBag.Error != null)
+    {
+        <ul>
+            @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+            {
+                <li class="alert-danger">@(e.Message)</li>
+            }
+        </ul>
+    }*@
+}
+
 <section>
 
-    <form action="/Registration/RegisterUser" method="POST">
+    <form action="/SignIn/SignIn" method="POST">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
 
         <div class="form-group">
-            <label for="EMail"></label>
-            <input asp-for="EMail" class="form-control" placeholder="Email" data-val-required="Email is required" data-val-maxlength-max="50" data-val-maxlength="Email Cannot exceed 50 characters" data-val-regex="Incorrect Email Adress" data-val-regex-pattern="^[\w-!$*%^\.]+@@([\w-]+\.)+[\w-]{2,4}$" />
+            <label for="EMail">Email</label>
+            <input asp-for="EMail" class="form-control" placeholder="Email" data-val="true" data-val-required="Email is required" data-val-maxlength-max="50" data-val-maxlength="Email Cannot exceed 50 characters" data-val-regex="Incorrect Email Adress" data-val-regex-pattern="^[\w-!$*%^\.]+@@([\w-]+\.)+[\w-]{2,4}$" />
             <span asp-validation-for="EMail" class="text-danger" data-valmsg-for="EMail" data-valmsg-replace="true"></span>
         </div>
 
         <div class="form-group">
-            <label for="Password"></label>
+            <label for="Password">Password</label>
             <input asp-for="Password" type="password" class="form-control" placeholder="Password" data-val-required="Password is required" data-val-maxlength-max="50" data-val-maxlength="Password Cannot exceed 50 characters" />
             <span asp-validation-for="Password" class="text-danger" data-valmsg-for="Password" data-valmsg-replace="true"></span>
         </div>
