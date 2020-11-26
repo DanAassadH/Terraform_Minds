@@ -393,11 +393,13 @@ namespace TerraformMinds.Controllers
          * ADMINISTRATOR INSTRUCTOR COMMANDS
          ************************************/
 
-        public IActionResult InstructorDetails(int instructorID)
+        public IActionResult InstructorDetail(int instructorID)
         {
             try
             {
-                ViewBag.Instructor = GetInstructorByID(instructorID); 
+                User instructor = GetInstructorByID(instructorID);
+                ViewBag.Instructor = instructor;
+                ViewBag.InstructorCourses = GetCoursesByInstructorID(instructor.ID);
             }
             catch(ValidationException e)
             {
@@ -440,9 +442,20 @@ namespace TerraformMinds.Controllers
             }
         }
 
+        public List<Course> GetCoursesByInstructorID(int userID)
+        {
+            List<Course> teachingCourses;
+            using (LearningManagementContext context = new LearningManagementContext())
+            {
+                teachingCourses = context.Courses.Where(x => x.UserID == userID).Include(x => x.User).ToList();
+
+                return teachingCourses;
+            }
+        }
+
         /************************************
-         * ADMINISTRATOR STUDENT COMMANDS
-         ************************************/
+        * ADMINISTRATOR STUDENT COMMANDS
+        ************************************/
         public IActionResult StudentDetail(int id)
         {
             try

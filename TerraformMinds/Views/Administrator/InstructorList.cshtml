@@ -23,7 +23,7 @@
                     <td>@(user.FirstName + " " + user.LastName)</td>
                     <td>@(user.EMail)</td>
                     <td>@(user.JoinDate.ToLongDateString())</td>
-                    <td>View Courses</td>
+                    <td><a href="/Administrator/InstructorDetail?instructorID=@(user.ID)">View Details</a></td>
                 </tr>
             }
     </table>

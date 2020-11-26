@@ -29,17 +29,17 @@
                 <th>Start Date</th>
                 <th>End Data</th>
             </tr>
-            @foreach (Course student in ViewBag.StudentCourses)
+            @foreach (Course studentCourses in ViewBag.StudentCourses)
             {
                 <tr>
                     <td>@(ViewBag.Student.ID)</td>
-                    <td>@((student.User.FirstName + " " + student.User.LastName))</td>
-                    <td>@(student.CourseName)</td>
-                    <td>@(student.Subject)</td>
-                    <td>@(student.CourseDescription)</td>
-                    <td>@(student.GradeLevel)</td>
-                    <td>@((student.StartDate == null ? "TBA" : ((DateTime)student.StartDate).ToLongDateString()))</td>
-                    <td>@((student.EndDate == null ? "TBA" : ((DateTime)student.EndDate).ToLongDateString()))</td>
+                    <td>@(studentCourses.User.FirstName + " " + studentCourses.User.LastName)</td>
+                    <td>@(studentCourses.CourseName)</td>
+                    <td>@(studentCourses.Subject)</td>
+                    <td>@(studentCourses.CourseDescription)</td>
+                    <td>@(studentCourses.GradeLevel)</td>
+                    <td>@((studentCourses.StartDate == null ? "TBA" : ((DateTime)studentCourses.StartDate).ToLongDateString()))</td>
+                    <td>@((studentCourses.EndDate == null ? "TBA" : ((DateTime)studentCourses.EndDate).ToLongDateString()))</td>
                 </tr>
             }
 
