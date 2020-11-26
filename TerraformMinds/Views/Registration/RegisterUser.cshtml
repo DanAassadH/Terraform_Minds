@@ -1,0 +1,74 @@
+﻿@model TerraformMinds.Models.User
+@{
+    ViewData["Title"] = "RegisterUser";
+}
+
+<h1>Register User</h1>
+
+
+@if (ViewBag.Message != null)
+{
+    <p class="alert-@(ViewBag.Error != null ? "danger" : "success")">@(ViewBag.Message)</p>
+
+    if (ViewBag.Error != null)
+    {
+        <ul>
+            @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+            {
+                <li class="alert-danger">@(e.Message)</li>
+            }
+        </ul>
+    }
+}
+
+@* Client Side Validarion https://www.blinkingcaret.com/2016/03/23/manually-use-mvc-client-side-validation/*@
+
+<section>
+    <h2>Register User</h2>
+
+    <form action="/Registration/RegisterUser" method="POST">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group">
+            <label for="FirstName"></label>
+            <input asp-for="FirstName" class="form-control" placeholder="First Name" data-val="true" data-val-required="First Name is required !" data-val-maxlength-max="50" data-val-maxlength="Name Cannot exceed 50 characters" />
+            <span asp-validation-for="FirstName" class="text-danger" data-valmsg-for="FirstName" data-valmsg-replace="true"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="LastName"></label>
+            <input asp-for="LastName" class="form-control" placeholder="Last Name" data-val-required="Last Name is required" data-val-maxlength-max="50" data-val-maxlength="Name Cannot exceed 50 characters" />
+            <span asp-validation-for="LastName" class="text-danger" data-valmsg-for="LastName" data-valmsg-replace="true"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="EMail"></label>
+            <input asp-for="EMail" class="form-control" placeholder="Email" data-val-required="Email is required" data-val-maxlength-max="50" data-val-maxlength="Email Cannot exceed 50 characters" data-val-regex="Incorrect Email Adress" data-val-regex-pattern="^(([^<>()\[\]\\.,;:\s@@]+(\.[^<>()\[\]\\.,;:\s@@]+)*)|(.+))@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$" />
+            <span asp-validation-for="EMail" class="text-danger" data-valmsg-for="EMail" data-valmsg-replace="true"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Password"></label>
+            <input asp-for="Password" type="password" class="form-control" placeholder="Password" data-val-required="Password is required" data-val-maxlength-max="50" data-val-maxlength="Password Cannot exceed 50 characters" />
+            <span asp-validation-for="Password" class="text-danger" data-valmsg-for="Password" data-valmsg-replace="true"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Role">Select A Role</label><br />
+            <input asp-for="Role" type="radio" value="3" data-val-required="Please Select One" />Student<br />
+            <input asp-for="Role" type="radio" value="2" data-val-required="Please Select One" />Instructor<br />
+            <span asp-validation-for="Role" class="text-danger" data-valmsg-for="Role" data-valmsg-replace="true"></span>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Submit" class="btn btn-primary" />
+        </div>
+
+    </form>
+
+</section>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
