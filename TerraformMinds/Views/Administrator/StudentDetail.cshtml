@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewData["Title"] = "Details";
+}
+
+@if (ViewBag.Error != null)
+{
+    <ul>
+        @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+        {
+            <li class="alert-danger">@(e.Message)</li>
+        }
+    </ul>
+}
+
+@if (ViewBag.Student != null)
+{
+    <h1>Course List for @(ViewBag.Student.User.FirstName + " " + ViewBag.Student.User.LastName)</h1>
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Course ID</th>
+                <th>Instructor</th>
+                <th>Course Name</th>
+                <th>Subject</th>
+                <th>Course Description</th>
+                <th>Grade Level</th>
+                <th>Start Date</th>
+                <th>End Data</th>
+            </tr>
+            @foreach (Course student in ViewBag.StudentCourses)
+            {
+                <tr>
+                    <td>@(ViewBag.Student.ID)</td>
+                    <td>@((student.User.FirstName + " " + student.User.LastName))</td>
+                    <td>@(student.CourseName)</td>
+                    <td>@(student.Subject)</td>
+                    <td>@(student.CourseDescription)</td>
+                    <td>@(student.GradeLevel)</td>
+                    <td>@((student.StartDate == null ? "TBA" : ((DateTime)student.StartDate).ToLongDateString()))</td>
+                    <td>@((student.EndDate == null ? "TBA" : ((DateTime)student.EndDate).ToLongDateString()))</td>
+                </tr>
+            }
+
+
+        </thead>
+    </table>
+}
+else
+{
+    <h1>Details</h1>
+    <p>An error occured trying to populate student data. <a href="/Administrator/StudentList">Click here to return to the student list</a>.</p>
+}

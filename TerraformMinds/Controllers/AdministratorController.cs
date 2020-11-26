@@ -393,6 +393,21 @@ namespace TerraformMinds.Controllers
          * ADMINISTRATOR INSTRUCTOR COMMANDS
          ************************************/
 
+        public IActionResult InstructorDetails(int instructorID)
+        {
+            try
+            {
+                ViewBag.Instructor = GetInstructorByID(instructorID); 
+            }
+            catch(ValidationException e)
+            {
+                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Exception = e;
+                ViewBag.Error = true;
+            }
+            return View();
+        }
+
         public IActionResult InstructorList()
         {
             ViewBag.Instructors = GetInstructors();
@@ -410,9 +425,41 @@ namespace TerraformMinds.Controllers
             return instructorList;
         }
 
+        public User GetInstructorByID(int instructorID)
+        {
+            using (LearningManagementContext context = new LearningManagementContext())
+            {
+                if(!context.Users.Any(x => x.ID == instructorID))
+                {
+                    exception.ValidationExceptions.Add(new Exception("Error: Cannot find Instructor"));
+                    throw exception;
+                }
+
+                User instructor = context.Users.Where(x => x.ID == instructorID).Include(x => x.Courses).SingleOrDefault();
+                return instructor;
+            }
+        }
+
         /************************************
          * ADMINISTRATOR STUDENT COMMANDS
          ************************************/
+        public IActionResult StudentDetail(int id)
+        {
+            try
+            {
+                Student student = GetStudentByID(id);
+                ViewBag.Student = student;
+                ViewBag.StudentCourses = GetEnrolledCoursesByStudentID(student.UserID);
+
+            }
+            catch (ValidationException e)
+            {
+                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Exception = e;
+                ViewBag.Error = true;
+            }
+            return View();
+        }
 
         public IActionResult StudentList()
         {
@@ -421,12 +468,51 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
-        public List<User> GetStudents()
+        public Student GetStudentByID(int id)
         {
-            List<User> studentList;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                studentList = context.Users.Where(x => x.Role == 3).ToList();
+                if (!context.Students.Any(x => x.ID == id))
+                {
+                    exception.ValidationExceptions.Add(new Exception("Error: Cannot find Student"));
+                    throw exception;
+                }
+
+                Student student = context.Students.Where(x => x.ID == id).Include(x => x.User).SingleOrDefault();
+                return student;
+            }
+        }
+
+        public List<Course> GetEnrolledCoursesByStudentID(int userID)
+        {
+            List<Course> enrolledCourses;
+            List<Student> studentCourses;
+            using (LearningManagementContext context = new LearningManagementContext())
+            {
+                studentCourses = context.Students.Where(x => x.UserID == userID).ToList();
+
+                // Find unique list of course IDs that the student is enrolled in.
+                List<int> courseIDs = new List<int>();
+                foreach (Student student in studentCourses)
+                {
+                    if (!courseIDs.Contains(student.CourseID))
+                    {
+                        courseIDs.Add(student.CourseID);
+                    }
+                }
+
+                // Get all additional course info that the student is enrolled in.
+                enrolledCourses = context.Courses.Where(x => courseIDs.Contains(x.ID)).Include(x => x.User).ToList();
+                return enrolledCourses;
+            }
+        }
+
+        public List<Student> GetStudents()
+        {
+            List<Student> studentList;
+            using (LearningManagementContext context = new LearningManagementContext())
+            {
+                studentList = context.Students.Include(x => x.User).ToList();
             }
             return studentList;
         }

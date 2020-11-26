@@ -16,15 +16,15 @@
                 <th>Join Date</th>
                 <th>Action</th>
             </tr>
-            @foreach (User user in ViewBag.Students)
+            @foreach (Student student in ViewBag.Students)
             {
-        <tr>
-            <td>@(user.ID)</td>
-            <td>@(user.FirstName + " " + user.LastName)</td>
-            <td>@(user.EMail)</td>
-            <td>@(user.JoinDate.ToLongDateString())</td>
-            <td>View Courses</td>
-        </tr>
+                <tr>
+                    <td>@(student.ID)</td>
+                    <td>@(student.User.FirstName + " " + student.User.LastName)</td>
+                    <td>@(student.User.EMail)</td>
+                    <td>@(student.User.JoinDate.ToLongDateString())</td>
+                    <td><a href="/Administrator/StudentDetail?id=@(student.ID)">View Details</a></td>
+                </tr>
             }
     </table>
 }
