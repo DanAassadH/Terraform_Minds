@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewData["Title"] = "Student List";
+}
+
+<h1>Student List</h1>
+
+@if (ViewBag.Students != null && ViewBag.Students.Count > 0)
+{
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Student ID</th>
+                <th>Full Name</th>
+                <th>E-Mail</th>
+                <th>Join Date</th>
+                <th>Action</th>
+            </tr>
+            @foreach (Student student in ViewBag.Students)
+            {
+                <tr>
+                    <td>@(student.ID)</td>
+                    <td>@(student.User.FirstName + " " + student.User.LastName)</td>
+                    <td>@(student.User.EMail)</td>
+                    <td>@(student.User.JoinDate.ToLongDateString())</td>
+                    <td><a href="/Administrator/StudentDetail?id=@(student.ID)">View Details</a></td>
+                </tr>
+            }
+    </table>
+}
+
+else
+{
+    <p>There are no students found</p>
+}
+

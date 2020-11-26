@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewData["Title"] = "Details";
+}
+
+@if (ViewBag.Error != null)
+{
+    <ul>
+        @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+        {
+            <li class="alert-danger">@(e.Message)</li>
+        }
+    </ul>
+}
+
+@if (ViewBag.Instructor != null)
+{
+    <h1>Course List for @(ViewBag.Instructor.FirstName + " " + ViewBag.Instructor.LastName)</h1>
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Course ID</th>
+                <th>Instructor</th>
+                <th>Course Name</th>
+                <th>Subject</th>
+                <th>Course Description</th>
+                <th>Grade Level</th>
+                <th>Start Date</th>
+                <th>End Data</th>
+            </tr>
+            @foreach (Course instructorCourses in ViewBag.InstructorCourses)
+            {
+                <tr>
+                    <td>@(instructorCourses.ID)</td>
+                    <td>@(instructorCourses.User.FirstName + " " + instructorCourses.User.LastName)</td>
+                    <td>@(instructorCourses.CourseName)</td>
+                    <td>@(instructorCourses.Subject)</td>
+                    <td>@(instructorCourses.CourseDescription)</td>
+                    <td>@(instructorCourses.GradeLevel)</td>
+                    <td>@((instructorCourses.StartDate == null ? "TBA" : ((DateTime)instructorCourses.StartDate).ToLongDateString()))</td>
+                    <td>@((instructorCourses.EndDate == null ? "TBA" : ((DateTime)instructorCourses.EndDate).ToLongDateString()))</td>
+                </tr>
+            }
+        </thead>
+    </table>
+}
+else
+{
+    <h1>Details</h1>
+    <p>An error occured trying to populate instructor data. <a href="/Administrator/InstructorList">Click here to return to the student list</a>.</p>
+}
