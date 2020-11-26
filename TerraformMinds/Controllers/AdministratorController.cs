@@ -57,9 +57,16 @@ namespace TerraformMinds.Controllers
                 .ToDictionary(us => us.ID, us => us.FirstName + " " + us.LastName), "Key", "Value", instructor);
                 ViewBag.Instructors = instructors;
                 ViewBag.CourseName = courseName;
+
+                // Create list of Subjects
+                var courseSubjects = new List<string>() { "English", "Math", "Science", "Social Studies" };
+                // Populate dropdown list for subjects.
+                var courseSubjectsList = new SelectList(courseSubjects.ToDictionary(s => s, s => s), "Key", "Value", courseSubjects);
+                ViewBag.CourseSubjects = courseSubjectsList;
+
                 ViewBag.Subject = subject;
-                ViewBag.StartDate = startDate;
-                ViewBag.EndDate = endDate;
+                ViewBag.StartDate = startDate.ToLongDateString();
+                ViewBag.EndDate = endDate.ToLongDateString();
                 ViewBag.CourseDescription = courseDescription;
 
                 // Create list of GradeLevels 
@@ -147,9 +154,16 @@ namespace TerraformMinds.Controllers
                     .ToDictionary(us => us.ID, us => us.FirstName + " " + us.LastName), "Key", "Value", instructor);
                     ViewBag.Instructors = instructors;
                     ViewBag.CourseName = courseName;
+
+                    // Create list of Subjects
+                    var courseSubjects = new List<string>() { "English", "Math", "Science", "Social Studies" };
+                    // Populate dropdown list for subjects.
+                    var courseSubjectsList = new SelectList(courseSubjects.ToDictionary(s => s, s => s), "Key", "Value", courseSubjects);
+                    ViewBag.CourseSubjects = courseSubjectsList;
+
                     ViewBag.Subject = subject;
-                    ViewBag.StartDate = startDate;
-                    ViewBag.EndDate = endDate;
+                    ViewBag.StartDate = startDate.ToLongDateString();
+                    ViewBag.EndDate = endDate.ToLongDateString();
                     ViewBag.CourseDescription = courseDescription;
 
                     // Create list of GradeLevels 
