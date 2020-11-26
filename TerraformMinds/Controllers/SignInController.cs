@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TerraformMinds.Models;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Text;
 using TerraformMinds.Models.Exceptions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace TerraformMinds.Controllers
 {
@@ -30,7 +29,11 @@ namespace TerraformMinds.Controllers
                     user = ValidateSignIn(EMail, Password);
                     if (user != null)
                     {
+
                         ViewBag.Message = $"Yaya Successfully Logged In User!";
+                  //      FormsAuthentication.SetAuthCookie(Model.Email, false);
+                  // Add switch or if else for user role and send to appropriate view 
+                        return RedirectToAction("Index" , "Home");
                     }
                     else
                     {
