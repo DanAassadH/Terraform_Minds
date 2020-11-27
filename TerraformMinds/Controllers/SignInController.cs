@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Text;
 using TerraformMinds.Models.Exceptions;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 namespace TerraformMinds.Controllers
 {
@@ -20,6 +23,9 @@ namespace TerraformMinds.Controllers
 
         public IActionResult SignIn(string EMail, string Password)
         {
+            ClaimsIdentity identity = null;
+            bool isAuthenticated = false;
+
             User user;
             if (Request.Method == "POST")
             {
@@ -30,10 +36,30 @@ namespace TerraformMinds.Controllers
                     if (user != null)
                     {
 
+
                         ViewBag.Message = $"Yaya Successfully Logged In User!";
-                  //      FormsAuthentication.SetAuthCookie(Model.Email, false);
-                  // Add switch or if else for user role and send to appropriate view 
-                        return RedirectToAction("Index" , "Home");
+                        //   FormsAuthentication.SetAuthCookie(EMail, false);
+                        // Add switch or if else for user role and send to appropriate view 
+
+                        //Create the identity for the user  
+                        identity = new ClaimsIdentity(new[] {
+                    new Claim(ClaimTypes.Name, EMail),
+                    new Claim(ClaimTypes.Role, "3")
+                }, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                        isAuthenticated = true;
+
+
+                        if (isAuthenticated)
+                        {
+                            var principal = new ClaimsPrincipal(identity);
+
+                            var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                            return RedirectToAction("Privacy", "Home");
+                        }
+
+                       // return RedirectToAction("Index" , "Home");
                     }
                     else
                     {
@@ -54,6 +80,10 @@ namespace TerraformMinds.Controllers
 
             return View();
         }
+
+
+        /* ----------------------------------------------- Actions ----------------------------------------*/
+
 
 
         [ValidateAntiForgeryToken]
