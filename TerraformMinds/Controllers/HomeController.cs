@@ -24,7 +24,6 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
-        [Authorize(Roles = "3")]
         public IActionResult Privacy()
         {
             return View();

@@ -37,29 +37,62 @@ namespace TerraformMinds.Controllers
                     {
 
 
-                        ViewBag.Message = $"Yaya Successfully Logged In User!";
+                        //  ViewBag.Message = $"Yaya Successfully Logged In User!";
                         //   FormsAuthentication.SetAuthCookie(EMail, false);
                         // Add switch or if else for user role and send to appropriate view 
 
                         //Create the identity for the user  
-                        identity = new ClaimsIdentity(new[] {
-                    new Claim(ClaimTypes.Name, EMail),
-                    new Claim(ClaimTypes.Role, "3")
-                }, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                        isAuthenticated = true;
-
-
-                        if (isAuthenticated)
+                        if (user.Role == 3)
                         {
-                            var principal = new ClaimsPrincipal(identity);
+                            identity = new ClaimsIdentity(new[] {
+                                new Claim(ClaimTypes.Name, EMail),
+                                new Claim(ClaimTypes.Role, "Student") }, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                            var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                            isAuthenticated = true;
 
-                            return RedirectToAction("Privacy", "Home");
+                            if (isAuthenticated)
+                            {
+                                var principal = new ClaimsPrincipal(identity);
+                                var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                                return RedirectToAction("Student", "Rolecheck");
+                            }
                         }
 
-                       // return RedirectToAction("Index" , "Home");
+                        if (user.Role == 2)
+                        {
+                            identity = new ClaimsIdentity(new[] {
+                                new Claim(ClaimTypes.Name, EMail),
+                                new Claim(ClaimTypes.Role, "Instructor") }, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                            isAuthenticated = true;
+
+                            if (isAuthenticated)
+                            {
+                                var principal = new ClaimsPrincipal(identity);
+                                var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                                return RedirectToAction("Instructor", "Rolecheck");
+                            }
+                        }
+
+                        if (user.Role == 1)
+                        {
+                            identity = new ClaimsIdentity(new[] {
+                                new Claim(ClaimTypes.Name, EMail),
+                                new Claim(ClaimTypes.Role, "Admin") }, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                            isAuthenticated = true;
+
+                            if (isAuthenticated)
+                            {
+                                var principal = new ClaimsPrincipal(identity);
+                                var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                                return RedirectToAction("Admin", "Rolecheck");
+                            }
+                        }
+
+
+                        // return RedirectToAction("Index" , "Home");
                     }
                     else
                     {
@@ -81,8 +114,17 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
+        /* ----------------------------------------------- Signout ----------------------------------------*/
 
-        /* ----------------------------------------------- Actions ----------------------------------------*/
+        [HttpPost]
+        public IActionResult Signout()
+        {
+            var login = HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Privacy", "Home");
+        }
+
+
+        /* ----------------------------------------------- Data ----------------------------------------*/
 
 
 
