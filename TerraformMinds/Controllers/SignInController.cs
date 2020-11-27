@@ -36,11 +36,6 @@ namespace TerraformMinds.Controllers
                     if (user != null)
                     {
 
-
-                        //  ViewBag.Message = $"Yaya Successfully Logged In User!";
-                        //   FormsAuthentication.SetAuthCookie(EMail, false);
-                        // Add switch or if else for user role and send to appropriate view 
-
                         //Create the identity for the user  
 
                         if (user.Role == 3)
@@ -116,7 +111,7 @@ namespace TerraformMinds.Controllers
 
         /* ----------------------------------------------- Signout ----------------------------------------*/
 
-        [HttpPost]
+       // [HttpPost]
         public IActionResult Signout()
         {
             var login = HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -126,7 +121,12 @@ namespace TerraformMinds.Controllers
 
         /* ----------------------------------------------- Data ----------------------------------------*/
 
-
+        /// <summary>
+        /// Validates user given email and password with the ones in database
+        /// </summary>
+        /// <param name="EMail"></param>
+        /// <param name="Password"></param>
+        /// <returns> validUser as the user credentials or null </returns>
 
         [ValidateAntiForgeryToken]
         public User ValidateSignIn(string EMail, string Password)
@@ -145,6 +145,14 @@ namespace TerraformMinds.Controllers
 
             return validUser;
         }
+
+
+        /// <summary>
+        /// ///////// Convert password to a Hash of random Letters Using a known salt
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="email"></param>
+        /// <returns><param string="Hashed Password"></param></returns>
 
         public string HashAndSaltPassowrd(string password, string email)
         {
