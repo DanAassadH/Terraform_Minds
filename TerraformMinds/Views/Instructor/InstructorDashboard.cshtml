@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewData["Title"] = "InstructorDashboard";
+}
+
+<h1>InstructorDashboard</h1>
+
+
+<h2> Welcome @User.Identity.Name To Instructor Dashboard </h2>
+
+
+<ul>
+    <li>
+        <a asp-action="Signout" asp-controller="SignIn">
+            Signout
+        </a>
+    </li>
+    <li>
+     @*   <a href="/Instructor/CourseList?id=@User.Identity.Name">My Courses</a>*@
+        <a asp-controller="Instructor" asp-action="CourseList"
+           asp-route-id="@User.Identity.Name">
+            My Courses
+        </a>
+    </li>
+</ul>
+
+
+<p> Here You will find the lists of all your courses and their details ,
+    select one of the option and get started </p>
+
