@@ -23,6 +23,12 @@ namespace TerraformMinds.Controllers
 
         }
 
+        /// <summary>
+        /// This is the Action for course List page for individual instructor , it shows that how many courses that instructor has
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> View() </returns>
+
         [Authorize(Roles = "Instructor")]
         public IActionResult CourseList(string id)
         {
@@ -40,9 +46,35 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
-        /* ------------------------------------------Data -----------------------------------------------------*/
+        /// <summary>
+        /// Action for Course details page this page gives detail about student and assignments
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Instructor")]
+        public IActionResult CourseDetail(string id)
+        {
+            try
+            {
+                ViewBag.InstructorsCourses = GetCourseByInstructorID(id);
+            }
+            catch (ValidationException e)
+            {
+                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Exception = e;
+                ViewBag.Error = true;
+            }
 
-        public  List<Course> GetCourseByInstructorID(string id)
+            return View();
+        }
+
+        /* ------------------------------------------Data -----------------------------------------------------*/
+        /// <summary>
+        /// This function grabs course List for individual instructor
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>List of courses</returns>
+        public List<Course> GetCourseByInstructorID(string id)
         {
             ValidationException exception = new ValidationException();
             List<Course> instructorsCourses  = null;

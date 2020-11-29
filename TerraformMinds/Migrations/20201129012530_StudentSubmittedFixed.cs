@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TerraformMinds.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class StudentSubmittedFixed : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,11 +18,13 @@ namespace TerraformMinds.Migrations
                     EMail = table.Column<string>(type: "varchar(50)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                         .Annotation("MySql:Collation", "utf8mb4_general_ci"),
-                    Password = table.Column<string>(type: "varchar(50)", nullable: false),
+                    Password = table.Column<string>(type: "varchar(50)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:Collation", "utf8mb4_general_ci"),
                     FirstName = table.Column<string>(type: "varchar(50)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                         .Annotation("MySql:Collation", "utf8mb4_general_ci"),
-                    LastName = table.Column<string>(type: "varchar(50)", nullable: true)
+                    LastName = table.Column<string>(type: "varchar(50)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                         .Annotation("MySql:Collation", "utf8mb4_general_ci"),
                     JoinDate = table.Column<DateTime>(type: "date", nullable: false)
@@ -38,7 +40,7 @@ namespace TerraformMinds.Migrations
                 {
                     ID = table.Column<int>(type: "int(10)", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UserID = table.Column<int>(type: "int(10)", nullable: true),
+                    UserID = table.Column<int>(type: "int(10)", nullable: false),
                     CourseName = table.Column<string>(type: "varchar(50)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                         .Annotation("MySql:Collation", "utf8mb4_general_ci"),
@@ -75,7 +77,7 @@ namespace TerraformMinds.Migrations
                     Question = table.Column<string>(type: "varchar(500)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                         .Annotation("MySql:Collation", "utf8mb4_general_ci"),
-                    DueDate = table.Column<DateTime>(type: "date", nullable: true),
+                    DueDate = table.Column<DateTime>(type: "date", nullable: false),
                     TotalScore = table.Column<int>(type: "int(5)", nullable: false)
                 },
                 constraints: table =>
@@ -111,7 +113,33 @@ namespace TerraformMinds.Migrations
                         column: x => x.CourseID,
                         principalTable: "course",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "student",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int(10)", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserID = table.Column<int>(type: "int(10)", nullable: false),
+                    CourseID = table.Column<int>(type: "int(10)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_student", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Student_Course",
+                        column: x => x.CourseID,
+                        principalTable: "course",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Student_User",
+                        column: x => x.UserID,
+                        principalTable: "user",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -121,11 +149,12 @@ namespace TerraformMinds.Migrations
                     ID = table.Column<int>(type: "int(10)", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     AssignmentID = table.Column<int>(type: "int(10)", nullable: false),
-                    DateSubmitted = table.Column<DateTime>(type: "date", nullable: true),
-                    Answer = table.Column<string>(type: "varchar(2000)", nullable: true)
+                    StudentID = table.Column<int>(type: "int(10)", nullable: false),
+                    DateSubmitted = table.Column<DateTime>(type: "date", nullable: false),
+                    Answer = table.Column<string>(type: "varchar(2000)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                         .Annotation("MySql:Collation", "utf8mb4_general_ci"),
-                    ScoreObtained = table.Column<int>(type: "int(5)", nullable: false),
+                    ScoreObtained = table.Column<int>(type: "int(5)", nullable: true),
                     Remarks = table.Column<string>(type: "varchar(500)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                         .Annotation("MySql:Collation", "utf8mb4_general_ci")
@@ -139,39 +168,12 @@ namespace TerraformMinds.Migrations
                         principalTable: "assignment",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "student",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int(10)", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UserID = table.Column<int>(type: "int(10)", nullable: false),
-                    CourseID = table.Column<int>(type: "int(10)", nullable: false),
-                    SubmitID = table.Column<int>(type: "int(10)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_student", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Student_Course",
-                        column: x => x.CourseID,
-                        principalTable: "course",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_student_submitted_SubmitID",
-                        column: x => x.SubmitID,
-                        principalTable: "submitted",
+                        name: "FK_Submit_Student",
+                        column: x => x.StudentID,
+                        principalTable: "student",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Student_User",
-                        column: x => x.UserID,
-                        principalTable: "user",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
@@ -199,7 +201,7 @@ namespace TerraformMinds.Migrations
             migrationBuilder.InsertData(
                 table: "assignment",
                 columns: new[] { "ID", "CourseID", "DueDate", "Question", "TotalScore" },
-                values: new object[] { -1, -1, null, "Assignment: Question Test", 10 });
+                values: new object[] { -1, -1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Assignment: Question Test", 10 });
 
             migrationBuilder.InsertData(
                 table: "resource",
@@ -207,14 +209,14 @@ namespace TerraformMinds.Migrations
                 values: new object[] { -1, -1, "Resource: Material Test", "www.google.ca" });
 
             migrationBuilder.InsertData(
-                table: "submitted",
-                columns: new[] { "ID", "Answer", "AssignmentID", "DateSubmitted", "Remarks", "ScoreObtained" },
-                values: new object[] { -1, "Submit: Answer Test", -1, null, "Submit: Remarks Test", 6 });
+                table: "student",
+                columns: new[] { "ID", "CourseID", "UserID" },
+                values: new object[] { -1, -1, -3 });
 
             migrationBuilder.InsertData(
-                table: "student",
-                columns: new[] { "ID", "CourseID", "SubmitID", "UserID" },
-                values: new object[] { -1, -1, -1, -3 });
+                table: "submitted",
+                columns: new[] { "ID", "Answer", "AssignmentID", "DateSubmitted", "Remarks", "ScoreObtained", "StudentID" },
+                values: new object[] { -1, "Submit: Answer Test", -1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Submit: Remarks Test", 6, -1 });
 
             migrationBuilder.CreateIndex(
                 name: "FK_Assignment_Course",
@@ -237,11 +239,6 @@ namespace TerraformMinds.Migrations
                 column: "CourseID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_student_SubmitID",
-                table: "student",
-                column: "SubmitID");
-
-            migrationBuilder.CreateIndex(
                 name: "FK_Student_User",
                 table: "student",
                 column: "UserID");
@@ -250,6 +247,11 @@ namespace TerraformMinds.Migrations
                 name: "FK_Submit_Assignment",
                 table: "submitted",
                 column: "AssignmentID");
+
+            migrationBuilder.CreateIndex(
+                name: "FK_Submit_Student",
+                table: "submitted",
+                column: "StudentID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -258,13 +260,13 @@ namespace TerraformMinds.Migrations
                 name: "resource");
 
             migrationBuilder.DropTable(
-                name: "student");
-
-            migrationBuilder.DropTable(
                 name: "submitted");
 
             migrationBuilder.DropTable(
                 name: "assignment");
+
+            migrationBuilder.DropTable(
+                name: "student");
 
             migrationBuilder.DropTable(
                 name: "course");

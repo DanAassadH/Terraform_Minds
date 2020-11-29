@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewData["Title"] = "CourseDetail";
+}
+
+<h1>CourseDetail</h1>
+
+<ul>
+    <li>
+        <a asp-action="InstructorDashboard" asp-controller="Instructor">
+            Main
+        </a>
+    </li>
+    <li>
+        <a asp-controller="Instructor" asp-action="CourseList"
+           asp-route-id="@User.Identity.Name">
+            My Courses
+        </a>
+    </li>
+    <li>
+        <a asp-action="Signout" asp-controller="SignIn">
+            Signout
+        </a>
+    </li>
+
+</ul>
+
+@if (ViewBag.Error != null)
+{
+    <ul>
+        @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+        {
+            <li class="alert-danger">@(e.Message)</li>
+        }
+    </ul>
+}
+
+
+
+
