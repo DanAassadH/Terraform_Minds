@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -24,7 +25,8 @@ namespace TerraformMinds.Controllers
         
         ValidationException exception = new ValidationException();
 
-        public IActionResult Index()
+        [Authorize(Roles = "Administrator")]
+        public IActionResult AdministratorDashboard()
         {
             return View();
         }

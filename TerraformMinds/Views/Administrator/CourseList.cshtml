@@ -3,6 +3,28 @@
     ViewData["Title"] = "Course List";
 }
 
+<ul>
+    <li>
+        <a asp-action="AdministratorDashboard" asp-controller="Administrator">Main</a>
+    </li>
+    <li class="nav-item">
+        <a asp-controller="Administrator" asp-action="InstructorList">Instructor List</a>
+    </li>
+    <li class="nav-item">
+        <a asp-controller="Administrator" asp-action="StudentList">Student List</a>
+    </li>
+    <li class="nav-item">
+        <a asp-controller="Administrator" asp-action="CourseList">Course List</a>
+    </li>
+    <li class="nav-item">
+        <a asp-controller="Administrator" asp-action="CourseCreate">Create Course</a>
+    </li>
+    <li>
+        <a asp-action="Signout" asp-controller="SignIn">Signout</a>
+    </li>
+
+</ul>
+
 <h1>Course List</h1>
 
 @*<form action="/Administrator/List" method="get">

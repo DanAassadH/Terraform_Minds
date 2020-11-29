@@ -76,7 +76,7 @@ namespace TerraformMinds.Controllers
                         {
                             identity = new ClaimsIdentity(new[] {
                                 new Claim(ClaimTypes.Name, EMail),
-                                new Claim(ClaimTypes.Role, "Admin") }, CookieAuthenticationDefaults.AuthenticationScheme);
+                                new Claim(ClaimTypes.Role, "Administrator") }, CookieAuthenticationDefaults.AuthenticationScheme);
 
                             isAuthenticated = true;
 
@@ -84,7 +84,8 @@ namespace TerraformMinds.Controllers
                             {
                                 var principal = new ClaimsPrincipal(identity);
                                 var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                                return RedirectToAction("Admin", "Rolecheck");
+                                //  return RedirectToAction("Admin", "Rolecheck");
+                                return RedirectToAction("AdministratorDashboard", "Administrator");
                             }
                         }
 

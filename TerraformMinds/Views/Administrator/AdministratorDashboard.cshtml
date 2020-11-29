@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewData["Title"] = "AdministratorDashboard";
+}
+
+<h1>AdministratorDashboard</h1>
+
+
+<h2> Welcome @User.Identity.Name To Administrator Dashboard </h2>
+
+
+<ul>
+    <li>
+        <a asp-action="AdministratorDashboard" asp-controller="Administrator">Main</a>
+    </li>
+    <li class="nav-item">
+        <a  asp-controller="Administrator" asp-action="InstructorList">Instructor List</a>
+    </li>
+    <li class="nav-item">
+        <a asp-controller="Administrator" asp-action="StudentList">Student List</a>
+    </li>
+    <li class="nav-item">
+        <a asp-controller="Administrator" asp-action="CourseList">Course List</a>
+    </li>
+    <li class="nav-item">
+        <a asp-controller="Administrator" asp-action="CourseCreate">Create Course</a>
+    </li>
+    <li>
+        <a asp-action="Signout" asp-controller="SignIn">Signout</a>
+    </li>
+
+</ul>
+
+
+<p>
+    Here You will find the lists of all the information regarding courses students and instructors ,
+    select one of the option and get started
+</p>
+
