@@ -57,6 +57,11 @@ namespace TerraformMinds.Controllers
             try
             {
                 ViewBag.SingleCourseDetail = GetCourseDetailsByID(id);
+                if(ViewBag.SingleCourseDetail != null)
+                {
+                    // Get students enrolled in this course
+                    ViewBag.StudentsForCourse = GetStudentsByCourseID(id);
+                }
             }
             catch (ValidationException e)
             {
@@ -144,6 +149,47 @@ namespace TerraformMinds.Controllers
             }
 
             return courseDetail;
+        }
+
+
+        public List<User> GetStudentsByCourseID(string id)
+        {
+            ValidationException exception = new ValidationException();
+            List<User> studentNames = null;
+            int parsedId;
+
+            id = !string.IsNullOrWhiteSpace(id) ? id.Trim() : null;
+
+            if (id == null)
+            {
+                exception.ValidationExceptions.Add(new Exception("No student ID Provided, Go back to main Instructor Dsahboard and select course again"));
+            }
+            else
+            {
+                if (int.TryParse(id, out parsedId))
+                {
+                    using (LearningManagementContext context = new LearningManagementContext())
+                    {
+                        // sql query :
+                        //SELECT a.FirstName, a.LastName FROM `user` a , student b WHERE a.ID=b.UserID AND CourseID = -2(id)
+                        //  studentNames = context.Courses.Where(x => x.ID == parsedId && x.UserID == userId).SingleOrDefault();
+
+                        studentNames = context.Users.Where(x => x.Role == 3).ToList();
+                    }
+                }
+                else
+                {
+                    exception.ValidationExceptions.Add(new Exception("Invalid student ID , Go back to main Instructor Dsahboard and select course again"));
+                }
+            }
+
+            if (exception.ValidationExceptions.Count > 0)
+            {
+                throw exception;
+            }
+
+            return studentNames;
+
         }
     }
 }
