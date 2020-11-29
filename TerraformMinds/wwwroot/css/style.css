@@ -23,6 +23,12 @@
 }
 
 /*---------------------------------------- Home Page Styles-------------------------------------------*/
+
+/*General*/
+h1, h2, h3, h4, h5 {
+    color: #2F2F75;
+}
+
 body {
     font-weight: 400;
 }
@@ -34,10 +40,11 @@ body p{
 /*home-cards*/
 
 
-
-
-
 /*site-cards*/
+
+.site-cards, .banner{
+    margin-bottom: 1rem !important;
+}
 
 .teacher-count {
     background-color: #A2D4DC; 
@@ -49,7 +56,7 @@ body p{
     background-color: #E399BA;
 }
 .teacher-count, .course-count, .student-count {
-    padding-top: 20px;
+    padding-top: 10px;
     display: flex;
     flex-wrap: wrap;
     text-align: center;
@@ -63,6 +70,7 @@ body p{
 
 .teacher-circle, .course-circle, .student-circle {
     
-    border-radius: 50%;
+    border-radius: 100%;
     width: 125px;
+    height: 125px;
 }
