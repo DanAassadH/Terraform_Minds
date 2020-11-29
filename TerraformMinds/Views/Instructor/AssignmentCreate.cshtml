@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewData["Title"] = "AssignmentCreate";
+}
+
+<h1>Create an Assignment</h1>
+
+<ul>
+    <li>
+        <a asp-action="InstructorDashboard" asp-controller="Instructor">
+            Main
+        </a>
+    </li>
+    <li>
+        @*   <a href="/Instructor/CourseList?id=@User.Identity.Name">My Courses</a>*@
+        <a asp-controller="Instructor" asp-action="CourseList"
+           asp-route-id="@User.Identity.Name">
+            My Courses
+        </a>
+    </li>
+    <li>
+        <a asp-action="Signout" asp-controller="SignIn">
+            Signout
+        </a>
+    </li>
+
+</ul>
+

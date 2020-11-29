@@ -74,6 +74,35 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
+
+        /// <summary>
+        /// Action to create a new assignment
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Instructor")]
+        public IActionResult AssignmentCreate(string id) // passing CourseID
+        {
+/*            try
+            {
+                ViewBag.SingleCourseDetail = GetCourseDetailsByID(id);
+                if (ViewBag.SingleCourseDetail != null)
+                {
+                    // Get students enrolled in this course
+                    ViewBag.StudentsForCourse = GetStudentsByCourseID(id);
+                }
+            }
+            catch (ValidationException e)
+            {
+                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Exception = e;
+                ViewBag.Error = true;
+            }*/
+
+            return View();
+        }
+
+
         /* ------------------------------------------Data -----------------------------------------------------*/
         /// <summary>
         /// This function grabs course List for individual instructor
@@ -157,8 +186,6 @@ namespace TerraformMinds.Controllers
         {
             ValidationException exception = new ValidationException();
             List<User> studentNames = null;
-            List<Course> enrolledCourses;
-            List<Student> studentCourses;
 
             int parsedId;
 

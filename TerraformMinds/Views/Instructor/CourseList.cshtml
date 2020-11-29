@@ -81,7 +81,7 @@
                        asp-route-id="@(course.ID)">
                         Details
                     </a>
-
+                    <p>@(course.ID)</p>
                 </div>
 
             </div>
@@ -89,43 +89,7 @@
 
         </div>
 
-            <table class="table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Course ID</th>
-
-                        <th>Course Name</th>
-                        <th>Subject</th>
-                        <th>Course Description</th>
-                        <th>Grade Level</th>
-                        <th>Start Date</th>
-                        <th>End Data</th>
-                        <th>Capactity</th>
-                        <th>Action</th>
-                    </tr>
-                    @foreach (Course course in ViewBag.InstructorsCourses)
-                    {
-                        <tr>
-                            <td>@(course.ID)</td>
-                            <td>@(course.CourseName)</td>
-                            <td>@(course.Subject)</td>
-                            <td>@(course.CourseDescription)</td>
-                            <td>@(course.GradeLevel)</td>
-                            <td>@((course.StartDate == null ? "TBA" : ((DateTime)course.StartDate).ToLongDateString()))</td>
-                            <td>@((course.EndDate == null ? "TBA" : ((DateTime)course.EndDate).ToLongDateString()))</td>
-                            @if (course.CurrentCapacity == course.MaxCapacity)
-                            {
-                                <td>FULL</td>
-                            }
-                            else
-                            {
-                                <td>@(course.CurrentCapacity + "/" + course.MaxCapacity)</td>
-                            }
-                            <td><a href="/Administrator/CourseEdit?id=@(course.ID)">Edit</a> | <a href="/Administrator/CourseDelete?id=@(course.ID)">Delete</a></td>
-
-                        </tr>
-                    }
-            </table>
+           
             }
 
             else

@@ -78,6 +78,8 @@
         </div>
     </div>
 
+    @*--------------------------------------Students Info -------------------------------------------------*@
+
     <h5> Students in this course</h5>
     @if (ViewBag.StudentsForCourse != null && ViewBag.StudentsForCourse.Count > 0)
     {
@@ -97,7 +99,7 @@
                         <td>Show Assignments</td>
                     </tr>
                 }
-</table>
+        </table>
 
 
 
@@ -106,6 +108,40 @@
     {
         <p><strong>No student enrolled in this course yet</strong></p>
     }
+
+    @*--------------------------------------Assignments Info -------------------------------------------------*@
+
+    <h5> Assignments in this course</h5>
+
+    <a asp-controller="Instructor" asp-action="AssignmentCreate" class="badge-pill badge-warning">Create a new assignment</a>
+
+    @if (ViewBag.StudentsForCourse != null && ViewBag.StudentsForCourse.Count > 0)
+    {
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Grade</th>
+                    <th>Action</th>
+                </tr>
+                @foreach (User student in ViewBag.StudentsForCourse)
+                {
+                    <tr>
+                        <td>@student.FirstName + @student.LastName</td>
+                        <td>A+</td>
+                        <td>Show Assignments</td>
+                    </tr>
+                }
+        </table>
+
+    }
+    else
+    {
+        <p><strong>No Assignments for this  course yet</strong></p>
+    }
+
+
 
 }
 else
