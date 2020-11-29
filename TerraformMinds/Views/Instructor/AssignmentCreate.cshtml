@@ -32,7 +32,7 @@
 
     <div class="form-group">
         <label for="Question">Question</label>
-        <input asp-for="Question" class="form-control" placeholder="Type Assignment " data-val="true" data-val-required="Question Required !" data-val-maxlength-max="500" data-val-maxlength="Question Cannot exceed 50 characters" />
+        <input asp-for="Question" class="form-control" placeholder="Type Assignment " data-val="true" data-val-required="Question Required !" data-val-maxlength-max="500" data-val-maxlength="Question Cannot exceed 500 characters" />
         <span asp-validation-for="Question" class="text-danger" data-valmsg-for="Question" data-valmsg-replace="true"></span>
     </div>
 
@@ -44,7 +44,7 @@
 
     <div>
         <label asp-for="TotalScore" class="control-label">Total Score</label>
-        <input asp-for="TotalScore" name="MaxCapacity" class="form-control" value="" data-val="true" data-val-required="Total Score Required" />
+        <input asp-for="TotalScore" class="form-control" value="" data-val="true" data-val-required="Total Score Required" data-val-range="Enter Score between 0 and 100" data-val-range-max="100" data-val-range-min="0"/>
         <span asp-validation-for="TotalScore" class="text-danger" data-valmsg-for="TotalScore"
               data-valmsg-replace="true"></span>
     </div>
