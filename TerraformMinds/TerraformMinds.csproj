@@ -6,20 +6,17 @@
 
   <ItemGroup>
     <Compile Remove="Views\Course\**" />
-    <Compile Remove="Views\Instructor\**" />
     <Compile Remove="Views\Student\**" />
     <Content Remove="Views\Course\**" />
-    <Content Remove="Views\Instructor\**" />
     <Content Remove="Views\Student\**" />
     <EmbeddedResource Remove="Views\Course\**" />
-    <EmbeddedResource Remove="Views\Instructor\**" />
     <EmbeddedResource Remove="Views\Student\**" />
     <None Remove="Views\Course\**" />
-    <None Remove="Views\Instructor\**" />
     <None Remove="Views\Student\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.9">
       <PrivateAssets>all</PrivateAssets>
@@ -32,7 +29,10 @@
 
 
   <ItemGroup>
+    <Folder Include="Migrations\" />
+
     <Folder Include="Images\" />
+
   </ItemGroup>
 
 </Project>
