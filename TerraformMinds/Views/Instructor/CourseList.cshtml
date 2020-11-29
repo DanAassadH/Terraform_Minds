@@ -11,10 +11,24 @@
 
 <ul>
     <li>
+        <a asp-action="InstructorDashboard" asp-controller="Instructor">
+            Main
+        </a>
+    </li>
+    <li>
+        @*   <a href="/Instructor/CourseList?id=@User.Identity.Name">My Courses</a>*@
+        <a asp-controller="Instructor" asp-action="CourseList"
+           asp-route-id="@User.Identity.Name">
+            My Courses
+        </a>
+    </li>
+    <li>
         <a asp-action="Signout" asp-controller="SignIn">
             Signout
         </a>
     </li>
+
+
 </ul>
 
 
@@ -34,51 +48,92 @@
 
     @if (ViewBag.InstructorsCourses != null && ViewBag.InstructorsCourses.Count > 0)
     {
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Course ID</th>
-                   
-                    <th>Course Name</th>
-                    <th>Subject</th>
-                    <th>Course Description</th>
-                    <th>Grade Level</th>
-                    <th>Start Date</th>
-                    <th>End Data</th>
-                    <th>Capactity</th>
-                    <th>Action</th>
-                </tr>
-                @foreach (Course course in ViewBag.InstructorsCourses)
-                {
+    <div class="card-columns">
+
+        @foreach (Course course in ViewBag.InstructorsCourses)
+        {
+            <div class="card">
+                <img class="card-img-top" src="..." alt="Card image cap">
+
+                <div class="card-body">
+                    <h4 class="card-title">@(course.CourseName)</h4>
+                    <h5>@(course.Subject)</h5>
+                    <p class="card-text">@(course.CourseDescription)</p>
+                    <p class="card-text">
+                        @(course.GradeLevel)
+                    </p>
+                    <p class="card-text">
+                        @((course.StartDate == null ? "TBA" : ((DateTime)course.StartDate).ToLongDateString()))
+                    </p>
+                    <p class="card-text">
+                        @((course.EndDate == null ? "TBA" : ((DateTime)course.EndDate).ToLongDateString()))
+                    </p>
+
+                    @if (course.CurrentCapacity == course.MaxCapacity)
+                    {
+                        <p>FULL</p>
+                    }
+                    else
+                    {
+                        <p>@(course.CurrentCapacity + "/" + course.MaxCapacity)</p>
+                    }
+
+
+                </div>
+                <div class="card-footer text-muted">
+                    <td><a href="/Administrator/CourseEdit?id=@(course.ID)">Edit</a> | <a href="/Administrator/CourseDelete?id=@(course.ID)">Delete</a></td>
+                </div>
+
+            </div>
+        }
+
+        </div>
+
+            <table class="table">
+                <thead class="thead-dark">
                     <tr>
-                        <td>@(course.ID)</td>                    
-                        <td>@(course.CourseName)</td>
-                        <td>@(course.Subject)</td>
-                        <td>@(course.CourseDescription)</td>
-                        <td>@(course.GradeLevel)</td>
-                        <td>@((course.StartDate == null ? "TBA" : ((DateTime)course.StartDate).ToLongDateString()))</td>
-                        <td>@((course.EndDate == null ? "TBA" : ((DateTime)course.EndDate).ToLongDateString()))</td>
-                        @if (course.CurrentCapacity == course.MaxCapacity)
-                        {
-                            <td>FULL</td>
-                        }
-                        else
-                        {
-                            <td>@(course.CurrentCapacity + "/" + course.MaxCapacity)</td>
-                        }
-                        <td><a href="/Administrator/CourseEdit?id=@(course.ID)">Edit</a> | <a href="/Administrator/CourseDelete?id=@(course.ID)">Delete</a></td>
+                        <th>Course ID</th>
 
+                        <th>Course Name</th>
+                        <th>Subject</th>
+                        <th>Course Description</th>
+                        <th>Grade Level</th>
+                        <th>Start Date</th>
+                        <th>End Data</th>
+                        <th>Capactity</th>
+                        <th>Action</th>
                     </tr>
-                }
-        </table>
-    }
+                    @foreach (Course course in ViewBag.InstructorsCourses)
+                    {
+                        <tr>
+                            <td>@(course.ID)</td>
+                            <td>@(course.CourseName)</td>
+                            <td>@(course.Subject)</td>
+                            <td>@(course.CourseDescription)</td>
+                            <td>@(course.GradeLevel)</td>
+                            <td>@((course.StartDate == null ? "TBA" : ((DateTime)course.StartDate).ToLongDateString()))</td>
+                            <td>@((course.EndDate == null ? "TBA" : ((DateTime)course.EndDate).ToLongDateString()))</td>
+                            @if (course.CurrentCapacity == course.MaxCapacity)
+                            {
+                                <td>FULL</td>
+                            }
+                            else
+                            {
+                                <td>@(course.CurrentCapacity + "/" + course.MaxCapacity)</td>
+                            }
+                            <td><a href="/Administrator/CourseEdit?id=@(course.ID)">Edit</a> | <a href="/Administrator/CourseDelete?id=@(course.ID)">Delete</a></td>
 
-    else
-    {
-        <p>You dont have any Courses yet</p>
-    }
+                        </tr>
+                    }
+            </table>
+            }
 
-</section>
+            else
+            {
+            <p>You dont have any Courses yet</p>
+            }
+
+    </section>
 
 
 

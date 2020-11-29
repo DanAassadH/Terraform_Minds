@@ -45,12 +45,10 @@ namespace TerraformMinds.Controllers
         public  List<Course> GetCourseByInstructorID(string id)
         {
             ValidationException exception = new ValidationException();
-
-
-            string signedinUserId  = User.Identity.Name;
             List<Course> instructorsCourses  = null;
 
-            if (signedinUserId == id)
+            // Prevent user from accessing any other user's record
+            if (User.Identity.Name == id)
             {
                 using (LearningManagementContext context = new LearningManagementContext())
                 {
