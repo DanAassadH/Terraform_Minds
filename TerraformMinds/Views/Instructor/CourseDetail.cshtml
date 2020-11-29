@@ -38,3 +38,47 @@
 
 
 
+
+@if (ViewBag.SingleCourseDetail != null)
+{
+
+    <div class="card">
+
+        <img class="card-img-top" src="..." alt="Card image cap">
+
+        <div class="card-body">
+            <h4 class="card-title">@(ViewBag.SingleCourseDetail.CourseName)</h4>
+            <h5>@(ViewBag.SingleCourseDetail.Subject)</h5>
+            <p class="card-text">@(ViewBag.SingleCourseDetail.CourseDescription)</p>
+            <p class="card-text">
+                @(ViewBag.SingleCourseDetail.GradeLevel)
+            </p>
+            <p class="card-text">
+                @((ViewBag.SingleCourseDetail.StartDate == null ? "TBA" : ((DateTime)ViewBag.SingleCourseDetail.StartDate).ToLongDateString()))
+            </p>
+            <p class="card-text">
+                @((ViewBag.SingleCourseDetail.EndDate == null ? "TBA" : ((DateTime)ViewBag.SingleCourseDetail.EndDate).ToLongDateString()))
+            </p>
+
+            @if (ViewBag.SingleCourseDetail.CurrentCapacity == ViewBag.SingleCourseDetail.MaxCapacity)
+            {
+                <p>FULL</p>
+            }
+            else
+            {
+                <p>@(ViewBag.SingleCourseDetail.CurrentCapacity + "/" + ViewBag.SingleCourseDetail.MaxCapacity)</p>
+            }
+
+
+        </div>
+    </div>
+}
+    else
+    {
+        <p>Course Details Not Available. Please head back to Main and try again</p>
+    }
+
+
+
+
+

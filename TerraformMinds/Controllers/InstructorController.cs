@@ -56,7 +56,7 @@ namespace TerraformMinds.Controllers
         {
             try
             {
-                ViewBag.InstructorsCourses = GetCourseByInstructorID(id);
+                ViewBag.SingleCourseDetail = GetCourseDetailsByID(id);
             }
             catch (ValidationException e)
             {
@@ -77,7 +77,7 @@ namespace TerraformMinds.Controllers
         public List<Course> GetCourseByInstructorID(string id)
         {
             ValidationException exception = new ValidationException();
-            List<Course> instructorsCourses  = null;
+            List<Course> instructorsCourses = null;
 
             // Prevent user from accessing any other user's record
             if (User.Identity.Name == id)
@@ -86,7 +86,7 @@ namespace TerraformMinds.Controllers
                 {
 
                     instructorsCourses = context.Courses.Where(x => x.UserID == int.Parse(id)).ToList();
-                }              
+                }
             }
             else
             {
@@ -98,6 +98,51 @@ namespace TerraformMinds.Controllers
                 throw exception;
             }
             return instructorsCourses;
+        }
+
+
+
+        /// <summary>
+        /// Function to grab details of the signle course whose ID is provided
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+
+        public Course GetCourseDetailsByID(string id)
+        {
+            ValidationException exception = new ValidationException();
+            Course courseDetail = null;
+            int parsedId;
+
+            id = !string.IsNullOrWhiteSpace(id) ? id.Trim() : null;
+
+            // check if id is non integer
+            if (id == null) 
+            {
+                exception.ValidationExceptions.Add(new Exception("No ID Provided, Go back to main Instructor Dsahboard and select course again"));
+            }
+            else
+            {
+                if (int.TryParse(id, out parsedId))
+                {
+                    using (LearningManagementContext context = new LearningManagementContext())
+                    {
+
+                        courseDetail = context.Courses.Where(x => x.ID == parsedId).SingleOrDefault();
+                    }
+                }
+                else
+                {
+                    exception.ValidationExceptions.Add(new Exception("Invalid ID , Go back to main Instructor Dsahboard and select course again"));
+                }
+            }
+
+            if (exception.ValidationExceptions.Count > 0)
+            {
+                throw exception;
+            }
+
+            return courseDetail;
         }
     }
 }
