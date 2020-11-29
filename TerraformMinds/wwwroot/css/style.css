@@ -23,3 +23,46 @@
 }
 
 /*---------------------------------------- Home Page Styles-------------------------------------------*/
+body {
+    font-weight: 400;
+}
+
+body p{
+    font-size:1.25rem;
+}
+
+/*home-cards*/
+
+
+
+
+
+/*site-cards*/
+
+.teacher-count {
+    background-color: #A2D4DC; 
+}
+.course-count {
+    background-color: #8389C0;
+}
+.student-count {
+    background-color: #E399BA;
+}
+.teacher-count, .course-count, .student-count {
+    padding-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.teacher-count img, .course-count img, .student-count img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.teacher-circle, .course-circle, .student-circle {
+    
+    border-radius: 50%;
+    width: 125px;
+}

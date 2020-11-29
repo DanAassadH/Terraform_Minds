@@ -18,11 +18,21 @@ namespace TerraformMinds.Controllers
             _logger = logger;
         }
 
+        // UN-COMMENT ONCE WE HAVE OVER 10 Instructors, Students and Courses.
+        //public IActionResult Index()
+        //{
+        //    ViewBag.CourseCount = RoundDown(CourseCount().Count());
+        //    ViewBag.InstructorCount = RoundDown(InstructorCount().Count());
+        //    ViewBag.StudentCount = RoundDown(StudentCount().Count());
+
+        //    return View();
+        //}
+
         public IActionResult Index()
         {
-            ViewBag.CourseCount = CourseCount();
-            ViewBag.InstructorCount = InstructorCount();
-            ViewBag.StudentCount = StudentCount();
+            ViewBag.CourseCount = CourseCount().Count();
+            ViewBag.InstructorCount = InstructorCount().Count();
+            ViewBag.StudentCount = StudentCount().Count();
 
             return View();
         }
@@ -76,6 +86,18 @@ namespace TerraformMinds.Controllers
             }
 
             return studentCount;
+        }
+
+        public int RoundDown(int toRound)
+        {
+            if(toRound % 10 == 0)
+            {
+                return toRound;
+            }
+            else
+            {
+                return toRound - toRound % 10;
+            }
         }
     }
 }
