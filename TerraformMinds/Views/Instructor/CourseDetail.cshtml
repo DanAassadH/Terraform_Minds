@@ -48,18 +48,24 @@
 
         <div class="card-body">
             <h4 class="card-title">@(ViewBag.SingleCourseDetail.CourseName)</h4>
-            <h5>@(ViewBag.SingleCourseDetail.Subject)</h5>
+            <h5>Subject : @(ViewBag.SingleCourseDetail.Subject)</h5>
+            <strong> Course Description : </strong>
             <p class="card-text">@(ViewBag.SingleCourseDetail.CourseDescription)</p>
+            <strong> Grade </strong>
             <p class="card-text">
                 @(ViewBag.SingleCourseDetail.GradeLevel)
             </p>
+
             <p class="card-text">
+                <strong>Start Date : </strong>
                 @((ViewBag.SingleCourseDetail.StartDate == null ? "TBA" : ((DateTime)ViewBag.SingleCourseDetail.StartDate).ToLongDateString()))
             </p>
             <p class="card-text">
+                <strong>End Date : </strong>
                 @((ViewBag.SingleCourseDetail.EndDate == null ? "TBA" : ((DateTime)ViewBag.SingleCourseDetail.EndDate).ToLongDateString()))
             </p>
 
+            <strong> Capacity </strong>
             @if (ViewBag.SingleCourseDetail.CurrentCapacity == ViewBag.SingleCourseDetail.MaxCapacity)
             {
                 <p>FULL</p>
@@ -68,7 +74,6 @@
             {
                 <p>@(ViewBag.SingleCourseDetail.CurrentCapacity + "/" + ViewBag.SingleCourseDetail.MaxCapacity)</p>
             }
-
 
         </div>
     </div>

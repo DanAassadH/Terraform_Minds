@@ -106,13 +106,14 @@ namespace TerraformMinds.Controllers
         /// Function to grab details of the signle course whose ID is provided
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns> details of a single course</returns>
 
         public Course GetCourseDetailsByID(string id)
         {
             ValidationException exception = new ValidationException();
             Course courseDetail = null;
             int parsedId;
+            int userId = int.Parse(User.Identity.Name);
 
             id = !string.IsNullOrWhiteSpace(id) ? id.Trim() : null;
 
@@ -128,7 +129,7 @@ namespace TerraformMinds.Controllers
                     using (LearningManagementContext context = new LearningManagementContext())
                     {
 
-                        courseDetail = context.Courses.Where(x => x.ID == parsedId).SingleOrDefault();
+                        courseDetail = context.Courses.Where(x => x.ID == parsedId && x.UserID == userId).SingleOrDefault();
                     }
                 }
                 else
