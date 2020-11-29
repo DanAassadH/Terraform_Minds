@@ -113,7 +113,7 @@
 
     <h5> Assignments in this course</h5>
 
-    <a asp-controller="Instructor" asp-action="AssignmentCreate" class="badge-pill badge-warning">Create a new assignment</a>
+    <a asp-controller="Instructor" asp-action="AssignmentCreate" asp-route-id="@(ViewBag.SingleCourseDetail.ID)" class="badge-pill badge-warning">Create a new assignment</a>
 
     @if (ViewBag.StudentsForCourse != null && ViewBag.StudentsForCourse.Count > 0)
     {
@@ -140,8 +140,6 @@
     {
         <p><strong>No Assignments for this  course yet</strong></p>
     }
-
-
 
 }
 else
