@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TerraformMinds.Models;
 using TerraformMinds.Models.Exceptions;
 
@@ -52,7 +53,7 @@ namespace TerraformMinds.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [Authorize(Roles = "Instructor")]
-        public IActionResult CourseDetail(string id)
+        public IActionResult CourseDetail(string id) // passing CourseID
         {
             try
             {
@@ -156,6 +157,9 @@ namespace TerraformMinds.Controllers
         {
             ValidationException exception = new ValidationException();
             List<User> studentNames = null;
+            List<Course> enrolledCourses;
+            List<Student> studentCourses;
+
             int parsedId;
 
             id = !string.IsNullOrWhiteSpace(id) ? id.Trim() : null;
@@ -170,11 +174,14 @@ namespace TerraformMinds.Controllers
                 {
                     using (LearningManagementContext context = new LearningManagementContext())
                     {
-                        // sql query :
-                        //SELECT a.FirstName, a.LastName FROM `user` a , student b WHERE a.ID=b.UserID AND CourseID = -2(id)
-                        //  studentNames = context.Courses.Where(x => x.ID == parsedId && x.UserID == userId).SingleOrDefault();
 
-                        studentNames = context.Users.Where(x => x.Role == 3).ToList();
+
+                        //  For reference for now :  allBooks = context.Books.Include(x => x.Author).Include(x => x.Borrows).Where(x => x.Borrows.Any(y => y.DueDate < DateTime.Today && y.ReturnedDate == null)).ToList();
+
+                        // sql query : get all the students enrolled in this course
+                        //SELECT a.FirstName, a.LastName FROM `user` a , student b WHERE a.ID=b.UserID AND CourseID = -2(id)
+
+                          studentNames = context.Users.Where(x => x.Students.Any(y => y.UserID == x.ID)).Where(x => x.Students.Any(y => y.CourseID == parsedId)).ToList();
                     }
                 }
                 else
