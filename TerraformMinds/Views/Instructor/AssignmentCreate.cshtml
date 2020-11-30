@@ -12,7 +12,6 @@
         </a>
     </li>
     <li>
-        @*   <a href="/Instructor/CourseList?id=@User.Identity.Name">My Courses</a>*@
         <a asp-controller="Instructor" asp-action="CourseList"
            asp-route-id="@User.Identity.Name">
             My Courses
@@ -60,13 +59,13 @@
 
     <div class="form-group">
         <label asp-for="DueDate" class="control-label">Due Date</label>
-        <input asp-for="DueDate" class="form-control" type="date" value="" data-val-range="Due Date Can be set after today" data-val-range-min="@DateTime.Now"/>
+        <input asp-for="DueDate" class="form-control" type="date" value="" data-val-range="Due Date Can not be before today" data-val-range-min="@DateTime.Now"/>
         <span asp-validation-for="DueDate" class="text-danger" data-valmsg-for="DueDate" data-valmsg-replace="true"></span>
     </div>
 
     <div>
         <label asp-for="TotalScore" class="control-label">Total Score</label>
-        <input asp-for="TotalScore" class="form-control" value="" data-val="true" data-val-required="Total Score Required" data-val-range="Enter Score between 0 and 100" data-val-range-max="100" data-val-range-min="0" />
+        <input asp-for="TotalScore" class="form-control" value="" data-val="true" data-val-required="Total Score Required" data-val-range="Enter Total Score between 0 and 100" data-val-range-max="100" data-val-range-min="0" />
         <span asp-validation-for="TotalScore" class="text-danger" data-valmsg-for="TotalScore"
               data-valmsg-replace="true"></span>
     </div>

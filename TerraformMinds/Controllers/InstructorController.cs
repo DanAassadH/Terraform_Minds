@@ -89,7 +89,7 @@ namespace TerraformMinds.Controllers
             {
                 try
                 {
-                   // Register(FirstName, LastName, EMail, Password, Role);
+                    CreateNewAssignment(Question, DueDate, TotalScore, id);
                     ViewBag.Message = $"Successfully Created Assignment!";
                 }
                 catch (ValidationException e)
@@ -183,6 +183,11 @@ namespace TerraformMinds.Controllers
         }
 
 
+        /// <summary>
+        /// Gets List of students in a course
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>List of Students</returns>
         public List<User> GetStudentsByCourseID(string id)
         {
             ValidationException exception = new ValidationException();
@@ -224,6 +229,119 @@ namespace TerraformMinds.Controllers
             }
 
             return studentNames;
+
+        }
+
+        public void CreateNewAssignment(string question, string dueDate, string totalScore, string id)
+        {
+            ValidationException exception = new ValidationException();
+
+            // Trim the values 
+            question = question?.Trim();
+            dueDate = dueDate?.Trim();
+            totalScore = totalScore?.Trim();
+            id = id?.Trim();
+
+            bool flag = false;
+
+            int parsedId;
+            int parsedTotalScore;
+
+            // Validation for courseID
+            if(id==null)
+            {
+                exception.ValidationExceptions.Add(new Exception("ID not found, Go back to details page and try again"));
+                flag = true;
+            }
+            else
+            {
+                if (!int.TryParse(id, out parsedId))
+                {
+                    exception.ValidationExceptions.Add(new Exception("Invalid Course ID , Go back to main Instructor Dsahboard and select course again"));
+                    flag = true;
+                }
+            }
+
+            // Validation for question
+            if (question == null)
+            {
+                exception.ValidationExceptions.Add(new Exception("Question Required"));
+                flag = true;
+            }
+            else
+            {
+                if(question.Length>500)
+                {
+                    exception.ValidationExceptions.Add(new Exception("exceed character count of 500, please rephrase"));
+                    flag = true;
+                }
+            }
+
+            // Validation for dueDate
+            if (dueDate == null)
+            {
+                exception.ValidationExceptions.Add(new Exception("Due Date Required"));
+                flag = true;
+            }
+            else
+            {
+                if(DateTime.Parse(dueDate)<DateTime.Now)
+                {
+                    exception.ValidationExceptions.Add(new Exception("Due Date Can not be before today"));
+                    flag = true;
+                }
+            }
+
+            // Validation for TotalScore
+            if (totalScore == null)
+            {
+                exception.ValidationExceptions.Add(new Exception("Total Score for Assignment required"));
+                flag = true;
+            }
+            else
+            {
+                if (!int.TryParse(totalScore, out parsedTotalScore))
+                {
+                    exception.ValidationExceptions.Add(new Exception("Numeric Value required for Total Score"));
+                    flag = true;
+                }
+                else
+                {
+                    if (!((parsedTotalScore > -1) && (parsedTotalScore < 101)))
+                    {
+                        exception.ValidationExceptions.Add(new Exception("Enter Total Score between 0 and 100"));
+                        flag = true;
+                    }
+                }
+
+            }
+
+            if (exception.ValidationExceptions.Count > 0)
+            {
+                throw exception;
+            }
+
+            //  
+            if (flag==false)
+            {
+        
+                using (LearningManagementContext context = new LearningManagementContext())
+                {
+                 
+                    // Add Values in assignment Table if all validations are passed
+                    context.Assignments.Add(new Assignment()
+                    {
+                        CourseID = int.Parse(id),
+                        Question = question,
+                        DueDate = DateTime.Parse(dueDate),
+                        TotalScore = int.Parse(totalScore)
+                       
+                    });
+                    context.SaveChanges();
+
+                }
+
+            }
 
         }
     }
