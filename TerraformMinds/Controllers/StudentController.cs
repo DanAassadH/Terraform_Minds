@@ -54,12 +54,11 @@ namespace TerraformMinds.Controllers
             try
             {
                 ViewBag.SingleCourseDetail = GetCourseDetailsByID(id);
-/*                if (ViewBag.SingleCourseDetail != null)
+                if (ViewBag.SingleCourseDetail != null)
                 {
-                    // Get students enrolled in this course
-                    ViewBag.StudentsForCourse = GetStudentsByCourseID(id);
-                    ViewBag.AssignmentsForCourse = GetAssignmentsByCourseID(id);
-                }*/
+                    // Get Assignments for this course Calling this function from instructor controller
+                    ViewBag.AssignmentsForCourse = InstructorController.GetAssignmentsByCourseID(id);
+                }
             }
             catch (ValidationException e)
             {
@@ -141,8 +140,7 @@ namespace TerraformMinds.Controllers
                     else
                     {
                         exception.ValidationExceptions.Add(new Exception("You are not registered in this course yet , Go back to main Student Dsahboard and select another course "));
-                    }
-                   
+                    }                 
                 }
             }
 
@@ -153,6 +151,49 @@ namespace TerraformMinds.Controllers
 
             return courseDetail;
         }
+
+        /// <summary>
+        /// Function to get assignments for A course
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> List of Assignments for a course </returns>
+      /*  public List<Assignment> GetAssignmentsByCourseID(string id)
+        {
+            ValidationException exception = new ValidationException();
+            List<Assignment> assignmentDetails = null;
+
+            int parsedId;
+
+            id = !string.IsNullOrWhiteSpace(id) ? id.Trim() : null;
+
+            if (id == null)
+            {
+                exception.ValidationExceptions.Add(new Exception("No Course ID Provided, Go back to main Student Dsahboard and select course again"));
+            }
+            else
+            {
+                if (int.TryParse(id, out parsedId))
+                {
+                    using (LearningManagementContext context = new LearningManagementContext())
+                    {
+                        assignmentDetails = context.Assignments.Where(x => x.CourseID == parsedId).ToList();
+                    }
+                }
+                else
+                {
+                    exception.ValidationExceptions.Add(new Exception("Invalid Course ID , Go back to main Student Dsahboard and select course again"));
+                }
+            }
+
+            if (exception.ValidationExceptions.Count > 0)
+            {
+                throw exception;
+            }
+
+            return assignmentDetails;
+
+        }*/
+
 
     }
 }

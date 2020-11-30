@@ -237,7 +237,7 @@ namespace TerraformMinds.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns> List of Assignments for a course </returns>
-        public List<Assignment> GetAssignmentsByCourseID(string id)
+        public static List<Assignment> GetAssignmentsByCourseID(string id)
         {
             ValidationException exception = new ValidationException();
             List<Assignment> assignmentDetails = null;
@@ -248,7 +248,7 @@ namespace TerraformMinds.Controllers
 
             if (id == null)
             {
-                exception.ValidationExceptions.Add(new Exception("No Course ID Provided, Go back to main Instructor Dsahboard and select course again"));
+                exception.ValidationExceptions.Add(new Exception("No Course ID Provided, Go back to main Dsahboard and select course again"));
             }
             else
             {
@@ -261,7 +261,7 @@ namespace TerraformMinds.Controllers
                 }
                 else
                 {
-                    exception.ValidationExceptions.Add(new Exception("Invalid Course ID , Go back to main Instructor Dsahboard and select course again"));
+                    exception.ValidationExceptions.Add(new Exception("Invalid Course ID , Go back to main Dsahboard and select course again"));
                 }
             }
 

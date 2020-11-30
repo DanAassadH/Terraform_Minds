@@ -65,6 +65,41 @@
 
         </div>
     </div>
+
+    @*--------------------------------------Assignments Info -------------------------------------------------*@
+
+    <h5> Assignments in this course</h5>
+
+@*    <a asp-controller="Student" asp-action="AssignmentCreate" asp-route-id="@(ViewBag.SingleCourseDetail.ID)" class="badge-pill badge-warning">Create a new assignment</a>*@
+
+    @if (ViewBag.AssignmentsForCourse != null && ViewBag.AssignmentsForCourse.Count > 0)
+    {
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Question</th>
+                    <th>Due Date</th>
+                    <th>Total Score</th>
+                    <th>Actions</th>
+                </tr>
+                @foreach (Assignment assignment in ViewBag.AssignmentsForCourse)
+                {
+                    <tr>
+                        <td>@assignment.Question</td>
+                        <td>@assignment.DueDate.ToLongDateString()</td>
+                        <td>@assignment.TotalScore</td>
+                        <td>Attempt</td>
+                    </tr>
+                }
+        </table>
+
+    }
+    else
+    {
+        <p><strong>No Assignments for this  course yet</strong></p>
+    }
+
+
 }
 else
 {
