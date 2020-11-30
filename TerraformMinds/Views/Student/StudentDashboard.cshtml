@@ -16,8 +16,7 @@
         </a>
     </li>
     <li>
-        @*   <a href="/Instructor/CourseList?id=@User.Identity.Name">My Courses</a>*@
-        <a asp-controller="Instructor" asp-action="CourseList"
+        <a asp-controller="Student" asp-action="CourseList"
            asp-route-id="@User.Identity.Name">
             My Courses
         </a>
