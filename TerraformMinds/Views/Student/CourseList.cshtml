@@ -12,8 +12,7 @@
         </a>
     </li>
     <li>
-        <a asp-controller="Student" asp-action="CourseList"
-           asp-route-id="@User.Identity.Name">
+        <a asp-controller="Student" asp-action="CourseList">
             My Courses
         </a>
     </li>
@@ -38,8 +37,7 @@
 
 
 <section>
-    <p>Hello to courses that are not working yet</p>
-    @*
+      
         @if (ViewBag.StudentsCourses != null && ViewBag.StudentsCourses.Count > 0)
         {
             <div class="card-columns">
@@ -93,7 +91,7 @@
         else
         {
             <p>You dont have any Courses yet</p>
-        }*@
+        }
 
 </section>
 

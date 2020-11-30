@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TerraformMinds.Models;
 using TerraformMinds.Models.Exceptions;
 
 namespace TerraformMinds.Controllers
@@ -25,21 +26,54 @@ namespace TerraformMinds.Controllers
         /// <returns> View() </returns>
 
         [Authorize(Roles = "Student")]
-        public IActionResult CourseList(string id)
+        public IActionResult CourseList() 
         {
-/*            try
+            try
             {
-                // Calling function from Instructor controller to display the list of courses by given id
-                ViewBag.StudentsCourses = InstructorController.GetCourseByUserID(id);
+                ViewBag.StudentsCourses = GetCourseByStudentID();
             }
             catch (ValidationException e)
             {
                 ViewBag.Message = "There exist problem(s) with your submission, see below.";
                 ViewBag.Exception = e;
                 ViewBag.Error = true;
-            }*/
+            }
 
             return View();
         }
+
+        /* ------------------------------------------Data -----------------------------------------------------*/
+        /// <summary>
+        /// This function grabs course List for individual instructor
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>List of courses</returns>
+        public List<Course> GetCourseByStudentID()
+        {
+            ValidationException exception = new ValidationException();
+            List<Course> studentsCourses = null;
+
+            if (User.Identity.Name != null)
+            {
+                using (LearningManagementContext context = new LearningManagementContext())
+                {
+                    // Sql Query : 
+                    // SELECT a.CourseName, a.Subject , a.CourseDescription FROM `Course` a , `student` b WHERE a.ID=b.CourseID AND b.UserID = 6(id)
+                       studentsCourses = context.Courses.Where(x => x.Students.Any(y => y.CourseID == x.ID)).Where(x => x.Students.Any(y => y.UserID == int.Parse(User.Identity.Name))).ToList();
+
+                }
+            }
+            else
+            {
+                exception.ValidationExceptions.Add(new Exception("Something went wrong please Logout and try again"));
+            }
+
+            if (exception.ValidationExceptions.Count > 0)
+            {
+                throw exception;
+            }
+            return studentsCourses;
+        }
+
     }
 }

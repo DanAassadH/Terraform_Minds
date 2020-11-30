@@ -35,7 +35,7 @@ namespace TerraformMinds.Controllers
         {
             try
             {
-                ViewBag.InstructorsCourses = GetCourseByUserID(id);
+                ViewBag.InstructorsCourses = GetCourseByInstructorID(id);
             }
             catch (ValidationException e)
             {
@@ -111,7 +111,7 @@ namespace TerraformMinds.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns>List of courses</returns>
-        public List<Course> GetCourseByUserID(string id)
+        public List<Course> GetCourseByInstructorID(string id)
         {
             ValidationException exception = new ValidationException();
             List<Course> instructorsCourses = null;
@@ -121,7 +121,6 @@ namespace TerraformMinds.Controllers
             {
                 using (LearningManagementContext context = new LearningManagementContext())
                 {
-
                     instructorsCourses = context.Courses.Where(x => x.UserID == int.Parse(id)).ToList();
                 }
             }
