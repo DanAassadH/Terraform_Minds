@@ -37,7 +37,7 @@
 
 
 
-
+@*--------------------------------------Details about courseo -------------------------------------------------*@
 
 @if (ViewBag.SingleCourseDetail != null)
 {
@@ -101,8 +101,6 @@
                 }
         </table>
 
-
-
     }
     else
     {
@@ -115,22 +113,23 @@
 
     <a asp-controller="Instructor" asp-action="AssignmentCreate" asp-route-id="@(ViewBag.SingleCourseDetail.ID)" class="badge-pill badge-warning">Create a new assignment</a>
 
-    @if (ViewBag.StudentsForCourse != null && ViewBag.StudentsForCourse.Count > 0)
+    @if (ViewBag.AssignmentsForCourse != null && ViewBag.AssignmentsForCourse.Count > 0)
     {
-
         <table class="table">
             <thead class="thead-dark">
                 <tr>
-                    <th>Name</th>
-                    <th>Grade</th>
-                    <th>Action</th>
+                    <th>Question</th>
+                    <th>Due Date</th>
+                    <th>Total Score</th>
+                    <th>Actions</th>
                 </tr>
-                @foreach (User student in ViewBag.StudentsForCourse)
+                @foreach (Assignment assignment in ViewBag.AssignmentsForCourse)
                 {
                     <tr>
-                        <td>@student.FirstName + @student.LastName</td>
-                        <td>A+</td>
-                        <td>Show Assignments</td>
+                        <td>@assignment.Question</td>
+                        <td>@assignment.DueDate.ToLongDateString()</td>
+                        <td>@assignment.TotalScore</td>
+                        <td>Edit</td>
                     </tr>
                 }
         </table>

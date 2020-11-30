@@ -62,6 +62,7 @@ namespace TerraformMinds.Controllers
                 {
                     // Get students enrolled in this course
                     ViewBag.StudentsForCourse = GetStudentsByCourseID(id);
+                    ViewBag.AssignmentsForCourse = GetAssignmentsByCourseID(id);
                 }
             }
             catch (ValidationException e)
@@ -139,7 +140,7 @@ namespace TerraformMinds.Controllers
 
 
         /// <summary>
-        /// Function to grab details of the signle course whose ID is provided
+        /// Function to grab details of the signle course whose ID is provided by instructor
         /// </summary>
         /// <param name="id"></param>
         /// <returns> details of a single course</returns>
@@ -184,7 +185,7 @@ namespace TerraformMinds.Controllers
 
 
         /// <summary>
-        /// Gets List of students in a course
+        /// Gets List of students in a course for the instructor
         /// </summary>
         /// <param name="id"></param>
         /// <returns>List of Students</returns>
@@ -199,7 +200,7 @@ namespace TerraformMinds.Controllers
 
             if (id == null)
             {
-                exception.ValidationExceptions.Add(new Exception("No student ID Provided, Go back to main Instructor Dsahboard and select course again"));
+                exception.ValidationExceptions.Add(new Exception("No Course ID Provided, Go back to main Instructor Dsahboard and select course again"));
             }
             else
             {
@@ -219,7 +220,7 @@ namespace TerraformMinds.Controllers
                 }
                 else
                 {
-                    exception.ValidationExceptions.Add(new Exception("Invalid student ID , Go back to main Instructor Dsahboard and select course again"));
+                    exception.ValidationExceptions.Add(new Exception("Invalid Course ID , Go back to main Instructor Dsahboard and select course again"));
                 }
             }
 
@@ -232,6 +233,55 @@ namespace TerraformMinds.Controllers
 
         }
 
+        /// <summary>
+        /// Function to get assignments for A course
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> List of Assignments for a course </returns>
+        public List<Assignment> GetAssignmentsByCourseID(string id)
+        {
+            ValidationException exception = new ValidationException();
+            List<Assignment> assignmentDetails = null;
+
+            int parsedId;
+
+            id = !string.IsNullOrWhiteSpace(id) ? id.Trim() : null;
+
+            if (id == null)
+            {
+                exception.ValidationExceptions.Add(new Exception("No Course ID Provided, Go back to main Instructor Dsahboard and select course again"));
+            }
+            else
+            {
+                if (int.TryParse(id, out parsedId))
+                {
+                    using (LearningManagementContext context = new LearningManagementContext())
+                    {
+                        assignmentDetails = context.Assignments.Where(x => x.CourseID == parsedId).ToList();
+                    }
+                }
+                else
+                {
+                    exception.ValidationExceptions.Add(new Exception("Invalid Course ID , Go back to main Instructor Dsahboard and select course again"));
+                }
+            }
+
+            if (exception.ValidationExceptions.Count > 0)
+            {
+                throw exception;
+            }
+
+            return assignmentDetails;
+
+        }
+
+        /// <summary>
+        /// Function to insert assignment values by instructor into assignment table
+        /// </summary>
+        /// <param name="question"></param>
+        /// <param name="dueDate"></param>
+        /// <param name="totalScore"></param>
+        /// <param name="id"></param>
         public void CreateNewAssignment(string question, string dueDate, string totalScore, string id)
         {
             ValidationException exception = new ValidationException();
@@ -321,7 +371,7 @@ namespace TerraformMinds.Controllers
                 throw exception;
             }
 
-            //  
+             
             if (flag==false)
             {
         
