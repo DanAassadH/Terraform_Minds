@@ -88,7 +88,7 @@
                         <td>@assignment.Question</td>
                         <td>@assignment.DueDate.ToLongDateString()</td>
                         <td>@assignment.TotalScore</td>
-                        <td>Attempt</td>
+                        <td><a asp-controller="Student" asp-action="AssignmentAttempt" asp-route-id="@assignment.ID">Attempt</a></td>
                     </tr>
                 }
         </table>
@@ -98,7 +98,6 @@
     {
         <p><strong>No Assignments for this  course yet</strong></p>
     }
-
 
 }
 else

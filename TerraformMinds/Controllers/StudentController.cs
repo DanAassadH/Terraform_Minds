@@ -70,6 +70,24 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Student")]
+        public IActionResult AssignmentAttempt(string id) 
+        {
+            
+            try
+            {
+                ViewBag.AssignmentDetails = GetAssignmentByID(id);
+                //ViewBag.StudentsCourses = SubmitAssignment();
+            }
+            catch (ValidationException e)
+            {
+                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Exception = e;
+                ViewBag.Error = true;
+            }
+
+            return View();
+        }
 
         /* ------------------------------------------Data -----------------------------------------------------*/
         /// <summary>
@@ -153,36 +171,30 @@ namespace TerraformMinds.Controllers
         }
 
         /// <summary>
-        /// Function to get assignments for A course
+        /// Function to get Details of an assignment
         /// </summary>
         /// <param name="id"></param>
-        /// <returns> List of Assignments for a course </returns>
-      /*  public List<Assignment> GetAssignmentsByCourseID(string id)
+        /// <returns> Assignment details</returns>
+        public Assignment GetAssignmentByID(string id) // Passing Assignment ID
         {
             ValidationException exception = new ValidationException();
-            List<Assignment> assignmentDetails = null;
+            Assignment assignmentDetails = null;
 
             int parsedId;
 
             id = !string.IsNullOrWhiteSpace(id) ? id.Trim() : null;
 
-            if (id == null)
+
+            if (int.TryParse(id, out parsedId))
             {
-                exception.ValidationExceptions.Add(new Exception("No Course ID Provided, Go back to main Student Dsahboard and select course again"));
+                using (LearningManagementContext context = new LearningManagementContext())
+                {
+                    assignmentDetails = context.Assignments.Where(x => x.ID == parsedId).SingleOrDefault();
+                }
             }
             else
             {
-                if (int.TryParse(id, out parsedId))
-                {
-                    using (LearningManagementContext context = new LearningManagementContext())
-                    {
-                        assignmentDetails = context.Assignments.Where(x => x.CourseID == parsedId).ToList();
-                    }
-                }
-                else
-                {
-                    exception.ValidationExceptions.Add(new Exception("Invalid Course ID , Go back to main Student Dsahboard and select course again"));
-                }
+                exception.ValidationExceptions.Add(new Exception("Invalid Assignemnt ID , Go back to main Student Dsahboard and select again"));
             }
 
             if (exception.ValidationExceptions.Count > 0)
@@ -192,7 +204,7 @@ namespace TerraformMinds.Controllers
 
             return assignmentDetails;
 
-        }*/
+        }
 
 
     }
