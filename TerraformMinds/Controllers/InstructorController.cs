@@ -144,7 +144,7 @@ namespace TerraformMinds.Controllers
         /// <param name="id"></param>
         /// <returns> details of a single course</returns>
 
-        public Course GetCourseDetailsByID(string id)
+        public Course GetCourseDetailsByID(string id) // Passing Course ID
         {
             ValidationException exception = new ValidationException();
             Course courseDetail = null;

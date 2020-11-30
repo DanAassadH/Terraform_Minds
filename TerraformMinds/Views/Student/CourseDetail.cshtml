@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "CourseDetail";
+}
+
+<h1>Course Detail For Student</h1>
+
+<ul>
+    <li>
+        <a asp-action="StudentDashboard" asp-controller="Student">
+            Main
+        </a>
+    </li>
+    <li>
+        <a asp-controller="Student" asp-action="CourseList">
+            My Courses
+        </a>
+    </li>
+    <li>
+        <a asp-action="Signout" asp-controller="SignIn">
+            Signout
+        </a>
+    </li>
+
+</ul>
+
+@if (ViewBag.Error != null)
+{
+    <ul>
+        @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+        {
+            <li class="alert-danger">@(e.Message)</li>
+        }
+    </ul>
+}
+
+
+
+@*--------------------------------------Details about courseo -------------------------------------------------*@
+
+@if (ViewBag.SingleCourseDetail != null)
+{
+
+    <div class="card">
+
+        <img class="card-img-top" src="..." alt="Card image cap">
+
+        <div class="card-body">
+            <h4 class="card-title">@(ViewBag.SingleCourseDetail.CourseName)</h4>
+            <h5>Subject : @(ViewBag.SingleCourseDetail.Subject)</h5>
+            <strong> Course Description : </strong>
+            <p class="card-text">@(ViewBag.SingleCourseDetail.CourseDescription)</p>
+            <strong> Grade </strong>
+            <p class="card-text">
+                @(ViewBag.SingleCourseDetail.GradeLevel)
+            </p>
+
+            <p class="card-text">
+                <strong>Start Date : </strong>
+                @((ViewBag.SingleCourseDetail.StartDate == null ? "TBA" : ((DateTime)ViewBag.SingleCourseDetail.StartDate).ToLongDateString()))
+            </p>
+            <p class="card-text">
+                <strong>End Date : </strong>
+                @((ViewBag.SingleCourseDetail.EndDate == null ? "TBA" : ((DateTime)ViewBag.SingleCourseDetail.EndDate).ToLongDateString()))
+            </p>
+
+        </div>
+    </div>
+}
+else
+{
+    <p>Course Details Not Available. Please head back to Main and try again</p>
+}
