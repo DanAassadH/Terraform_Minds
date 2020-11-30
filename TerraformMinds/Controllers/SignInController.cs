@@ -50,7 +50,8 @@ namespace TerraformMinds.Controllers
                             {
                                 var principal = new ClaimsPrincipal(identity);
                                 var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                                return RedirectToAction("Student", "Rolecheck");
+                                // return RedirectToAction("Student", "Rolecheck");
+                                return RedirectToAction("StudentDashboard", "Student");
                             }
                         }
 
