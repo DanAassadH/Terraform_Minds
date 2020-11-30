@@ -71,20 +71,41 @@ namespace TerraformMinds.Controllers
         }
 
         [Authorize(Roles = "Student")]
-        public IActionResult AssignmentAttempt(string id) 
+        public IActionResult AssignmentAttempt(string id, string Answer,string CourseID) 
         {
-            
-            try
+
+
+
+            if (Request.Method == "POST")
             {
-                ViewBag.AssignmentDetails = GetAssignmentByID(id);
-                //ViewBag.StudentsCourses = SubmitAssignment();
+                try
+                {
+                   // SubmitAssignment(Answer,);
+                    ViewBag.Message = $"Successfully Submitted Assignment!";
+                    ViewBag.SubmitYes = true;
+                }
+                catch (ValidationException e)
+                {
+                    ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                    ViewBag.Exception = e;
+                    ViewBag.Error = true;
+                }
+                
             }
-            catch (ValidationException e)
+            else
             {
-                ViewBag.Message = "There exist problem(s) with your submission, see below.";
-                ViewBag.Exception = e;
-                ViewBag.Error = true;
+                try
+                {
+                    ViewBag.AssignmentDetails = GetAssignmentByID(id);
+                }
+                catch (ValidationException e)
+                {
+                    ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                    ViewBag.Exception = e;
+                    ViewBag.Error = true;
+                }
             }
+
 
             return View();
         }
