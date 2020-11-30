@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,8 +60,11 @@ namespace TerraformMinds.Controllers
                 {
                     // Sql Query : 
                     // SELECT a.CourseName, a.Subject , a.CourseDescription FROM `Course` a , `student` b WHERE a.ID=b.CourseID AND b.UserID = 6(id)
-                       studentsCourses = context.Courses.Where(x => x.Students.Any(y => y.CourseID == x.ID)).Where(x => x.Students.Any(y => y.UserID == int.Parse(User.Identity.Name))).ToList();
+                   //    studentsCourses = context.Courses.Where(x => x.Students.Any(y => y.CourseID == x.ID)).Where(x => x.Students.Any(y => y.UserID == int.Parse(User.Identity.Name))).ToList();
 
+                    //SELECT a.`UserID`, a.`CourseName`, a.`Subject`, a.`CourseDescription` , c.FirstName FROM `Course` a , `student` b , `user` c WHERE a.ID=b.CourseID And a.UserID=c.ID AND b.UserID = 6
+
+                    studentsCourses = context.Courses.Include(x=>x.User).Where(x => x.Students.Any(y => y.CourseID == x.ID)).Where(x => x.Students.Any(y => y.UserID == int.Parse(User.Identity.Name))).ToList();
                 }
             }
             else

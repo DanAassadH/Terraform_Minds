@@ -54,22 +54,14 @@
                             <p class="card-text">
                                 @(course.GradeLevel)
                             </p>
+
+                            <p>Instructor : @(course.User.FirstName)  @(course.User.LastName)</p>
                             <p class="card-text">
                                 @((course.StartDate == null ? "TBA" : ((DateTime)course.StartDate).ToLongDateString()))
                             </p>
                             <p class="card-text">
                                 @((course.EndDate == null ? "TBA" : ((DateTime)course.EndDate).ToLongDateString()))
                             </p>
-
-                            @if (course.CurrentCapacity == course.MaxCapacity)
-                            {
-                                <p>FULL</p>
-                            }
-                            else
-                            {
-                                <p>@(course.CurrentCapacity + "/" + course.MaxCapacity)</p>
-                            }
-
 
                         </div>
                         <div class="card-footer text-muted">
