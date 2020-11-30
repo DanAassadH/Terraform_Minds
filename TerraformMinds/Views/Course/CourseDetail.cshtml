@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewData["Title"] = "Details";
+}
+
+@if (ViewBag.Error != null)
+{
+    <ul>
+        @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+        {
+            <li class="alert-danger">@(e.Message)</li>
+        }
+    </ul>
+}
+
+@if (ViewBag.CourseDetails != null)
+{
+    <h1>Course Details for @(ViewBag.CourseDetails.CourseName)</h1>
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Course ID</th>
+                <th>Course Name</th>
+                <th>Subject</th>
+                <th>Course Description</th>
+                <th>Grade Level</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+            </tr>
+                <tr>
+                    <td>@(ViewBag.CourseDetails.ID)</td>
+                    <td>@(ViewBag.CourseDetails.CourseName)</td>
+                    <td>@(ViewBag.CourseDetails.Subject)</td>
+                    <td>@(ViewBag.CourseDetails.CourseDescription)</td>
+                    <td>@(ViewBag.CourseDetails.GradeLevel)</td>
+                    <td>@((ViewBag.CourseDetails.StartDate == null ? "TBA" : ((DateTime)ViewBag.CourseDetails.StartDate).ToLongDateString()))</td>
+                    <td>@((ViewBag.CourseDetails.EndDate == null ? "TBA" : ((DateTime)ViewBag.CourseDetails.EndDate).ToLongDateString()))</td>
+                </tr>
+        </thead>
+    </table>
+    <p>Return to <a asp-action="CourseList" asp-controller="Course">Course List</a></p>
+}
+else
+{
+    <h1>Details</h1>
+    <p>An error occured trying to populate course information. <a asp-action="CourseList" asp-controller="Course">Click here to return to the course list.</a></p>
+}

@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewData["Title"] = "Course List";
+}
+
+
+<h1>Course List</h1>
+
+<form asp-action="CourseList" asp-controller="Course" method="get">
+    <label for="gradeFilter">Filter by Grade Level</label>
+    <select id="gradeFilter" name="gradeFilter" asp-items="ViewBag.GradeLevels">
+        <option value="">Select Grade Level</option>
+    </select>
+    <label for="subjectFilter">Filter by Subject</label>
+    <select id="subjectFilter" name="subjectFilter" asp-items="ViewBag.CourseSubjects">
+        <option value="">Select Subject</option>
+    </select>
+    <input type="submit" value="Go!" />
+</form>
+
+@if (ViewBag.Courses != null && ViewBag.Courses.Count > 0)
+{
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Course ID</th>
+                @*<th>Instructor</th>*@
+                <th>Course Name</th>
+                <th>Subject</th>
+                <th>Course Description</th>
+                <th>Grade Level</th>
+                <th>Start Date</th>
+                <th>End Data</th>
+                <th>Capactity</th>
+                <th>Action</th>
+            </tr>
+            @foreach (Course course in ViewBag.Courses)
+            {
+                <tr>
+                    <td>@(course.ID)</td>
+                    @*<td>@(course.User.FirstName + " " + course.User.LastName)</td>*@
+                    <td>@(course.CourseName)</td>
+                    <td>@(course.Subject)</td>
+                    <td>@(course.CourseDescription)</td>
+                    <td>@(course.GradeLevel)</td>
+                    <td>@((course.StartDate == null ? "TBA" : ((DateTime)course.StartDate).ToLongDateString()))</td>
+                    <td>@((course.EndDate == null ? "TBA" : ((DateTime)course.EndDate).ToLongDateString()))</td>
+                    @if (course.CurrentCapacity == course.MaxCapacity)
+                    {
+                        <td>FULL</td>
+                    }
+                    else
+                    {
+                        <td>@(course.CurrentCapacity + "/" + course.MaxCapacity)</td>
+                    }
+                    <td><a asp-action="CourseDetail" asp-controller="Course" asp-route-courseID="@(course.ID)">Details</a></td>
+                </tr>
+            }
+    </table>
+}
+
+else
+{
+    <p>There are no courses found</p>
+}
+

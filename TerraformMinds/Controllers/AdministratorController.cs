@@ -21,8 +21,6 @@ namespace TerraformMinds.Controllers
 
     public class AdministratorController : Controller
     {
-
-        
         ValidationException exception = new ValidationException();
 
         [Authorize(Roles = "Administrator")]
@@ -213,19 +211,18 @@ namespace TerraformMinds.Controllers
         /// </summary>
         /// <param name="courseID"></param>
         /// <returns>Returns a course based on its unique ID</returns>
-        public Course GetCourseByID(string courseID)
+        public Course GetCourseByID(int courseID)
         {
-            int parsedCourseID = int.Parse(courseID);
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                if (!context.Courses.Any(x => x.ID == int.Parse(courseID)))
+                if (!context.Courses.Any(x => x.ID == courseID))
                 {
                     exception.ValidationExceptions.Add(new Exception("That Course ID Does Not Exist"));
                     throw exception;
                 }
                 else
                 {
-                    Course course = context.Courses.Where(x => x.ID == int.Parse(courseID)).Include(x => x.User).SingleOrDefault();
+                    Course course = context.Courses.Where(x => x.ID == courseID).Include(x => x.User).SingleOrDefault();
 
                     return course;
                 }
@@ -472,11 +469,11 @@ namespace TerraformMinds.Controllers
         /************************************
         * ADMINISTRATOR STUDENT COMMANDS
         ************************************/
-        public IActionResult StudentDetail(int id)
+        public IActionResult StudentDetail(int studentID)
         {
             try
             {
-                Student student = GetStudentByID(id);
+                Student student = GetStudentByID(studentID);
                 ViewBag.Student = student;
                 ViewBag.StudentCourses = GetEnrolledCoursesByStudentID(student.UserID);
 
@@ -497,17 +494,17 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
-        public Student GetStudentByID(int id)
+        public Student GetStudentByID(int studentID)
         {
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                if (!context.Students.Any(x => x.ID == id))
+                if (!context.Students.Any(x => x.ID == studentID))
                 {
                     exception.ValidationExceptions.Add(new Exception("Error: Cannot find Student"));
                     throw exception;
                 }
 
-                Student student = context.Students.Where(x => x.ID == id).Include(x => x.User).SingleOrDefault();
+                Student student = context.Students.Where(x => x.ID == studentID).Include(x => x.User).SingleOrDefault();
                 return student;
             }
         }
@@ -541,7 +538,7 @@ namespace TerraformMinds.Controllers
             List<Student> studentList;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                studentList = context.Students.Include(x => x.User).ToList();
+                studentList = context.Students.Where(x => x.User.Role == 3).Include(x => x.User).ToList();
             }
             return studentList;
         }
