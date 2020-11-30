@@ -81,24 +81,25 @@ namespace TerraformMinds.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [Authorize(Roles = "Instructor")]
-        public IActionResult AssignmentCreate(string id) // passing CourseID
+        public IActionResult AssignmentCreate(string Question, string DueDate, string TotalScore, string id) // passing CourseID
         {
-/*            try
+  
+            ViewBag.PassingCourseID = id;
+            if (Request.Method == "POST")
             {
-                ViewBag.SingleCourseDetail = GetCourseDetailsByID(id);
-                if (ViewBag.SingleCourseDetail != null)
+                try
                 {
-                    // Get students enrolled in this course
-                    ViewBag.StudentsForCourse = GetStudentsByCourseID(id);
+                   // Register(FirstName, LastName, EMail, Password, Role);
+                    ViewBag.Message = $"Successfully Created Assignment!";
                 }
-            }
-            catch (ValidationException e)
-            {
-                ViewBag.Message = "There exist problem(s) with your submission, see below.";
-                ViewBag.Exception = e;
-                ViewBag.Error = true;
-            }*/
+                catch (ValidationException e)
+                {
+                    ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                    ViewBag.Exception = e;
+                    ViewBag.Error = true;
+                }
 
+            }
             return View();
         }
 

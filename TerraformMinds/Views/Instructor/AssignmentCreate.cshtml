@@ -26,9 +26,31 @@
 
 </ul>
 
+<a asp-controller="Instructor" asp-action="CourseDetail"
+   asp-route-id="@ViewBag.PassingCourseID">
+    Back to course detail page
+</a>
+
+@if (ViewBag.Message != null)
+{
+    <p class="alert-@(ViewBag.Error != null ? "danger" : "success")">@(ViewBag.Message)</p>
+
+    @if (ViewBag.Error != null)
+    {
+        <ul>
+            @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+            {
+                <li class="alert-danger">@(e.Message)</li>
+            }
+        </ul>
+    }
+
+}
 
 <form action="/Instructor/AssignmentCreate" method="POST">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" name="id" value="@ViewBag.PassingCourseID" />
 
     <div class="form-group">
         <label for="Question">Question</label>
@@ -38,13 +60,13 @@
 
     <div class="form-group">
         <label asp-for="DueDate" class="control-label">Due Date</label>
-        <input asp-for="DueDate" class="form-control" type="date" value="" />
-        <span asp-validation-for="DueDate" class="text-danger"></span>
+        <input asp-for="DueDate" class="form-control" type="date" value="" data-val-range="Due Date Can be set after today" data-val-range-min="@DateTime.Now"/>
+        <span asp-validation-for="DueDate" class="text-danger" data-valmsg-for="DueDate" data-valmsg-replace="true"></span>
     </div>
 
     <div>
         <label asp-for="TotalScore" class="control-label">Total Score</label>
-        <input asp-for="TotalScore" class="form-control" value="" data-val="true" data-val-required="Total Score Required" data-val-range="Enter Score between 0 and 100" data-val-range-max="100" data-val-range-min="0"/>
+        <input asp-for="TotalScore" class="form-control" value="" data-val="true" data-val-required="Total Score Required" data-val-range="Enter Score between 0 and 100" data-val-range-max="100" data-val-range-min="0" />
         <span asp-validation-for="TotalScore" class="text-danger" data-valmsg-for="TotalScore"
               data-valmsg-replace="true"></span>
     </div>
