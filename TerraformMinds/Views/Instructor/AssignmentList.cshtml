@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewData["Title"] = "AssignmentList";
+}
+
+<h1>Display Assignments for student</h1>
+
+<ul>
+    <li>
+        <a asp-action="InstructorDashboard" asp-controller="Instructor">
+            Main
+        </a>
+    </li>
+    <li>
+        <a asp-controller="Instructor" asp-action="CourseList"
+           asp-route-id="@User.Identity.Name">
+            My Courses
+        </a>
+    </li>
+    <li>
+        <a asp-action="Signout" asp-controller="SignIn">
+            Signout
+        </a>
+    </li>
+
+</ul>
+
+@if (ViewBag.Error != null)
+{
+    <ul>
+        @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+        {
+            <li class="alert-danger">@(e.Message)</li>
+        }
+    </ul>
+}
+
+
+
+@*--------------------------------------Details about Assignments for student-------------------------------------------------*@
+
+
+@if (ViewBag.SubmittedAssignments != null && ViewBag.SubmittedAssignments.Count > 0)
+{
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Question</th>
+                <th>Due Date</th>
+                <th>Total Score</th>
+                <th>Date Submitted</th>
+                <th>Answer</th>
+                <th>Score obtained</th>
+                <th>Remarks</th>
+            </tr>
+            @foreach (Submit assignment in ViewBag.SubmittedAssignments)
+            {
+                <tr>
+                    <td>@assignment.Assignment.Question</td>
+                    <td>@assignment.Assignment.DueDate.ToLongDateString()</td>
+                    <td>@assignment.Assignment.TotalScore</td>
+
+                    <td>@assignment.DateSubmitted.ToLongDateString()</td>
+                    <td>@assignment.Answer</td>
+                    <td>@assignment.ScoreObtained</td>
+                    <td>@assignment.Remarks</td>
+
+
+                </tr>
+            }
+    </table>
+
+}
+else
+{
+    <p><strong>No Assignment For This Student yet</strong></p>
+}
+
+

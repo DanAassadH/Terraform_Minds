@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewData["Title"] = "CourseList";
+}
+
+<h1>Course List For Students</h1>
+
+<ul>
+    <li>
+        <a asp-action="StudentDashboard" asp-controller="Student">
+            Main
+        </a>
+    </li>
+    <li>
+        <a asp-controller="Student" asp-action="CourseList">
+            My Courses
+        </a>
+    </li>
+    <li>
+        <a asp-action="Signout" asp-controller="SignIn">
+            Signout
+        </a>
+    </li>
+
+</ul>
+
+
+@if (ViewBag.Error != null)
+{
+    <ul>
+        @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+        {
+            <li class="alert-danger">@(e.Message)</li>
+        }
+    </ul>
+}
+
+
+<section>
+      
+        @if (ViewBag.StudentsCourses != null && ViewBag.StudentsCourses.Count > 0)
+        {
+            <div class="card-columns">
+
+                @foreach (Course course in ViewBag.StudentsCourses)
+                {
+                    <div class="card">
+                        <img class="card-img-top" src="..." alt="Card image cap">
+
+                        <div class="card-body">
+                            <h4 class="card-title">@(course.CourseName)</h4>
+                            <h5>@(course.Subject)</h5>
+                            <p class="card-text">@(course.CourseDescription)</p>
+                            <p class="card-text">
+                                @(course.GradeLevel)
+                            </p>
+
+                            <p>Instructor : @(course.User.FirstName)  @(course.User.LastName)</p>
+                            <p class="card-text">
+                                @((course.StartDate == null ? "TBA" : ((DateTime)course.StartDate).ToLongDateString()))
+                            </p>
+                            <p class="card-text">
+                                @((course.EndDate == null ? "TBA" : ((DateTime)course.EndDate).ToLongDateString()))
+                            </p>
+
+                        </div>
+                        <div class="card-footer text-muted">
+                            <a asp-controller="Student" asp-action="CourseDetail"
+                               asp-route-id="@(course.ID)">
+                                Details
+                            </a>
+                            <p>@(course.ID)</p>
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+
+        }
+
+        else
+        {
+            <p>You dont have any Courses yet</p>
+        }
+
+</section>
+
+
+

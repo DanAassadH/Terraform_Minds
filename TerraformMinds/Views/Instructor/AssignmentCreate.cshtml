@@ -1,0 +1,82 @@
+﻿@model TerraformMinds.Models.Assignment
+@{
+    ViewData["Title"] = "AssignmentCreate";
+}
+
+<h1>Create an Assignment</h1>
+
+<ul>
+    <li>
+        <a asp-action="InstructorDashboard" asp-controller="Instructor">
+            Main
+        </a>
+    </li>
+    <li>
+        <a asp-controller="Instructor" asp-action="CourseList"
+           asp-route-id="@User.Identity.Name">
+            My Courses
+        </a>
+    </li>
+    <li>
+        <a asp-action="Signout" asp-controller="SignIn">
+            Signout
+        </a>
+    </li>
+
+</ul>
+
+<a asp-controller="Instructor" asp-action="CourseDetail"
+   asp-route-id="@ViewBag.PassingCourseID">
+    Back to course detail page
+</a>
+
+@if (ViewBag.Message != null)
+{
+    <p class="alert-@(ViewBag.Error != null ? "danger" : "success")">@(ViewBag.Message)</p>
+
+    @if (ViewBag.Error != null)
+    {
+        <ul>
+            @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+            {
+                <li class="alert-danger">@(e.Message)</li>
+            }
+        </ul>
+    }
+
+}
+
+<form action="/Instructor/AssignmentCreate" method="POST">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" name="id" value="@ViewBag.PassingCourseID" />
+
+    <div class="form-group">
+        <label for="Question">Question</label>
+        <input asp-for="Question" class="form-control" placeholder="Type Assignment " data-val="true" data-val-required="Question Required !" data-val-maxlength-max="500" data-val-maxlength="Question Cannot exceed 500 characters" />
+        <span asp-validation-for="Question" class="text-danger" data-valmsg-for="Question" data-valmsg-replace="true"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DueDate" class="control-label">Due Date</label>
+        <input asp-for="DueDate" class="form-control" type="date" value="" data-val-range="Due Date Can not be before today" data-val-range-min="@DateTime.Now"/>
+        <span asp-validation-for="DueDate" class="text-danger" data-valmsg-for="DueDate" data-valmsg-replace="true"></span>
+    </div>
+
+    <div>
+        <label asp-for="TotalScore" class="control-label">Total Score</label>
+        <input asp-for="TotalScore" class="form-control" value="" data-val="true" data-val-required="Total Score Required" data-val-range="Enter Total Score between 0 and 100" data-val-range-max="100" data-val-range-min="0" />
+        <span asp-validation-for="TotalScore" class="text-danger" data-valmsg-for="TotalScore"
+              data-valmsg-replace="true"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Submit" class="btn btn-primary" />
+    </div>
+
+</form>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
