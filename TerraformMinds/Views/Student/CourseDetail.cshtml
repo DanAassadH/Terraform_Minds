@@ -66,11 +66,9 @@
         </div>
     </div>
 
-    @*--------------------------------------Assignments Info -------------------------------------------------*@
+    @*-------------------------------------- Assignments Info -------------------------------------------------*@
 
     <h5> Assignments in this course</h5>
-
-@*    <a asp-controller="Student" asp-action="AssignmentCreate" asp-route-id="@(ViewBag.SingleCourseDetail.ID)" class="badge-pill badge-warning">Create a new assignment</a>*@
 
     @if (ViewBag.AssignmentsForCourse != null && ViewBag.AssignmentsForCourse.Count > 0)
     {
@@ -84,12 +82,23 @@
                 </tr>
                 @foreach (Assignment assignment in ViewBag.AssignmentsForCourse)
                 {
-                    <tr>
-                        <td>@assignment.Question</td>
-                        <td>@assignment.DueDate.ToLongDateString()</td>
-                        <td>@assignment.TotalScore</td>
-                        <td><a asp-controller="Student" asp-action="AssignmentAttempt" asp-route-id="@assignment.ID">Attempt</a></td>
-                    </tr>
+            <tr>
+                <td>@assignment.Question</td>
+                <td>@assignment.DueDate.ToLongDateString()</td>
+                <td>@assignment.TotalScore</td>
+
+                 
+            <td>
+                     @if (ViewBag.SubmittedIds.Contains(assignment.ID) )
+                {
+                    <p>Submitted</p>
+                }
+                else
+                {
+                    <a asp-controller="Student" asp-action="AssignmentAttempt" asp-route-id="@assignment.ID">Attempt</a>
+                }
+            </td>
+            </tr>
                 }
         </table>
 
@@ -98,6 +107,50 @@
     {
         <p><strong>No Assignments for this  course yet</strong></p>
     }
+
+    @*-------------------------------------- Submitted Assignments Info -------------------------------------------------*@
+
+    <h5> Assignments You Have Submitted</h5>
+
+    //  ViewBag.SubmittedAssignments = GetSubmittedAssignments(studentId);
+
+    @if (ViewBag.SubmittedAssignments != null && ViewBag.SubmittedAssignments.Count > 0)
+    {
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Question</th>
+                    <th>Due Date</th>
+                    <th>Total Score</th>
+                    <th>Date Submitted</th>
+                    <th>Answer</th>
+                    <th>Score obtained</th>
+                    <th>Remarks</th>
+                </tr>
+                @foreach (Submit assignment in ViewBag.SubmittedAssignments)
+                {
+                    <tr>
+                        <td>@assignment.Assignment.Question</td>
+                        <td>@assignment.Assignment.DueDate.ToLongDateString()</td>
+                        <td>@assignment.Assignment.TotalScore</td>
+
+                        <td>@assignment.DateSubmitted.ToLongDateString()</td>
+                        <td>@assignment.Answer</td>
+                        <td>@assignment.ScoreObtained</td>
+                        <td>@assignment.Remarks</td>
+
+
+                    </tr>
+                }
+        </table>
+
+    }
+    else
+    {
+        <p><strong>You Havent Submitted any assignment yet</strong></p>
+    }
+
+
 
 }
 else

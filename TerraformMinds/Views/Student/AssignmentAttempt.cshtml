@@ -59,11 +59,13 @@
         <span asp-validation-for="Answer" class="text-danger" data-valmsg-for="Answer" data-valmsg-replace="true"></span>
     </div>
 
-    <input type="text" name="CourseID" value="@(ViewBag.AssignmentDetails.CourseID)"/>
+    <input type="text" name="CourseID" value="@(ViewBag.AssignmentDetails.CourseID)" />
+    <input type="text" name="id" value="@(ViewBag.AssignmentDetails.ID)" />
 
     <div class="form-group">
         <input type="submit" value="Submit" class="btn btn-primary" />
     </div>
+
 
 </form>
 }

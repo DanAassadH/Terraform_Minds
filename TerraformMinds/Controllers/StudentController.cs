@@ -16,7 +16,7 @@ namespace TerraformMinds.Controllers
         [Authorize(Roles = "Student")]
         public IActionResult StudentDashboard()
         {
-          return View();
+            return View();
 
         }
 
@@ -27,7 +27,7 @@ namespace TerraformMinds.Controllers
         /// <returns> View() </returns>
 
         [Authorize(Roles = "Student")]
-        public IActionResult CourseList() 
+        public IActionResult CourseList()
         {
             try
             {
@@ -51,13 +51,30 @@ namespace TerraformMinds.Controllers
         [Authorize(Roles = "Student")]
         public IActionResult CourseDetail(string id) // passing CourseID
         {
+            List<Submit> submittedAssignments;
+        
             try
             {
                 ViewBag.SingleCourseDetail = GetCourseDetailsByID(id);
                 if (ViewBag.SingleCourseDetail != null)
                 {
-                    // Get Assignments for this course Calling this function from instructor controller
+                    int studentId = GetStudentId(id);
+                    submittedAssignments = GetSubmittedAssignments(studentId);
+                   
+                    List<int> submittedIds = new List<int>();
+
+                    int i = 0;
+                    foreach (Submit submit in submittedAssignments)
+                    {
+                        submittedIds.Add(submit.AssignmentID) ;
+                        i++;
+                    }
+
+                      // Get Assignments for this course Calling this function from instructor controller
                     ViewBag.AssignmentsForCourse = InstructorController.GetAssignmentsByCourseID(id);
+                    ViewBag.SubmittedAssignments = submittedAssignments;
+                    ViewBag.SubmittedIds = submittedIds;
+
                 }
             }
             catch (ValidationException e)
@@ -71,48 +88,36 @@ namespace TerraformMinds.Controllers
         }
 
         [Authorize(Roles = "Student")]
-        public IActionResult AssignmentAttempt(string id, string Answer,string CourseID) 
+        public IActionResult AssignmentAttempt(string id, string Answer, string CourseID) // id is Assignment id
         {
 
-
-
-            if (Request.Method == "POST")
+            try
             {
-                try
+                if (Request.Method == "POST")
                 {
-                   // SubmitAssignment(Answer,);
+                    SubmitAssignment(id, Answer, CourseID);
                     ViewBag.Message = $"Successfully Submitted Assignment!";
                     ViewBag.SubmitYes = true;
                 }
-                catch (ValidationException e)
-                {
-                    ViewBag.Message = "There exist problem(s) with your submission, see below.";
-                    ViewBag.Exception = e;
-                    ViewBag.Error = true;
-                }
-                
-            }
-            else
-            {
-                try
+                else
                 {
                     ViewBag.AssignmentDetails = GetAssignmentByID(id);
                 }
-                catch (ValidationException e)
-                {
-                    ViewBag.Message = "There exist problem(s) with your submission, see below.";
-                    ViewBag.Exception = e;
-                    ViewBag.Error = true;
-                }
-            }
 
+            }
+            catch (ValidationException e)
+            {
+                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Exception = e;
+                ViewBag.Error = true;
+            }
 
             return View();
         }
 
         /* ------------------------------------------Data -----------------------------------------------------*/
         /// <summary>
-        /// This function grabs course List for individual instructor
+        /// This function grabs course List for individual Student
         /// </summary>
         /// <param name="id"></param>
         /// <returns>List of courses</returns>
@@ -128,7 +133,7 @@ namespace TerraformMinds.Controllers
                     //Sql Query : 
                     //SELECT a.`UserID`, a.`CourseName`, a.`Subject`, a.`CourseDescription` , c.FirstName FROM `Course` a , `student` b , `user` c WHERE a.ID=b.CourseID And a.UserID=c.ID AND b.UserID = 6
 
-                    studentsCourses = context.Courses.Include(x=>x.User).Where(x => x.Students.Any(y => y.CourseID == x.ID)).Where(x => x.Students.Any(y => y.UserID == int.Parse(User.Identity.Name))).ToList();
+                    studentsCourses = context.Courses.Include(x => x.User).Where(x => x.Students.Any(y => y.CourseID == x.ID)).Where(x => x.Students.Any(y => y.UserID == int.Parse(User.Identity.Name))).ToList();
                 }
             }
             else
@@ -165,21 +170,21 @@ namespace TerraformMinds.Controllers
                 exception.ValidationExceptions.Add(new Exception("Invalid ID , Go back to main Student Dashboard and select course again"));
             }
             else
-            {            
+            {
                 using (LearningManagementContext context = new LearningManagementContext())
                 {
                     // To confirm that student do no access any other students course 
                     // Select CourseID FROM student WHERE CourseID = -1 AND UserID = 6
                     Student confirmStudent = context.Students.Where(x => x.CourseID == parsedId && x.UserID == userId).SingleOrDefault();
 
-                    if(confirmStudent!=null)
+                    if (confirmStudent != null)
                     {
                         courseDetail = context.Courses.Where(x => x.ID == parsedId/* && x.UserID == userId*/).SingleOrDefault();
                     }
                     else
                     {
                         exception.ValidationExceptions.Add(new Exception("You are not registered in this course yet , Go back to main Student Dsahboard and select another course "));
-                    }                 
+                    }
                 }
             }
 
@@ -215,7 +220,7 @@ namespace TerraformMinds.Controllers
             }
             else
             {
-                exception.ValidationExceptions.Add(new Exception("Invalid Assignemnt ID , Go back to main Student Dsahboard and select again"));
+                exception.ValidationExceptions.Add(new Exception("Invalid Assignemnt ID , Go back to main Student Dashboard and select again"));
             }
 
             if (exception.ValidationExceptions.Count > 0)
@@ -226,6 +231,139 @@ namespace TerraformMinds.Controllers
             return assignmentDetails;
 
         }
+
+        /// <summary>
+        /// Function to enter the Answer of an assignment in the database 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="answer"></param>
+        /// <param name="courseID"></param>
+        public void SubmitAssignment(string id, string answer, string courseID)
+        {
+            ValidationException exception = new ValidationException();
+            bool flag = false;
+            int parsedId;
+
+            // Trim the values 
+            id = id?.Trim();
+            answer = answer?.Trim();
+            courseID = courseID?.Trim();
+
+
+
+            // Validation for  Assignment ID
+            if (id == null || courseID == null)
+            {
+                exception.ValidationExceptions.Add(new Exception("ID not found, Go back to details page and try again"));
+                flag = true;
+            }
+            else
+            {
+                if (!int.TryParse(id, out parsedId))
+                {
+                    exception.ValidationExceptions.Add(new Exception("Invalid Course ID , Go back to main Instructor Dsahboard and select course again"));
+                    flag = true;
+                }
+            }
+
+            // Validation for answer
+            if (answer == null)
+            {
+                exception.ValidationExceptions.Add(new Exception("Answer Required"));
+                flag = true;
+            }
+            else
+            {
+                if (answer.Length > 2000)
+                {
+                    exception.ValidationExceptions.Add(new Exception("exceed character count of 2000, please rephrase"));
+                    flag = true;
+                }
+            }
+
+
+            if (exception.ValidationExceptions.Count > 0)
+            {
+                throw exception;
+            }
+
+
+            if (flag == false)
+            {
+
+                using (LearningManagementContext context = new LearningManagementContext())
+                {
+
+                    // Add Values in assignment Table if all validations are passed
+                    context.Submissions.Add(new Submit()
+                    {
+                        AssignmentID = int.Parse(id),
+                        StudentID = GetStudentId(courseID),
+                        DateSubmitted = DateTime.Now,
+                        Answer = answer
+
+                    });
+                    context.SaveChanges();
+
+                }
+
+            }
+        }
+
+        /// <summary>
+        /// function to get student id of a student which is a unique course - user(with role 3) key pair
+        /// </summary>
+        /// <param name="courseID"></param>
+        /// <returns>student Id</returns>
+        public int GetStudentId(string courseID)
+        {
+            int id;
+            using (LearningManagementContext context = new LearningManagementContext())
+            {
+               Student studentID = context.Students.Where(x => x.CourseID == int.Parse(courseID) && x.UserID==int.Parse(User.Identity.Name)).SingleOrDefault();
+
+                id = studentID.ID;
+            }
+            return id;
+        }
+
+
+        /// <summary>
+        /// Function to get the list of submitted assignments for a course for student
+        /// </summary>
+        /// <param name="studentID"></param>
+        /// <returns>List of submitted assignments of a course</returns>
+
+        public List<Submit> GetSubmittedAssignments(int studentID)
+        {
+            ValidationException exception = new ValidationException();
+            List<Submit> studentsAssignment = null;
+
+            if (User.Identity.Name != null)
+            {
+                using (LearningManagementContext context = new LearningManagementContext())
+                {
+                    //Sql Query : 
+                    //SELECT a.* , b.* FROM `submitted` a , `assignment` b WHERE a.AssignmentID = b.ID AND a.StudentID = 5 (id)
+
+                    studentsAssignment = context.Submissions.Include(x => x.Assignment).Where(x => x.Assignment.ID == x.AssignmentID).Where(x => x.StudentID == studentID).ToList();
+                }
+            }
+            else
+            {
+                exception.ValidationExceptions.Add(new Exception("Something went wrong please Logout and try again"));
+            }
+
+            if (exception.ValidationExceptions.Count > 0)
+            {
+                throw exception;
+            }
+
+            return studentsAssignment;
+
+
+        }
+
 
 
     }
