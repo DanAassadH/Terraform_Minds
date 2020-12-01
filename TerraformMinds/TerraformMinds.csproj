@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Compile Remove="Images\**" />
+
     <Compile Remove="Views\Student\**" />
     <Content Remove="Images\**" />
     <Content Remove="Views\Student\**" />
@@ -13,6 +14,15 @@
     <EmbeddedResource Remove="Views\Student\**" />
     <None Remove="Images\**" />
     <None Remove="Views\Student\**" />
+
+    <Compile Remove="Views\Course\**" />
+
+    <Content Remove="Views\Course\**" />
+  
+    <EmbeddedResource Remove="Views\Course\**" />
+ 
+    <None Remove="Views\Course\**" />
+
   </ItemGroup>
 
   <ItemGroup>

@@ -14,8 +14,8 @@ namespace TerraformMinds.Models
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<Resource> Resources { get; set; }
-        public virtual DbSet<Resource> Assignments { get; set; }
-        public virtual DbSet<Resource> Submissions { get; set; }
+        public virtual DbSet<Assignment> Assignments { get; set; }
+        public virtual DbSet<Submit> Submissions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
