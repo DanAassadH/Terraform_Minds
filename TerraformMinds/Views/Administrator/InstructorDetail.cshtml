@@ -49,7 +49,7 @@
                 <th>Course Description</th>
                 <th>Grade Level</th>
                 <th>Start Date</th>
-                <th>End Data</th>
+                <th>End Date</th>
             </tr>
             @foreach (Course instructorCourses in ViewBag.InstructorCourses)
             {
@@ -66,9 +66,10 @@
             }
         </thead>
     </table>
+    <p>Return to <a asp-action="InstructorList" asp-controller="Administrator">Instructor List</a></p>
 }
 else
 {
     <h1>Details</h1>
-    <p>An error occured trying to populate instructor data. <a href="/Administrator/InstructorList">Click here to return to the student list</a>.</p>
+    <p>An error occured trying to populate instructor data. <a asp-action="InstructorList" asp-controller="Administrator">Click here to return to the instructor list</a>.</p>
 }
