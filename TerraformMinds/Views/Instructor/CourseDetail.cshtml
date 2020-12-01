@@ -88,15 +88,15 @@
             <thead class="thead-dark">
                 <tr>
                     <th>Name</th>
-                    <th>Grade</th>
+
                     <th>Action</th>
                 </tr>
                 @foreach (User student in ViewBag.StudentsForCourse)
                 {
                     <tr>
                         <td>@student.FirstName + @student.LastName</td>
-                        <td>A+</td>
-                        <td>Show Assignments</td>
+
+                        <td><a asp-controller="Instructor" asp-action="AssignmentList" asp-route-cid="@(ViewBag.SingleCourseDetail.ID)" asp-route-uid="@(student.ID)">Mark Assignments</a></td>
                     </tr>
                 }
         </table>
@@ -121,7 +121,7 @@
                     <th>Question</th>
                     <th>Due Date</th>
                     <th>Total Score</th>
-                    <th>Actions</th>
+
                 </tr>
                 @foreach (Assignment assignment in ViewBag.AssignmentsForCourse)
                 {
@@ -129,7 +129,7 @@
                         <td>@assignment.Question</td>
                         <td>@assignment.DueDate.ToLongDateString()</td>
                         <td>@assignment.TotalScore</td>
-                        <td>Edit</td>
+
                     </tr>
                 }
         </table>

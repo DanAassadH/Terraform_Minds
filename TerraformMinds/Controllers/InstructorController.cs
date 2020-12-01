@@ -105,6 +105,28 @@ namespace TerraformMinds.Controllers
         }
 
 
+        [Authorize(Roles = "Instructor")]
+        public IActionResult AssignmentList(string cid, string uid ) 
+        {
+
+            try
+            {
+                int studentId = StudentController.GetStudentId(cid, uid);
+                ViewBag.SubmittedAssignments = StudentController.GetSubmittedAssignments(studentId);
+
+            }
+            catch (ValidationException e)
+            {
+                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Exception = e;
+                ViewBag.Error = true;
+            }
+
+            return View();
+        }
+
+
+
         /* ------------------------------------------Data -----------------------------------------------------*/
         /// <summary>
         /// This function grabs course List for individual instructor
