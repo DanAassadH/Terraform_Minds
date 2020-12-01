@@ -71,10 +71,24 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
-        public IActionResult Register()
+        public IActionResult Register (int courseID)
         {
-            return View();
+
+            try
+            {
+                RegisterCourse(courseID);
+                ViewBag.Message = $"Course sucessfully registered";
+            }
+
+            catch(ValidationException e)
+            {
+                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Exception = e;
+                ViewBag.Error = true;
+            }
+            return RedirectToAction("CourseDetail", new Dictionary<string, int>() { { "courseID", courseID } });
         }
+
         
         public List<Course> GetCoursesAll()
         {
@@ -88,7 +102,6 @@ namespace TerraformMinds.Controllers
 
         public List<Course> GetCoursesByGrade(string gradeFilter)
         {
-            string gradeFilterUpper = gradeFilter.ToUpper();
             List<Course> courseListByGrade;
             using (LearningManagementContext context = new LearningManagementContext())
             {
@@ -99,7 +112,6 @@ namespace TerraformMinds.Controllers
 
         public List<Course> GetCoursesBySubject(string subjectFilter)
         {
-            string subjectFilterUpper = subjectFilter.ToUpper();
             List<Course> courseListBySubject;
             using (LearningManagementContext context = new LearningManagementContext())
             {
@@ -110,8 +122,6 @@ namespace TerraformMinds.Controllers
 
         public List<Course> GetCoursesByGradeAndSubject(string subjectFilter, string gradeFilter)
         {
-            string subjectFilterUpper = subjectFilter.ToUpper();
-            string gradeFilterUpper = gradeFilter.ToUpper();
             List<Course> courseListBySubject;
             using (LearningManagementContext context = new LearningManagementContext())
             {
@@ -138,11 +148,42 @@ namespace TerraformMinds.Controllers
             }
         }
 
-        public void RegisterCourse(int studentID, int courseID)
+        public void RegisterCourse(int courseID)
         {
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                
+                Course enrollCourse = context.Courses.Where(x => x.ID == courseID).SingleOrDefault();
+
+                User userRoll = context.Users.Where(x => x.Role == 3 && x.ID == int.Parse(User.Identity.Name)).SingleOrDefault();
+
+                if (userRoll == null)
+                {
+                    exception.ValidationExceptions.Add(new Exception("Please sign-in to enroll"));
+                    throw exception;
+                }
+                else
+                {
+                    if(context.Students.Any(x => x.CourseID == courseID))
+                    {
+                        exception.ValidationExceptions.Add(new Exception("You have already enrolled for this course."));
+                        throw exception;
+                    }
+                }
+
+                if (exception.ValidationExceptions.Count > 0)
+                {
+                    throw exception;
+                }
+
+                context.Students.Add(new Student()
+                {
+                    UserID = int.Parse(User.Identity.Name),
+                    CourseID = courseID,
+                });
+
+                enrollCourse.CurrentCapacity += 1;
+
+                context.SaveChanges();
             }
         }
     }

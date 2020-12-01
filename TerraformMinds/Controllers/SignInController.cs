@@ -41,7 +41,7 @@ namespace TerraformMinds.Controllers
                         if (user.Role == 3)
                         {
                             identity = new ClaimsIdentity(new[] {
-                                new Claim(ClaimTypes.Name, EMail),
+                                new Claim(ClaimTypes.Name, user.ID.ToString()),
                                 new Claim(ClaimTypes.Role, "Student") }, CookieAuthenticationDefaults.AuthenticationScheme);
 
                             isAuthenticated = true;

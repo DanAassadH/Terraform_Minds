@@ -7,11 +7,11 @@
 <h1>Course List</h1>
 
 <form asp-action="CourseList" asp-controller="Course" method="get">
-    <label for="gradeFilter">Filter by Grade Level</label>
+    <label for="gradeFilter">Filter by Grade Level:</label>
     <select id="gradeFilter" name="gradeFilter" asp-items="ViewBag.GradeLevels">
         <option value="">Select Grade Level</option>
     </select>
-    <label for="subjectFilter">Filter by Subject</label>
+    <label for="subjectFilter">Filter by Subject:</label>
     <select id="subjectFilter" name="subjectFilter" asp-items="ViewBag.CourseSubjects">
         <option value="">Select Subject</option>
     </select>
@@ -24,7 +24,7 @@
         <thead class="thead-dark">
             <tr>
                 <th>Course ID</th>
-                @*<th>Instructor</th>*@
+                <th>Instructor</th>
                 <th>Course Name</th>
                 <th>Subject</th>
                 <th>Course Description</th>
@@ -38,7 +38,7 @@
             {
                 <tr>
                     <td>@(course.ID)</td>
-                    @*<td>@(course.User.FirstName + " " + course.User.LastName)</td>*@
+                    <td>@(course.User.FirstName + " " + course.User.LastName)</td>
                     <td>@(course.CourseName)</td>
                     <td>@(course.Subject)</td>
                     <td>@(course.CourseDescription)</td>
