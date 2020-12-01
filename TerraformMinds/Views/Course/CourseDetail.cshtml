@@ -48,6 +48,15 @@
 
     <a asp-action="CourseList" asp-controller="Course" class="badge-pill badge-warning">Course List</a>
     <a asp-action="Register" asp-controller="Course" asp-route-courseID="@(ViewBag.CourseDetails.ID)" class="badge-pill badge-warning">Enroll</a>
+
+    @*@if (User.Identity.Name == null)
+    {
+        <a asp-action="Index" asp-controller="SignIn">SignIn to Enroll</a>
+    }
+    else
+    {
+        <a asp-action="Register" asp-controller="Course" asp-route-courseID="@(ViewBag.CourseDetails.ID)" class="badge-pill badge-warning">Enroll</a>
+    }*@
 }
 else
 {
