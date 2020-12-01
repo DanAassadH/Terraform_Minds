@@ -4,16 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Images\**" />
-    <Compile Remove="Views\Course\**" />
-    <Content Remove="Images\**" />
-    <Content Remove="Views\Course\**" />
-    <EmbeddedResource Remove="Images\**" />
-    <EmbeddedResource Remove="Views\Course\**" />
-    <None Remove="Images\**" />
-    <None Remove="Views\Course\**" />
-  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.3" />
