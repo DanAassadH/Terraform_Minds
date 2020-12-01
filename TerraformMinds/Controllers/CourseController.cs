@@ -78,6 +78,7 @@ namespace TerraformMinds.Controllers
             {
                 RegisterCourse(courseID);
                 ViewBag.Message = $"Course sucessfully registered";
+                ViewBag.CourseDetails = GetCourseByID(courseID);
             }
 
             catch(ValidationException e)
@@ -85,8 +86,10 @@ namespace TerraformMinds.Controllers
                 ViewBag.Message = "There exist problem(s) with your submission, see below.";
                 ViewBag.Exception = e;
                 ViewBag.Error = true;
+                ViewBag.CourseDetails = GetCourseByID(courseID);
             }
-            return RedirectToAction("CourseDetail", new Dictionary<string, int>() { { "courseID", courseID } });
+
+            return View("CourseDetail");
         }
 
         
@@ -167,6 +170,32 @@ namespace TerraformMinds.Controllers
                     {
                         exception.ValidationExceptions.Add(new Exception("You have already enrolled for this course."));
                         throw exception;
+                    }
+
+                    else
+                    {
+                        if(enrollCourse.CurrentCapacity >= enrollCourse.MaxCapacity)
+                        {
+                            exception.ValidationExceptions.Add(new Exception("Sorry, the course you are registering for is already full"));
+                            throw exception;
+                        }
+                        else
+                        {
+                            if(enrollCourse.StartDate < DateTime.Today)
+                            {
+                                exception.ValidationExceptions.Add(new Exception("Sorry, registration for that course is now closed"));
+                                throw exception;
+                            }
+
+                            else
+                            {
+                                if(enrollCourse.EndDate <= DateTime.Today)
+                                {
+                                    exception.ValidationExceptions.Add(new Exception("Sorry, that course has                already ended."));
+                                    throw exception;
+                                }
+                            }
+                        }
                     }
                 }
 
