@@ -9,6 +9,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using System.Text.RegularExpressions;
 
 namespace TerraformMinds.Controllers
 {
@@ -90,20 +91,17 @@ namespace TerraformMinds.Controllers
                             }
                         }
 
-
-                        // return RedirectToAction("Index" , "Home");
                     }
                     else
                     {
                         ViewBag.Message = "Email and Password dont match";
-                        ViewBag.Error = true;
                     }
 
                 }
                 catch (ValidationException e)
                 {
                     ViewBag.Message = "Something went wrong";
-                    // ViewBag.Exception = e;
+                    ViewBag.Exception = e;
                     ViewBag.Error = true;
                 }
 
@@ -115,8 +113,7 @@ namespace TerraformMinds.Controllers
 
         /* ----------------------------------------------- Signout ----------------------------------------*/
 
-       // [HttpPost]
-        public IActionResult Signout()
+       public IActionResult Signout()
         {
             var login = HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Privacy", "Home");
@@ -130,23 +127,68 @@ namespace TerraformMinds.Controllers
         /// </summary>
         /// <param name="EMail"></param>
         /// <param name="Password"></param>
-        /// <returns> validUser as the user credentials or null </returns>
+        /// <returns> valid User or null </returns>
 
         [ValidateAntiForgeryToken]
         public User ValidateSignIn(string EMail, string Password)
         {
+            ValidationException exception = new ValidationException();
+            // Trim the values 
+            Password = Password?.Trim();
+            EMail = EMail?.Trim();
+      
             string password;
-            User validUser;
+            User validUser = null;
+            bool flag = false;
 
-            // Add Password Hash here
-            password = HashAndSaltPassowrd(Password, EMail);
 
-            using (LearningManagementContext context = new LearningManagementContext())
+            /// Validation for email
+            if (string.IsNullOrWhiteSpace(EMail))
             {
-                // Validating User
-                validUser = context.Users.Where(x => x.EMail.Equals(EMail) && x.Password.Equals(password)).SingleOrDefault();
+                exception.ValidationExceptions.Add(new Exception("EMail Required"));
+                flag = true;
+            }
+            else if (EMail.Length > 50)
+            {
+                exception.ValidationExceptions.Add(new Exception("Maximum Character limit for Email is 50"));
+                flag = true;
+            }
+            else if (!Regex.IsMatch(EMail, @"^[\w-!$*%^\.]+@([\w-]+\.)+[\w-]{2,4}$"))
+            {
+                exception.ValidationExceptions.Add(new Exception("Incorrect Email Address  "));
+                flag = true;
             }
 
+            // Validation for password
+            if (string.IsNullOrWhiteSpace(Password))
+            {
+                exception.ValidationExceptions.Add(new Exception("Password Required"));
+                flag = true;
+
+            }
+            else if(Password.Length > 50)
+            {
+                exception.ValidationExceptions.Add(new Exception("Maximum Character limit for password is 50"));
+                flag = true;
+            }
+
+
+            if (exception.ValidationExceptions.Count > 0)
+            {
+                throw exception;
+            }
+
+            if (flag==false)
+            {
+                // Add Password Hash here
+                password = HashAndSaltPassowrd(Password, EMail);
+                using (LearningManagementContext context = new LearningManagementContext())
+                {
+                    // Validating User
+                    validUser = context.Users.Where(x => x.EMail.Equals(EMail) && x.Password.Equals(password)).SingleOrDefault();
+                }
+               
+            }
             return validUser;
         }
 
@@ -158,7 +200,7 @@ namespace TerraformMinds.Controllers
         /// <param name="email"></param>
         /// <returns><param string="Hashed Password"></param></returns>
 
-        public string HashAndSaltPassowrd(string password, string email)
+        public static string HashAndSaltPassowrd(string password, string email)
         {
 
             // https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/consumer-apis/password-hashing?view=aspnetcore-5.0

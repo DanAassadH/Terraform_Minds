@@ -61,8 +61,8 @@
 <form action="/Instructor/AssignmentMark" method="POST">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <input type="text" name="submitId" value="@ViewBag.SubmittedAssignmentAnswer.ID" />
-    <input type="text" name="TotalScore" value="@ViewBag.SubmittedAssignmentAnswer.Assignment.TotalScore" />
+    <input type="hidden" name="submitId" value="@ViewBag.SubmittedAssignmentAnswer.ID" />
+    <input type="hidden" name="TotalScore" value="@ViewBag.SubmittedAssignmentAnswer.Assignment.TotalScore" />
 
     <div class="form-group">
         <label for="ScoreObtained">Score Obtained</label>

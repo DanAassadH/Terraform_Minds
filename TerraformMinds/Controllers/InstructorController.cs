@@ -151,10 +151,6 @@ namespace TerraformMinds.Controllers
                     ViewBag.Message = $"Successfully Submitted Assignment!";
                     ViewBag.SubmitYes = true;
                 }
-/*                else
-                {
-                    ViewBag.SubmittedAssignmentAnswer = GetSubmittedAssignmentBySubmitID(submitId);
-                }*/
 
             }
             catch (ValidationException e)

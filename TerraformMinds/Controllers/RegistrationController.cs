@@ -101,7 +101,7 @@ namespace TerraformMinds.Controllers
                     FirstName = firstName,
                     LastName = lastName,
                     EMail = email,
-                    Password = HashAndSaltPassowrd(password,email),
+                    Password = SignInController.HashAndSaltPassowrd(password,email),
                     Role = int.Parse(role),
                     JoinDate = DateTime.Now
                 }) ;
@@ -111,7 +111,7 @@ namespace TerraformMinds.Controllers
 
         }
 
-        public string HashAndSaltPassowrd(string password , string email)
+/*        public string HashAndSaltPassowrd(string password , string email)
         {
 
             // https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/consumer-apis/password-hashing?view=aspnetcore-5.0
@@ -130,6 +130,6 @@ namespace TerraformMinds.Controllers
 
 
             return hashed;
-        }
+        }*/
    }
 }
