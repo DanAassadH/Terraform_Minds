@@ -8,10 +8,10 @@
 
 @if (ViewBag.Message != null)
 {
-    <p>Success</p>
+   
     <p class="alert-@(ViewBag.Error != null ? "danger" : "success")">@(ViewBag.Message)</p>
 
-@*    if (ViewBag.Error != null)
+    if (ViewBag.Error != null)
     {
         <ul>
             @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
@@ -19,8 +19,10 @@
                 <li class="alert-danger">@(e.Message)</li>
             }
         </ul>
-    }*@
+    }
 }
+
+
 
 <section>
 

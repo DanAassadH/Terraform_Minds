@@ -59,7 +59,7 @@ namespace TerraformMinds.Controllers
                 if (ViewBag.SingleCourseDetail != null)
                 {
                     int studentId = GetStudentId(id,User.Identity.Name);
-                    submittedAssignments = GetSubmittedAssignments(studentId);
+                    submittedAssignments = GetSubmittedAssignments(studentId.ToString());
                    
                     List<int> submittedIds = new List<int>();
 
@@ -87,6 +87,13 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Action to Display Individual Assignment Page to Student , student can submit the answer of a question 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="Answer"></param>
+        /// <param name="CourseID"></param>
+        /// <returns></returns>
         [Authorize(Roles = "Student")]
         public IActionResult AssignmentAttempt(string id, string Answer, string CourseID) // id is Assignment id
         {
@@ -233,7 +240,7 @@ namespace TerraformMinds.Controllers
         }
 
         /// <summary>
-        /// Function to enter the Answer of an assignment in the database 
+        /// Function to enter the Answer of an assignment in the database by Student
         /// </summary>
         /// <param name="id"></param>
         /// <param name="answer"></param>
@@ -248,8 +255,6 @@ namespace TerraformMinds.Controllers
             id = id?.Trim();
             answer = answer?.Trim();
             courseID = courseID?.Trim();
-
-
 
             // Validation for  Assignment ID
             if (id == null || courseID == null)
@@ -334,25 +339,26 @@ namespace TerraformMinds.Controllers
         /// <param name="studentID"></param>
         /// <returns>List of submitted assignments of a course</returns>
 
-        public static List<Submit> GetSubmittedAssignments(int studentID)
+        public static List<Submit> GetSubmittedAssignments(string studentID)
         {
             ValidationException exception = new ValidationException();
             List<Submit> studentsAssignment = null;
+            int parsedId;
 
-/*            if (User.Identity.Name != null)
-            {*/
+            if (!int.TryParse(studentID, out parsedId))
+            {
                 using (LearningManagementContext context = new LearningManagementContext())
                 {
                     //Sql Query : 
                     //SELECT a.* , b.* FROM `submitted` a , `assignment` b WHERE a.AssignmentID = b.ID AND a.StudentID = 5 (id)
 
-                    studentsAssignment = context.Submissions.Include(x => x.Assignment).Where(x => x.Assignment.ID == x.AssignmentID).Where(x => x.StudentID == studentID).ToList();
+                    studentsAssignment = context.Submissions.Include(x => x.Assignment).Where(x => x.Assignment.ID == x.AssignmentID).Where(x => x.StudentID == parsedId).ToList();
                 }
-/*            }
+            }
             else
             {
-                exception.ValidationExceptions.Add(new Exception("Something went wrong please Logout and try again"));
-            }*/
+                exception.ValidationExceptions.Add(new Exception("Something went wrong please go to main dashboard and try again"));
+            }
 
             if (exception.ValidationExceptions.Count > 0)
             {
@@ -360,8 +366,6 @@ namespace TerraformMinds.Controllers
             }
 
             return studentsAssignment;
-
-
         }
 
 

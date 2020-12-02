@@ -7,6 +7,7 @@ using TerraformMinds.Models;
 using TerraformMinds.Models.Exceptions;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace TerraformMinds.Controllers
 {
@@ -43,7 +44,14 @@ namespace TerraformMinds.Controllers
 
 
         /* ----------------------------------------------- Data ------------------------------------------*/
-
+        /// <summary>
+        /// Function To add Validated user credentials in User database
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <param name="role"></param>
         public void Register(string firstName, string lastName , string email, string password, string role)
         {
             ValidationException exception = new ValidationException();
@@ -54,82 +62,100 @@ namespace TerraformMinds.Controllers
             email = email?.Trim();
             password = password?.Trim();
             role = role?.Trim();
+            bool flag = false;
 
-
+            // Validation for First Name 
             if (string.IsNullOrWhiteSpace(firstName))
             {
                 exception.ValidationExceptions.Add(new Exception("First Name Not Provided"));
+                flag = true;
+            }
+            else if (firstName.Length > 50)
+            {
+                exception.ValidationExceptions.Add(new Exception("First Name Cannot exceed 50 characters"));
+                flag = true;
             }
 
+            // Validation for Last Name 
             if (string.IsNullOrWhiteSpace(lastName))
             {
                 exception.ValidationExceptions.Add(new Exception("Last Name Not Provided"));
-
+                flag = true;
+            }
+            else if (lastName.Length > 50)
+            {
+                exception.ValidationExceptions.Add(new Exception("Last Name Cannot exceed 50 characters"));
+                flag = true;
             }
 
+            // Validation for Email
             if (string.IsNullOrWhiteSpace(email))
             {
                 exception.ValidationExceptions.Add(new Exception("Email Not Provided"));
+                flag = true;
+            }
+            else if (email.Length > 50)
+            {
+                exception.ValidationExceptions.Add(new Exception("Email Cannot exceed 50 characters"));
+                flag = true;
+            }
+            else if (!Regex.IsMatch(email, @"^[\w-!$*%^\.]+@([\w-]+\.)+[\w-]{2,4}$"))
+            {
+                exception.ValidationExceptions.Add(new Exception("Incorrect Email Address  "));
+                flag = true;
             }
 
+            // Validation for Password
             if (string.IsNullOrWhiteSpace(password))
             {
                 exception.ValidationExceptions.Add(new Exception("Password Not Provided"));
+                flag = true;
+            }
+            else if (password.Length > 50)
+            {
+                exception.ValidationExceptions.Add(new Exception("Password Cannot exceed 50 characters"));
+                flag = true;
             }
 
             if (string.IsNullOrWhiteSpace(role))
             {
                 exception.ValidationExceptions.Add(new Exception("Please Select a Role"));
+                flag = true;
             }
 
-            using (LearningManagementContext context = new LearningManagementContext())
+
+            if(flag==false)
             {
-                // Checking for Email duplication
-                if ((context.Users.Where(x => (x.EMail.Trim().ToUpper()) == email.ToUpper()).Count()) > 0)
+                using (LearningManagementContext context = new LearningManagementContext())
                 {
-                    exception.ValidationExceptions.Add(new Exception("Email already exist, Try again with a new one"));
+                    // Checking for Email duplication
+                    if ((context.Users.Where(x => (x.EMail.Trim().ToUpper()) == email.ToUpper()).Count()) > 0)
+                    {
+                        exception.ValidationExceptions.Add(new Exception("Email already exist, Try again with a new one"));
+                        flag = true;
+                    }
+
+                    if(flag==false)
+                    {
+                        // Add Values in user Table if all validations are passed
+                        context.Users.Add(new User()
+                        {
+                            FirstName = firstName,
+                            LastName = lastName,
+                            EMail = email.ToUpper(),
+                            Password = SignInController.HashAndSaltPassowrd(password, email.ToUpper()),
+                            Role = int.Parse(role),
+                            JoinDate = DateTime.Now
+                        });
+                        context.SaveChanges();
+                    }
                 }
-
-                if (exception.ValidationExceptions.Count > 0)
-                {
-                    throw exception;
-                }
-
-                // Add Values in user Table if all validations are passed
-                context.Users.Add(new User()
-                {
-                    FirstName = firstName,
-                    LastName = lastName,
-                    EMail = email,
-                    Password = HashAndSaltPassowrd(password,email),
-                    Role = int.Parse(role),
-                    JoinDate = DateTime.Now
-                }) ;
-                context.SaveChanges();
-
             }
 
-        }
-
-        public string HashAndSaltPassowrd(string password , string email)
-        {
-
-            // https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/consumer-apis/password-hashing?view=aspnetcore-5.0
-            // Generate a SALT
-            // Convert string to a byte array Using a known salt insted of random . for proper security there should be a SALT field in database, and every password should have a different SALT(generated through random function) , but for this application we are using a combination of email+password to generate SALT 
-
-            byte[] salt = Encoding.ASCII.GetBytes(email + password);
-
-            // derive a 256-bit subkey (use HMACSHA1 with 10,000 iterations)
-            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: password,
-                salt: salt,
-                prf: KeyDerivationPrf.HMACSHA1,
-                iterationCount: 10000,
-                numBytesRequested: 256 / 8));
-
-
-            return hashed;
+            if (exception.ValidationExceptions.Count > 0)
+            {
+                throw exception;
+            }
         }
    }
 }

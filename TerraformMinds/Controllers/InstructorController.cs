@@ -25,7 +25,7 @@ namespace TerraformMinds.Controllers
         }
 
         /// <summary>
-        /// This is the Action for course List page for individual instructor , it shows that how many courses that instructor has
+        /// Action for course List page for individual instructor , it shows that how many courses that instructor has
         /// </summary>
         /// <param name="id"></param>
         /// <returns> View() </returns>
@@ -104,7 +104,12 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
-
+        /// <summary>
+        /// Action to Display all the Assignments of a student for a course in teacher dashboard
+        /// </summary>
+        /// <param name="cid"></param>
+        /// <param name="uid"></param>
+        /// <returns>Assignments List Page</returns>
         [Authorize(Roles = "Instructor")]
         public IActionResult AssignmentList(string cid, string uid ) 
         {
@@ -112,7 +117,7 @@ namespace TerraformMinds.Controllers
             try
             {
                 int studentId = StudentController.GetStudentId(cid, uid);
-                ViewBag.SubmittedAssignments = StudentController.GetSubmittedAssignments(studentId);
+                ViewBag.SubmittedAssignments = StudentController.GetSubmittedAssignments(studentId.ToString());
 
             }
             catch (ValidationException e)
@@ -125,6 +130,38 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Action to display the submitted assignment to instructor , and let instructor add score and remarkds on that answer
+        /// </summary>
+        /// <param name="submitId"></param>
+        /// <param name="Remarks"></param>
+        /// <param name="ScoreObtained"></param>
+        /// <returns>View of the assignment answer </returns>
+        [Authorize(Roles = "Instructor")]
+        public IActionResult AssignmentMark(string submitId , string Remarks ,string ScoreObtained, string TotalScore)
+        {
+
+            try
+            {
+                ViewBag.SubmittedAssignmentAnswer = GetSubmittedAssignmentBySubmitID(submitId);
+
+                if (Request.Method=="POST")
+                {
+                    SubmitAssignmentScoreAndRemarks(submitId, Remarks, ScoreObtained,TotalScore);
+                    ViewBag.Message = $"Successfully Submitted Assignment!";
+                    ViewBag.SubmitYes = true;
+                }
+
+            }
+            catch (ValidationException e)
+            {
+                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Exception = e;
+                ViewBag.Error = true;
+            }
+
+            return View();
+        }
 
 
         /* ------------------------------------------Data -----------------------------------------------------*/
@@ -176,12 +213,7 @@ namespace TerraformMinds.Controllers
             id = !string.IsNullOrWhiteSpace(id) ? id.Trim() : null;
 
             // check if id is non integer
-            if (id == null) 
-            {
-                exception.ValidationExceptions.Add(new Exception("No ID Provided, Go back to main Instructor Dsahboard and select course again"));
-            }
-            else
-            {
+
                 if (int.TryParse(id, out parsedId))
                 {
                     using (LearningManagementContext context = new LearningManagementContext())
@@ -194,7 +226,7 @@ namespace TerraformMinds.Controllers
                 {
                     exception.ValidationExceptions.Add(new Exception("Invalid ID , Go back to main Instructor Dsahboard and select course again"));
                 }
-            }
+            
 
             if (exception.ValidationExceptions.Count > 0)
             {
@@ -219,19 +251,11 @@ namespace TerraformMinds.Controllers
 
             id = !string.IsNullOrWhiteSpace(id) ? id.Trim() : null;
 
-            if (id == null)
-            {
-                exception.ValidationExceptions.Add(new Exception("No Course ID Provided, Go back to main Instructor Dsahboard and select course again"));
-            }
-            else
-            {
+
                 if (int.TryParse(id, out parsedId))
                 {
                     using (LearningManagementContext context = new LearningManagementContext())
                     {
-
-
-                        //  For reference for now :  allBooks = context.Books.Include(x => x.Author).Include(x => x.Borrows).Where(x => x.Borrows.Any(y => y.DueDate < DateTime.Today && y.ReturnedDate == null)).ToList();
 
                         // sql query : get all the students enrolled in this course
                         //SELECT a.FirstName, a.LastName FROM `user` a , student b WHERE a.ID=b.UserID AND CourseID = -2(id)
@@ -243,7 +267,7 @@ namespace TerraformMinds.Controllers
                 {
                     exception.ValidationExceptions.Add(new Exception("Invalid Course ID , Go back to main Instructor Dsahboard and select course again"));
                 }
-            }
+            
 
             if (exception.ValidationExceptions.Count > 0)
             {
@@ -259,7 +283,7 @@ namespace TerraformMinds.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns> List of Assignments for a course </returns>
-        public static List<Assignment> GetAssignmentsByCourseID(string id)
+        public static List<Assignment> GetAssignmentsByCourseID(string id) //Passing Course ID
         {
             ValidationException exception = new ValidationException();
             List<Assignment> assignmentDetails = null;
@@ -268,12 +292,7 @@ namespace TerraformMinds.Controllers
 
             id = !string.IsNullOrWhiteSpace(id) ? id.Trim() : null;
 
-            if (id == null)
-            {
-                exception.ValidationExceptions.Add(new Exception("No Course ID Provided, Go back to main Dsahboard and select course again"));
-            }
-            else
-            {
+
                 if (int.TryParse(id, out parsedId))
                 {
                     using (LearningManagementContext context = new LearningManagementContext())
@@ -285,7 +304,7 @@ namespace TerraformMinds.Controllers
                 {
                     exception.ValidationExceptions.Add(new Exception("Invalid Course ID , Go back to main Dsahboard and select course again"));
                 }
-            }
+            
 
             if (exception.ValidationExceptions.Count > 0)
             {
@@ -412,6 +431,126 @@ namespace TerraformMinds.Controllers
 
                 }
 
+            }
+
+        }
+
+        /// <summary>
+        /// Function to get the answer of an assignment submitted by student
+        /// </summary>
+        /// <param name="submitID"></param>
+        /// <returns>Students Submitted answer to assignment Question</returns>
+        public Submit GetSubmittedAssignmentBySubmitID(string submitID)
+        {
+            ValidationException exception = new ValidationException();
+            Submit studentsAssignment = null;
+          
+            submitID = submitID?.Trim();
+
+            int parsedId;
+
+            // Validation for submitID
+            if (!int.TryParse(submitID, out parsedId))
+            {
+               exception.ValidationExceptions.Add(new Exception("Invalid Course ID , Go back to course page and try again"));
+ 
+            }
+            else
+            {
+                using (LearningManagementContext context = new LearningManagementContext())
+                {
+                    //Sql Query : 
+                   // SELECT a.* , b.* FROM `submitted` a , `assignment` b WHERE a.AssignmentID = b.ID And a.ID = 5
+
+                    studentsAssignment = context.Submissions.Include(x => x.Assignment).Where(x => x.Assignment.ID == x.AssignmentID).Where(x => x.ID == int.Parse(submitID)).SingleOrDefault();
+                }
+            }
+
+            if (exception.ValidationExceptions.Count > 0)
+            {
+                throw exception;
+            }
+
+            return studentsAssignment;
+        }
+
+        /// <summary>
+        /// Function to update the Score and remarks in submit, table these fields are added by instructor
+        /// </summary>
+        /// <param name="submitId"></param>
+        /// <param name="remarks"></param>
+        /// <param name="scoreObtained"></param>
+        /// <param name="totalScore"></param>
+        public void SubmitAssignmentScoreAndRemarks(string submitId,string  remarks,string scoreObtained, string totalScore)
+        {
+            ValidationException exception = new ValidationException();
+            Submit updateSubmission = null;
+            submitId = submitId?.Trim();
+            remarks = remarks?.Trim();
+            scoreObtained = scoreObtained?.Trim();
+            totalScore = totalScore?.Trim();
+
+            bool flag = false;
+
+            int parsedId;
+            int parsedScoreObtained;
+            int parsedTotalScore;
+
+            // Validation for submitID
+                if (!int.TryParse(submitId, out parsedId))
+                {
+                    exception.ValidationExceptions.Add(new Exception("Invalid submission ID , Go back to Course list and try again"));
+                    flag = true;
+                }
+
+            // Validation for Total Score
+            if (!int.TryParse(totalScore, out parsedTotalScore))
+            {
+                exception.ValidationExceptions.Add(new Exception("TotalScore not provided , Go back to Course list and try again"));
+                flag = true;
+            }
+
+
+            // Validation for remarks
+            if (remarks.Length > 500 && remarks!=null)
+                {
+                    exception.ValidationExceptions.Add(new Exception("Exceed character count of 500, please rephrase"));
+                    flag = true;
+                }
+
+            // Validation for Score obtained
+                if (!int.TryParse(scoreObtained, out parsedScoreObtained))
+                {
+                    exception.ValidationExceptions.Add(new Exception("Numeric Value required for Score Obtained"));
+                    flag = true;
+                }
+                else
+                {
+                    if (!((parsedScoreObtained > -1) && (parsedScoreObtained < parsedTotalScore+1)))
+                    {
+                        exception.ValidationExceptions.Add(new Exception($"Enter Total Score between 0 and {parsedTotalScore}"));
+                        flag = true;
+                    }
+                }
+
+
+            if (flag == false)
+            {
+
+                using (LearningManagementContext context = new LearningManagementContext())
+                {
+
+                    updateSubmission = context.Submissions.Where(x => x.ID == int.Parse(submitId)).SingleOrDefault();
+                    updateSubmission.ScoreObtained = int.Parse(scoreObtained);
+                    updateSubmission.Remarks = remarks;
+                    context.SaveChanges();
+
+                }
+            }
+
+            if (exception.ValidationExceptions.Count > 0)
+            {
+                throw exception;
             }
 
         }
