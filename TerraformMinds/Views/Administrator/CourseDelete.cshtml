@@ -49,7 +49,7 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StartDate)
-            @*@((Html.DisplayFor(model => model.StartDate) == null ? "TBA" : Html.DisplayFor(model => model.StartDate)))*@
+            @*@((Html.DisplayFor(model => model.StartDate.HasValue) ? "TBA" : model => model.StartDate))*@
         </dd>
         <dt class = "col-sm-2">
             End Date:

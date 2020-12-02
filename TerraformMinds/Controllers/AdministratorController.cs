@@ -76,7 +76,7 @@ namespace TerraformMinds.Controllers
                 ViewBag.GradeLevels = gradeLevelList;
 
                 ViewBag.GradeLevel = gradeLevel;
-                ViewBag.CurrentCapacity = currentCapacity;
+                //ViewBag.CurrentCapacity = currentCapacity;
                 ViewBag.MaxCapacity = maxCapacity; 
             }
             return View();
@@ -110,6 +110,12 @@ namespace TerraformMinds.Controllers
         {
             using (LearningManagementContext context = new LearningManagementContext())
             {
+
+                instructor = instructor != null ? instructor.Trim() : null;
+                courseName = courseName != null ? courseName.Trim() : null;
+                subject = subject != null ? subject.Trim() : null;
+                courseDescription = courseDescription != null ? courseDescription.Trim() : null;
+
                 if (ModelState.IsValid)
                 {
                     try
@@ -127,9 +133,17 @@ namespace TerraformMinds.Controllers
 
                             else
                             {
-                                if(context.Courses.Any(x => x.CourseName == course.CourseName))
+                                if (course.StartDate < DateTime.Today)
                                 {
-                                    exception.ValidationExceptions.Add(new Exception("Invalid: That course already exists."));
+                                    exception.ValidationExceptions.Add(new Exception("Invalid: Course Start Date cannot be set in the past."));
+                                }
+
+                                else
+                                {
+                                    if (context.Courses.Any(x => x.CourseName == course.CourseName))
+                                    {
+                                        exception.ValidationExceptions.Add(new Exception("Invalid: That course already exists."));
+                                    }
                                 }
                             }
                         }
@@ -173,7 +187,7 @@ namespace TerraformMinds.Controllers
                     ViewBag.GradeLevels = gradeLevelList;
 
                     ViewBag.GradeLevel = gradeLevel;
-                    ViewBag.CurrentCapacity = currentCapacity;
+                    //ViewBag.CurrentCapacity = currentCapacity;
                     ViewBag.MaxCapacity = maxCapacity;
                 }
             }
@@ -268,7 +282,7 @@ namespace TerraformMinds.Controllers
                 ViewBag.GradeLevels = gradeLevelList;
 
                 ViewBag.GradeLevel = course.GradeLevel;
-                ViewBag.CurrentCapacity = course.CurrentCapacity;
+                //ViewBag.CurrentCapacity = course.CurrentCapacity;
                 ViewBag.MaxCapacity = course.MaxCapacity;
 
                 return View();
@@ -288,6 +302,10 @@ namespace TerraformMinds.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CourseEdit(int id, [Bind("ID,UserID,CourseName,Subject,CourseDescription,GradeLevel,StartDate,EndDate,CurrentCapacity,MaxCapacity")] Course course)
         {
+            course.CourseName = course.CourseName != null ? course.CourseName.Trim() : null;
+            course.Subject = course.Subject != null ? course.Subject.Trim() : null;
+            course.CourseDescription = course.CourseDescription != null ? course.CourseDescription.Trim() : null;
+
             using (LearningManagementContext context = new LearningManagementContext())
             {
                 if (id != course.ID)
@@ -356,9 +374,8 @@ namespace TerraformMinds.Controllers
                     ViewBag.GradeLevels = gradeLevelList;
 
                     ViewBag.GradeLevel = course.GradeLevel;
-                    ViewBag.CurrentCapacity = course.CurrentCapacity;
+                    //ViewBag.CurrentCapacity = course.CurrentCapacity;
                     ViewBag.MaxCapacity = course.MaxCapacity;
-                    //return RedirectToAction(nameof(CourseList));
                 }   
             }
             return View(course);
