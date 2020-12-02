@@ -54,6 +54,7 @@ namespace TerraformMinds.Controllers
             email = email?.Trim();
             password = password?.Trim();
             role = role?.Trim();
+            bool flag = false;
 
 
             if (string.IsNullOrWhiteSpace(firstName))
