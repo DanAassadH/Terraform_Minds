@@ -60,56 +60,66 @@ namespace TerraformMinds.Controllers
             if (string.IsNullOrWhiteSpace(firstName))
             {
                 exception.ValidationExceptions.Add(new Exception("First Name Not Provided"));
+                flag = true;
             }
 
             if (string.IsNullOrWhiteSpace(lastName))
             {
                 exception.ValidationExceptions.Add(new Exception("Last Name Not Provided"));
-
+                flag = true;
             }
 
             if (string.IsNullOrWhiteSpace(email))
             {
                 exception.ValidationExceptions.Add(new Exception("Email Not Provided"));
+                flag = true;
             }
 
             if (string.IsNullOrWhiteSpace(password))
             {
                 exception.ValidationExceptions.Add(new Exception("Password Not Provided"));
+                flag = true;
             }
 
             if (string.IsNullOrWhiteSpace(role))
             {
                 exception.ValidationExceptions.Add(new Exception("Please Select a Role"));
+                flag = true;
             }
 
-            using (LearningManagementContext context = new LearningManagementContext())
+
+            if(flag==false)
             {
-                // Checking for Email duplication
-                if ((context.Users.Where(x => (x.EMail.Trim().ToUpper()) == email.ToUpper()).Count()) > 0)
+                using (LearningManagementContext context = new LearningManagementContext())
                 {
-                    exception.ValidationExceptions.Add(new Exception("Email already exist, Try again with a new one"));
+                    // Checking for Email duplication
+                    if ((context.Users.Where(x => (x.EMail.Trim().ToUpper()) == email.ToUpper()).Count()) > 0)
+                    {
+                        exception.ValidationExceptions.Add(new Exception("Email already exist, Try again with a new one"));
+                        flag = true;
+                    }
+
+                    if(flag==false)
+                    {
+                        // Add Values in user Table if all validations are passed
+                        context.Users.Add(new User()
+                        {
+                            FirstName = firstName,
+                            LastName = lastName,
+                            EMail = email.ToUpper(),
+                            Password = SignInController.HashAndSaltPassowrd(password, email.ToUpper()),
+                            Role = int.Parse(role),
+                            JoinDate = DateTime.Now
+                        });
+                        context.SaveChanges();
+                    }
                 }
-
-                if (exception.ValidationExceptions.Count > 0)
-                {
-                    throw exception;
-                }
-
-                // Add Values in user Table if all validations are passed
-                context.Users.Add(new User()
-                {
-                    FirstName = firstName,
-                    LastName = lastName,
-                    EMail = email,
-                    Password = SignInController.HashAndSaltPassowrd(password,email),
-                    Role = int.Parse(role),
-                    JoinDate = DateTime.Now
-                }) ;
-                context.SaveChanges();
-
             }
 
+            if (exception.ValidationExceptions.Count > 0)
+            {
+                throw exception;
+            }
         }
 
 /*        public string HashAndSaltPassowrd(string password , string email)

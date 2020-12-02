@@ -181,11 +181,11 @@ namespace TerraformMinds.Controllers
             if (flag==false)
             {
                 // Add Password Hash here
-                password = HashAndSaltPassowrd(Password, EMail);
+                password = HashAndSaltPassowrd(Password, EMail.ToUpper());
                 using (LearningManagementContext context = new LearningManagementContext())
                 {
                     // Validating User
-                    validUser = context.Users.Where(x => x.EMail.Equals(EMail) && x.Password.Equals(password)).SingleOrDefault();
+                    validUser = context.Users.Where(x => x.EMail.ToUpper().Equals(EMail.ToUpper()) && x.Password.Equals(password)).SingleOrDefault();
                 }
                
             }
@@ -194,11 +194,11 @@ namespace TerraformMinds.Controllers
 
 
         /// <summary>
-        /// ///////// Convert password to a Hash of random Letters Using a known salt
+        /// Convert password to a Hash of random characters Using a known salt
         /// </summary>
         /// <param name="password"></param>
         /// <param name="email"></param>
-        /// <returns><param string="Hashed Password"></param></returns>
+        /// <returns>Hashed Password as a string</returns>
 
         public static string HashAndSaltPassowrd(string password, string email)
         {
