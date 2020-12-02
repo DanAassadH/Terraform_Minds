@@ -25,7 +25,6 @@ namespace TerraformMinds.Controllers
             var gradeLevelList = new SelectList(gradeLevels.ToDictionary(g => g, g => g), "Key", "Value", gradeLevels);
             ViewBag.GradeLevels = gradeLevelList;
 
-
             var courseSubjects = new List<string>() { "English", "Math", "Science", "Social Studies" };
             var courseSubjectsList = new SelectList(courseSubjects.ToDictionary(s => s, s => s), "Key", "Value", courseSubjects);
             ViewBag.CourseSubjects = courseSubjectsList;
@@ -191,7 +190,7 @@ namespace TerraformMinds.Controllers
                             {
                                 if(enrollCourse.EndDate <= DateTime.Today)
                                 {
-                                    exception.ValidationExceptions.Add(new Exception("Sorry, that course has                already ended."));
+                                    exception.ValidationExceptions.Add(new Exception("Sorry, that course has already ended."));
                                     throw exception;
                                 }
                             }
@@ -215,5 +214,20 @@ namespace TerraformMinds.Controllers
                 context.SaveChanges();
             }
         }
+
+        //public void CourseCapacity(int courseID)
+        //{
+
+        //    using (LearningManagementContext context = new LearningManagementContext())
+        //    {
+        //        List<Student> courseCount = context.Students.Where(x => x.CourseID == courseID).ToList();
+        //        Course courses = context.Courses.Where(x => x.ID == courseID).SingleOrDefault();
+
+        //        int courseCurrentCapacity = courseCount.Count();
+
+        //        courses.CurrentCapacity = courseCurrentCapacity;
+                
+        //    }
+        //}
     }
 }
