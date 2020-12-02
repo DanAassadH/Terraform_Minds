@@ -117,7 +117,7 @@ namespace TerraformMinds.Controllers
             try
             {
                 int studentId = StudentController.GetStudentId(cid, uid);
-                ViewBag.SubmittedAssignments = StudentController.GetSubmittedAssignments(studentId);
+                ViewBag.SubmittedAssignments = StudentController.GetSubmittedAssignments(studentId.ToString());
 
             }
             catch (ValidationException e)
@@ -213,12 +213,7 @@ namespace TerraformMinds.Controllers
             id = !string.IsNullOrWhiteSpace(id) ? id.Trim() : null;
 
             // check if id is non integer
-            if (id == null) 
-            {
-                exception.ValidationExceptions.Add(new Exception("No ID Provided, Go back to main Instructor Dsahboard and select course again"));
-            }
-            else
-            {
+
                 if (int.TryParse(id, out parsedId))
                 {
                     using (LearningManagementContext context = new LearningManagementContext())
@@ -231,7 +226,7 @@ namespace TerraformMinds.Controllers
                 {
                     exception.ValidationExceptions.Add(new Exception("Invalid ID , Go back to main Instructor Dsahboard and select course again"));
                 }
-            }
+            
 
             if (exception.ValidationExceptions.Count > 0)
             {
@@ -256,19 +251,11 @@ namespace TerraformMinds.Controllers
 
             id = !string.IsNullOrWhiteSpace(id) ? id.Trim() : null;
 
-            if (id == null)
-            {
-                exception.ValidationExceptions.Add(new Exception("No Course ID Provided, Go back to main Instructor Dsahboard and select course again"));
-            }
-            else
-            {
+
                 if (int.TryParse(id, out parsedId))
                 {
                     using (LearningManagementContext context = new LearningManagementContext())
                     {
-
-
-                        //  For reference for now :  allBooks = context.Books.Include(x => x.Author).Include(x => x.Borrows).Where(x => x.Borrows.Any(y => y.DueDate < DateTime.Today && y.ReturnedDate == null)).ToList();
 
                         // sql query : get all the students enrolled in this course
                         //SELECT a.FirstName, a.LastName FROM `user` a , student b WHERE a.ID=b.UserID AND CourseID = -2(id)
@@ -280,7 +267,7 @@ namespace TerraformMinds.Controllers
                 {
                     exception.ValidationExceptions.Add(new Exception("Invalid Course ID , Go back to main Instructor Dsahboard and select course again"));
                 }
-            }
+            
 
             if (exception.ValidationExceptions.Count > 0)
             {
@@ -296,7 +283,7 @@ namespace TerraformMinds.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns> List of Assignments for a course </returns>
-        public static List<Assignment> GetAssignmentsByCourseID(string id)
+        public static List<Assignment> GetAssignmentsByCourseID(string id) //Passing Course ID
         {
             ValidationException exception = new ValidationException();
             List<Assignment> assignmentDetails = null;
@@ -305,12 +292,7 @@ namespace TerraformMinds.Controllers
 
             id = !string.IsNullOrWhiteSpace(id) ? id.Trim() : null;
 
-            if (id == null)
-            {
-                exception.ValidationExceptions.Add(new Exception("No Course ID Provided, Go back to main Dsahboard and select course again"));
-            }
-            else
-            {
+
                 if (int.TryParse(id, out parsedId))
                 {
                     using (LearningManagementContext context = new LearningManagementContext())
@@ -322,7 +304,7 @@ namespace TerraformMinds.Controllers
                 {
                     exception.ValidationExceptions.Add(new Exception("Invalid Course ID , Go back to main Dsahboard and select course again"));
                 }
-            }
+            
 
             if (exception.ValidationExceptions.Count > 0)
             {
@@ -521,7 +503,7 @@ namespace TerraformMinds.Controllers
                     flag = true;
                 }
 
-            // Validation for submitID
+            // Validation for Total Score
             if (!int.TryParse(totalScore, out parsedTotalScore))
             {
                 exception.ValidationExceptions.Add(new Exception("TotalScore not provided , Go back to Course list and try again"));
@@ -559,20 +541,11 @@ namespace TerraformMinds.Controllers
                 {
 
                     updateSubmission = context.Submissions.Where(x => x.ID == int.Parse(submitId)).SingleOrDefault();
-/*
-                    context.Update(course);
-                    await context.SaveChangesAsync();
-                    ViewBag.Message = $"Successfully updated course!";*/
-
-                  //  updateSubmission = await context.Submissions.FindAsync(int.Parse(submitId));
-
                     updateSubmission.ScoreObtained = int.Parse(scoreObtained);
                     updateSubmission.Remarks = remarks;
-                   // context.Update(updateSubmission);
                     context.SaveChanges();
 
                 }
-
             }
 
             if (exception.ValidationExceptions.Count > 0)
