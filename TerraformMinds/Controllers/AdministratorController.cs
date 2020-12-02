@@ -106,7 +106,7 @@ namespace TerraformMinds.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("CourseCreate")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CourseCreate(string instructor, string courseName, string subject, string courseDescription, string gradeLevel, DateTime startDate, DateTime endDate, int currentCapacity, int maxCapacity, [Bind("ID,UserID,CourseName,Subject,CourseDescription,GradeLevel,StartDate,EndDate,CurrentCapacity,MaxCapacity")] Course course)
+        public async Task<IActionResult> CourseCreate(string instructor, string courseName, string subject, string courseDescription, string gradeLevel, DateTime startDate, DateTime endDate, int currentCapacity, int maxCapacity, [Bind("ID,UserID,CourseName,Subject,CourseDescription,GradeLevel,StartDate,EndDate,MaxCapacity")] Course course)
         {
             using (LearningManagementContext context = new LearningManagementContext())
             {
@@ -411,11 +411,37 @@ namespace TerraformMinds.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             using (LearningManagementContext context = new LearningManagementContext())
-            {
+            {                
                 var course = await context.Courses.FindAsync(id);
-                context.Courses.Remove(course);
-                await context.SaveChangesAsync();
-                return RedirectToAction(nameof(CourseList));
+
+                try
+                {
+                    if (course.StartDate < DateTime.Today)
+                    {
+                        exception.ValidationExceptions.Add(new Exception("Error: Cannot delete a course that is in progress."));
+                    }
+
+                    else if (course.EndDate > DateTime.Today && course.StartDate < DateTime.Today)
+                    {
+                        exception.ValidationExceptions.Add(new Exception("Error: Cannot delete a course that is in progress."));
+                    }
+
+                    if (exception.ValidationExceptions.Count > 0)
+                    {
+                        throw exception;
+                    }
+                    context.Courses.Remove(course);
+                    await context.SaveChangesAsync();
+                    return RedirectToAction(nameof(CourseList));
+                }
+
+                catch (ValidationException e)
+                {
+                    ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                    ViewBag.Exception = e;
+                    ViewBag.Error = true;
+                }
+                return View(course);
             }
         }
 

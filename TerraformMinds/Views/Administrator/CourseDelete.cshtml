@@ -4,6 +4,22 @@
     ViewData["Title"] = "Delete";
 }
 
+@if (ViewBag.Message != null)
+{
+    @*TERNARY EXPRESSION*@
+    <p class="alert-@(ViewBag.Error != null ? "danger" : "success")">@(ViewBag.Message)</p>
+
+    if (ViewBag.Error != null)
+    {
+        <ul>
+            @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+            {
+                <li class="alert-danger">@(e.Message)</li>
+            }
+        </ul>
+    }
+}
+
 <ul>
     <li>
         <a asp-action="AdministratorDashboard" asp-controller="Administrator">Main</a>
@@ -32,19 +48,19 @@
 <div>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Course Name:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CourseName)
         </dd>
-        <dt class = "col-sm-2">
-            Subject: 
+        <dt class="col-sm-2">
+            Subject:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Subject)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Start Date:
         </dt>
         <dd class="col-sm-10">
@@ -57,7 +73,7 @@
                 @Html.Raw(@"TBA");
             }
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             End Date:
         </dt>
         <dd class="col-sm-10">
@@ -70,32 +86,32 @@
                 @Html.Raw(@"TBA");
             }
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Course Description:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CourseDescription)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Grade Level:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.GradeLevel)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Current Capacity:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CurrentCapacity)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Max Capacity:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.MaxCapacity)
         </dd>
     </dl>
-    
+
     <form asp-action="CourseDelete">
         <input type="hidden" asp-for="ID" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
