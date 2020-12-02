@@ -52,21 +52,55 @@
                 <th>Answer</th>
                 <th>Score obtained</th>
                 <th>Remarks</th>
+                <th>Action</th>
             </tr>
             @foreach (Submit assignment in ViewBag.SubmittedAssignments)
             {
-                <tr>
-                    <td>@assignment.Assignment.Question</td>
-                    <td>@assignment.Assignment.DueDate.ToLongDateString()</td>
-                    <td>@assignment.Assignment.TotalScore</td>
+        <tr>
+            <td>@assignment.Assignment.Question</td>
+            <td>@assignment.Assignment.DueDate.ToLongDateString()</td>
+            <td>@assignment.Assignment.TotalScore</td>
 
-                    <td>@assignment.DateSubmitted.ToLongDateString()</td>
-                    <td>@assignment.Answer</td>
-                    <td>@assignment.ScoreObtained</td>
-                    <td>@assignment.Remarks</td>
+            <td>@assignment.DateSubmitted.ToLongDateString()</td>
+            <td>@assignment.Answer</td>
 
 
-                </tr>
+            @if (@assignment.ScoreObtained == null)
+            {
+                <td>Not Scored</td>
+            }
+            else
+            {
+                <td>@assignment.ScoreObtained</td>
+
+            }
+
+            @if (@assignment.Remarks == null)
+            {
+                <td>Not Remarked</td>
+            }
+            else
+            {
+                <td>@assignment.Remarks</td>
+
+            }
+
+            @if (@assignment.ScoreObtained == null)
+            {
+                <td>
+                    <a asp-controller="Instructor" asp-action="AssignmentMark"
+                       asp-route-submitId="@assignment.ID">
+                        Mark
+                    </a>
+                </td>
+            }
+            else
+            {
+                <td></td>
+            }
+
+
+        </tr>
             }
     </table>
 

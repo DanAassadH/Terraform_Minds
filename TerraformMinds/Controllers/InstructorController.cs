@@ -104,7 +104,12 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
-
+        /// <summary>
+        /// Action to Display all the Assignments of a student for a course in teacher dashboard
+        /// </summary>
+        /// <param name="cid"></param>
+        /// <param name="uid"></param>
+        /// <returns>Assignments List Page</returns>
         [Authorize(Roles = "Instructor")]
         public IActionResult AssignmentList(string cid, string uid ) 
         {
@@ -125,6 +130,25 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
+
+        [Authorize(Roles = "Instructor")]
+        public IActionResult AssignmentMark(string submitId)
+        {
+
+            try
+            {
+                   ViewBag.SubmittedAssignmentAnswer = GetSubmittedAssignmentBySubmitID(submitId);
+
+            }
+            catch (ValidationException e)
+            {
+                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Exception = e;
+                ViewBag.Error = true;
+            }
+
+            return View();
+        }
 
 
         /* ------------------------------------------Data -----------------------------------------------------*/
@@ -415,5 +439,46 @@ namespace TerraformMinds.Controllers
             }
 
         }
+
+        /// <summary>
+        /// Function to get the answer of an assignment submitted by student
+        /// </summary>
+        /// <param name="submitID"></param>
+        /// <returns>Students Submitted answer to assignment Question</returns>
+        public Submit GetSubmittedAssignmentBySubmitID(string submitID)
+        {
+            ValidationException exception = new ValidationException();
+            Submit studentsAssignment = null;
+          
+            submitID = submitID?.Trim();
+
+            int parsedId;
+
+            // Validation for submitID
+            if (!int.TryParse(submitID, out parsedId))
+            {
+               exception.ValidationExceptions.Add(new Exception("Invalid Course ID , Go back to course page and try again"));
+ 
+            }
+            else
+            {
+                using (LearningManagementContext context = new LearningManagementContext())
+                {
+                    //Sql Query : 
+                   // SELECT a.* , b.* FROM `submitted` a , `assignment` b WHERE a.AssignmentID = b.ID And a.ID = 5
+
+                    studentsAssignment = context.Submissions.Include(x => x.Assignment).Where(x => x.Assignment.ID == x.AssignmentID).Where(x => x.ID == int.Parse(submitID)).SingleOrDefault();
+                }
+            }
+
+            if (exception.ValidationExceptions.Count > 0)
+            {
+                throw exception;
+            }
+
+            return studentsAssignment;
+        }
+
+
     }
 }

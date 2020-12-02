@@ -1,0 +1,85 @@
+﻿@model TerraformMinds.Models.Submit
+@{
+    ViewData["Title"] = "AssignmentMark";
+}
+
+<h1>AssignmentMark</h1>
+
+
+<ul>
+    <li>
+        <a asp-action="InstructorDashboard" asp-controller="Instructor">
+            Main
+        </a>
+    </li>
+    <li>
+        <a asp-controller="Instructor" asp-action="CourseList"
+           asp-route-id="@User.Identity.Name">
+            My Courses
+        </a>
+    </li>
+    <li>
+        <a asp-action="Signout" asp-controller="SignIn">
+            Signout
+        </a>
+    </li>
+
+</ul>
+
+@if (ViewBag.Error != null)
+{
+    <ul>
+        @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+        {
+            <li class="alert-danger">@(e.Message)</li>
+        }
+    </ul>
+}
+
+
+
+<div class="card">
+
+    <img class="card-img-top" src="..." alt="Card image cap">
+
+    <div class="card-body">
+        <h4 class="card-title">Question : @ViewBag.SubmittedAssignmentAnswer.Assignment.Question</h4>
+
+        <p class="card-text"> Due Date :  @ViewBag.SubmittedAssignmentAnswer.Assignment.DueDate.ToLongDateString()</p>
+        <p class="card-text">Date submitted : @ViewBag.SubmittedAssignmentAnswer.DateSubmitted.ToLongDateString()</p>
+
+        <p class="card-text">Answer : @ViewBag.SubmittedAssignmentAnswer.Answer</p>
+
+    </div>
+</div>
+
+
+
+<form action="/Instructor/AssignmentMark" method="POST">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label for="ScoreObtained">Score Obtained</label>
+        <input asp-for="ScoreObtained" class="form-control" placeholder="Score Obtained" data-val="true" data-val-required="Enter Score Obtained" data-val-maxlength-max="50" data-val-maxlength="Name Cannot exceed 50 characters" />
+        <span asp-validation-for="ScoreObtained" class="text-danger" data-valmsg-for="ScoreObtained" data-valmsg-replace="true"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="Remarks">Teachers Remarks</label>
+        <input asp-for="Remarks" class="form-control" placeholder="Remarks" data-val="true" data-val-maxlength-max="500" data-val-maxlength="Please Keep remarks to 500 characters" />
+        <span asp-validation-for="Remarks" class="text-danger" data-valmsg-for="Remarks" data-valmsg-replace="true"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Submit" class="btn btn-primary" />
+    </div>
+
+</form>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+

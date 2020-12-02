@@ -233,7 +233,7 @@ namespace TerraformMinds.Controllers
         }
 
         /// <summary>
-        /// Function to enter the Answer of an assignment in the database 
+        /// Function to enter the Answer of an assignment in the database by Student
         /// </summary>
         /// <param name="id"></param>
         /// <param name="answer"></param>
