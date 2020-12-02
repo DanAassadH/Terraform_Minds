@@ -36,31 +36,37 @@
     </ul>
 }
 
+@if (ViewBag.SubmitYes == null)
+{ 
+    <div class="card">
 
+        <img class="card-img-top" src="..." alt="Card image cap">
 
-<div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Question : @ViewBag.SubmittedAssignmentAnswer.Assignment.Question</h4>
 
-    <img class="card-img-top" src="..." alt="Card image cap">
+            <p class="card-text"> Due Date :  @ViewBag.SubmittedAssignmentAnswer.Assignment.DueDate.ToLongDateString()</p>
 
-    <div class="card-body">
-        <h4 class="card-title">Question : @ViewBag.SubmittedAssignmentAnswer.Assignment.Question</h4>
+            <p class="card-text"> Total Score :  @ViewBag.SubmittedAssignmentAnswer.Assignment.TotalScore</p>
 
-        <p class="card-text"> Due Date :  @ViewBag.SubmittedAssignmentAnswer.Assignment.DueDate.ToLongDateString()</p>
-        <p class="card-text">Date submitted : @ViewBag.SubmittedAssignmentAnswer.DateSubmitted.ToLongDateString()</p>
+            <p class="card-text">Date submitted : @ViewBag.SubmittedAssignmentAnswer.DateSubmitted.ToLongDateString()</p>
 
-        <p class="card-text">Answer : @ViewBag.SubmittedAssignmentAnswer.Answer</p>
+            <p class="card-text">Answer : @ViewBag.SubmittedAssignmentAnswer.Answer</p>
 
+        </div>
     </div>
-</div>
 
 
 
 <form action="/Instructor/AssignmentMark" method="POST">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+    <input type="text" name="submitId" value="@ViewBag.SubmittedAssignmentAnswer.ID" />
+    <input type="text" name="TotalScore" value="@ViewBag.SubmittedAssignmentAnswer.Assignment.TotalScore" />
+
     <div class="form-group">
         <label for="ScoreObtained">Score Obtained</label>
-        <input asp-for="ScoreObtained" class="form-control" placeholder="Score Obtained" data-val="true" data-val-required="Enter Score Obtained" data-val-maxlength-max="50" data-val-maxlength="Name Cannot exceed 50 characters" />
+        <input asp-for="ScoreObtained" class="form-control" placeholder="Score Obtained" data-val="true" data-val-required="Enter Score Obtained" data-val-range="Marks Obtained should be between 0 and Total marks" data-val-range-max=" @ViewBag.SubmittedAssignmentAnswer.Assignment.TotalScore" data-val-range-min="0" />
         <span asp-validation-for="ScoreObtained" class="text-danger" data-valmsg-for="ScoreObtained" data-valmsg-replace="true"></span>
     </div>
 
@@ -76,7 +82,11 @@
 
 </form>
 
-
+}
+else
+{
+    <p>Assignment Submitted successfully</p>
+}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

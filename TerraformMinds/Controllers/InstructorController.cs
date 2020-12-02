@@ -25,7 +25,7 @@ namespace TerraformMinds.Controllers
         }
 
         /// <summary>
-        /// This is the Action for course List page for individual instructor , it shows that how many courses that instructor has
+        /// Action for course List page for individual instructor , it shows that how many courses that instructor has
         /// </summary>
         /// <param name="id"></param>
         /// <returns> View() </returns>
@@ -130,14 +130,31 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
-
+        /// <summary>
+        /// Action to display the submitted assignment to instructor , and let instructor add score and remarkds on that answer
+        /// </summary>
+        /// <param name="submitId"></param>
+        /// <param name="Remarks"></param>
+        /// <param name="ScoreObtained"></param>
+        /// <returns>View of the assignment answer </returns>
         [Authorize(Roles = "Instructor")]
-        public IActionResult AssignmentMark(string submitId)
+        public IActionResult AssignmentMark(string submitId , string Remarks ,string ScoreObtained, string TotalScore)
         {
 
             try
             {
-                   ViewBag.SubmittedAssignmentAnswer = GetSubmittedAssignmentBySubmitID(submitId);
+                ViewBag.SubmittedAssignmentAnswer = GetSubmittedAssignmentBySubmitID(submitId);
+
+                if (Request.Method=="POST")
+                {
+                    SubmitAssignmentScoreAndRemarks(submitId, Remarks, ScoreObtained,TotalScore);
+                    ViewBag.Message = $"Successfully Submitted Assignment!";
+                    ViewBag.SubmitYes = true;
+                }
+/*                else
+                {
+                    ViewBag.SubmittedAssignmentAnswer = GetSubmittedAssignmentBySubmitID(submitId);
+                }*/
 
             }
             catch (ValidationException e)
@@ -479,6 +496,94 @@ namespace TerraformMinds.Controllers
             return studentsAssignment;
         }
 
+        /// <summary>
+        /// Function to update the Score and remarks in submit, table these fields are added by instructor
+        /// </summary>
+        /// <param name="submitId"></param>
+        /// <param name="remarks"></param>
+        /// <param name="scoreObtained"></param>
+        /// <param name="totalScore"></param>
+        public void SubmitAssignmentScoreAndRemarks(string submitId,string  remarks,string scoreObtained, string totalScore)
+        {
+            ValidationException exception = new ValidationException();
+            Submit updateSubmission = null;
+            submitId = submitId?.Trim();
+            remarks = remarks?.Trim();
+            scoreObtained = scoreObtained?.Trim();
+            totalScore = totalScore?.Trim();
 
+            bool flag = false;
+
+            int parsedId;
+            int parsedScoreObtained;
+            int parsedTotalScore;
+
+            // Validation for submitID
+                if (!int.TryParse(submitId, out parsedId))
+                {
+                    exception.ValidationExceptions.Add(new Exception("Invalid submission ID , Go back to Course list and try again"));
+                    flag = true;
+                }
+
+            // Validation for submitID
+            if (!int.TryParse(totalScore, out parsedTotalScore))
+            {
+                exception.ValidationExceptions.Add(new Exception("TotalScore not provided , Go back to Course list and try again"));
+                flag = true;
+            }
+
+
+            // Validation for remarks
+            if (remarks.Length > 500 && remarks!=null)
+                {
+                    exception.ValidationExceptions.Add(new Exception("Exceed character count of 500, please rephrase"));
+                    flag = true;
+                }
+
+            // Validation for Score obtained
+                if (!int.TryParse(scoreObtained, out parsedScoreObtained))
+                {
+                    exception.ValidationExceptions.Add(new Exception("Numeric Value required for Score Obtained"));
+                    flag = true;
+                }
+                else
+                {
+                    if (!((parsedScoreObtained > -1) && (parsedScoreObtained < parsedTotalScore+1)))
+                    {
+                        exception.ValidationExceptions.Add(new Exception($"Enter Total Score between 0 and {parsedTotalScore}"));
+                        flag = true;
+                    }
+                }
+
+
+            if (flag == false)
+            {
+
+                using (LearningManagementContext context = new LearningManagementContext())
+                {
+
+                    updateSubmission = context.Submissions.Where(x => x.ID == int.Parse(submitId)).SingleOrDefault();
+/*
+                    context.Update(course);
+                    await context.SaveChangesAsync();
+                    ViewBag.Message = $"Successfully updated course!";*/
+
+                  //  updateSubmission = await context.Submissions.FindAsync(int.Parse(submitId));
+
+                    updateSubmission.ScoreObtained = int.Parse(scoreObtained);
+                    updateSubmission.Remarks = remarks;
+                   // context.Update(updateSubmission);
+                    context.SaveChanges();
+
+                }
+
+            }
+
+            if (exception.ValidationExceptions.Count > 0)
+            {
+                throw exception;
+            }
+
+        }
     }
 }
