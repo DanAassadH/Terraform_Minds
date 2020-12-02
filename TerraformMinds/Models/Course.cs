@@ -29,10 +29,13 @@ namespace TerraformMinds.Models
         [Required]
         public string Subject { get; set; }
 
+        //ToString("yyyy-MM-dd")
         [Column(TypeName = "date")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime? StartDate { get; set; }
 
         [Column(TypeName = "date")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime? EndDate { get; set; }
 
 

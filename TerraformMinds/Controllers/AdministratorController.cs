@@ -282,7 +282,7 @@ namespace TerraformMinds.Controllers
                 ViewBag.GradeLevels = gradeLevelList;
 
                 ViewBag.GradeLevel = course.GradeLevel;
-                //ViewBag.CurrentCapacity = course.CurrentCapacity;
+                ViewBag.CurrentCapacity = course.CurrentCapacity;
                 ViewBag.MaxCapacity = course.MaxCapacity;
 
                 return View();
@@ -374,7 +374,7 @@ namespace TerraformMinds.Controllers
                     ViewBag.GradeLevels = gradeLevelList;
 
                     ViewBag.GradeLevel = course.GradeLevel;
-                    //ViewBag.CurrentCapacity = course.CurrentCapacity;
+                    ViewBag.CurrentCapacity = course.CurrentCapacity;
                     ViewBag.MaxCapacity = course.MaxCapacity;
                 }   
             }

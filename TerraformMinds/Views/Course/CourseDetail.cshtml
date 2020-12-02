@@ -40,8 +40,8 @@
                 <td>@(ViewBag.CourseDetails.Subject)</td>
                 <td>@(ViewBag.CourseDetails.CourseDescription)</td>
                 <td>@(ViewBag.CourseDetails.GradeLevel)</td>
-                <td>@((ViewBag.CourseDetails.StartDate == null ? "TBA" : ((DateTime)ViewBag.CourseDetails.StartDate).ToLongDateString()))</td>
-                <td>@((ViewBag.CourseDetails.EndDate == null ? "TBA" : ((DateTime)ViewBag.CourseDetails.EndDate).ToLongDateString()))</td>
+                <td>@((ViewBag.CourseDetails.StartDate == null ? "TBA" : ((DateTime)ViewBag.CourseDetails.StartDate).ToString("yyyy-MM-dd")))</td>
+                <td>@((ViewBag.CourseDetails.EndDate == null ? "TBA" : ((DateTime)ViewBag.CourseDetails.EndDate).ToString("yyyy-MM-dd")))</td>
             </tr>
         </thead>
     </table>

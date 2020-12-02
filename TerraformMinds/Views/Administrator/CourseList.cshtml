@@ -52,8 +52,8 @@
                 <td>@(course.Subject)</td>
                 <td>@(course.CourseDescription)</td>
                 <td>@(course.GradeLevel)</td>
-                <td>@((course.StartDate == null ? "TBA" : ((DateTime)course.StartDate).ToLongDateString()))</td>
-                <td>@((course.EndDate == null ? "TBA" : ((DateTime)course.EndDate).ToLongDateString()))</td>
+                <td>@((course.StartDate == null ? "TBA" : ((DateTime)course.StartDate).ToString("yyyy-MM-dd")))</td>
+                <td>@((course.EndDate == null ? "TBA" : ((DateTime)course.EndDate).ToString("yyyy-MM-dd")))</td>
                 @if (course.CurrentCapacity == course.MaxCapacity)
                 {
                     <td>FULL</td>
