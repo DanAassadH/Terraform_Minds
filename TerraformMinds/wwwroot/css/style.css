@@ -16,22 +16,17 @@
     color: #2F2F75;
 }
 
-.test-font{
-    font-size:300px;
-    color:aqua;
-
+.test-font {
+    font-size: 300px;
+    color: aqua;
 }
 /*-----------------------------------------Nav Bar ----------------------------------------------------*/
+
+
 .navbar {
     min-height: 90px;
     background-color: #2F2F75;
 }
-
-/*.navbar-nav li a {
-   
-    color: #D8EBF6;
-    text-decoration:none;
-}*/
 
 .navbar-nav .nav-item .nav-link {
     color: #D8EBF6;
@@ -39,9 +34,9 @@
 }
 
 
-    .navbar-nav .nav-item .nav-link:hover {
-        color: #49BCD9;
-    }
+.navbar-nav .nav-item .nav-link:hover {
+    color: #49BCD9;
+}
 
 
 /*---------------------------------------- Home Page Styles-------------------------------------------*/
@@ -55,28 +50,31 @@ body {
     font-weight: 400;
 }
 
-body p{
-    font-size:1.25rem;
-}
+    body p {
+        font-size: 1.25rem;
+    }
 
 /*home-cards*/
 
 
 /*site-cards*/
 
-.site-cards, .banner{
+.site-cards, .banner {
     margin-bottom: 1rem !important;
 }
 
 .teacher-count {
-    background-color: #A2D4DC; 
+    background-color: #A2D4DC;
 }
+
 .course-count {
     background-color: #8389C0;
 }
+
 .student-count {
     background-color: #E399BA;
 }
+
 .teacher-count, .course-count, .student-count {
     padding-top: 10px;
     display: flex;
@@ -84,14 +82,13 @@ body p{
     text-align: center;
 }
 
-.teacher-count img, .course-count img, .student-count img{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
+    .teacher-count img, .course-count img, .student-count img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
 
 .teacher-circle, .course-circle, .student-circle {
-    
     border-radius: 100%;
     width: 125px;
     height: 125px;

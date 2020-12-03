@@ -32,21 +32,25 @@
 
         <div class="form-group">
             <label for="EMail">Email</label>
-            <input asp-for="EMail" class="form-control" placeholder="Email" data-val="true" data-val-required="Email is required" data-val-maxlength-max="50" data-val-maxlength="Email Cannot exceed 50 characters" data-val-regex="Incorrect Email Adress" data-val-regex-pattern="^[\w-!$*%^\.]+@@([\w-]+\.)+[\w-]{2,4}$" />
-            <span asp-validation-for="EMail" class="text-danger" data-valmsg-for="EMail" data-valmsg-replace="true"></span>
+            <div  class=" input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-at"></i></span>
+                </div>
+                <input asp-for="EMail" class="form-control" placeholder="Email" aria-describedby="basic-addon1" data-val="true" data-val-required="Email is required" data-val-maxlength-max="50" data-val-maxlength="Email Cannot exceed 50 characters" data-val-regex="Incorrect Email Adress" data-val-regex-pattern="^[\w-!$*%^\.]+@@([\w-]+\.)+[\w-]{2,4}$" />
+                <span asp-validation-for="EMail" class="text-danger" data-valmsg-for="EMail" data-valmsg-replace="true"></span>
+            </div>
         </div>
+            <div class="form-group">
+                <label for="Password">Password</label>
+                <input asp-for="Password" type="password" class="form-control" placeholder="Password" data-val-required="Password is required" data-val-maxlength-max="50" data-val-maxlength="Password Cannot exceed 50 characters" />
+                <span asp-validation-for="Password" class="text-danger" data-valmsg-for="Password" data-valmsg-replace="true"></span>
+            </div>
 
-        <div class="form-group">
-            <label for="Password">Password</label>
-            <input asp-for="Password" type="password" class="form-control" placeholder="Password" data-val-required="Password is required" data-val-maxlength-max="50" data-val-maxlength="Password Cannot exceed 50 characters" />
-            <span asp-validation-for="Password" class="text-danger" data-valmsg-for="Password" data-valmsg-replace="true"></span>
-        </div>
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-primary" />
+            </div>
 
-        <div class="form-group">
-            <input type="submit" value="Submit" class="btn btn-primary" />
-        </div>
-
-    </form>
+</form>
 </section>
 
 <p> Dont have an account yet</p>

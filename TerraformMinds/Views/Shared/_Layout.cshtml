@@ -50,9 +50,35 @@
                 </ul>
 
                 <ul class="navbar-nav ml-auto nav-flex-icons">
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="SignIn" asp-action="Index"><i class="fas fa-user"></i> SignIn</a>
-                    </li>
+                    @if (User.Identity.Name == null)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="SignIn" asp-action="Index"><i class="fas fa-user"></i> SignIn</a>
+                        </li>
+                    }
+                    else
+                    {
+                        if (User.IsInRole("Administrator"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Administrator" asp-action="AdministratorDashboard"><i class="fas fa-sitemap"></i> Dashboard</a>
+                            </li>
+                        }
+                        if (User.IsInRole("Instructor"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Instructor" asp-action="InstructorDashboard"><i class="fas fa-sitemap"></i> Dashboard</a>
+                            </li>
+                        }
+                        if (User.IsInRole("Student"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Student" asp-action="StudentDashboard"><i class="fas fa-sitemap"></i> Dashboard</a>
+                            </li>
+                        }
+
+                    }
+
                 </ul>
 
             </div>
