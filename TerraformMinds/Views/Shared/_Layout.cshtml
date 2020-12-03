@@ -21,27 +21,28 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow mb-3">
             <div class="container">
+
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="/images/terraform-minds-logo3.png" height="90" alt="Terraform Minds Logo"></a>
+
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                    <span><i class="fas fa-bars"></i></span>
                 </button>
+
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link " asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home"></i> Home</a>
+                            <a  asp-controller="Home" asp-action="Index"><i class="fas fa-home"></i> Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Course" asp-action="CourseList"><i class="fas fa-book"></i> Courses</a>
+                            <a  asp-controller="Course" asp-action="CourseList"><i class="fas fa-book"></i> Courses</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy"><i class="fas fa-info-circle"></i> About Us</a>
+                            <a  asp-controller="Home" asp-action="Privacy"><i class="fas fa-info-circle"></i> About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="SignIn" asp-action="Index"><i class="fas fa-user"></i> SignIn</a>
+                            <a asp-controller="SignIn" asp-action="Index"><i class="fas fa-user"></i> SignIn</a>
                         </li>
-
-
                     </ul>
                 </div>
             </div>
