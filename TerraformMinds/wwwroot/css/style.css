@@ -21,6 +21,27 @@
     color:aqua;
 
 }
+/*-----------------------------------------Nav Bar ----------------------------------------------------*/
+.navbar {
+    min-height: 90px;
+    background-color: #2F2F75;
+}
+
+.navbar-nav li a {
+   
+    font-weight:bolder;
+    font-size: 20px;
+   
+}
+
+.nav-link a {
+    color: yellow;
+}
+
+.navbar-nav li a:hover {
+    color: white;
+}
+
 
 /*---------------------------------------- Home Page Styles-------------------------------------------*/
 

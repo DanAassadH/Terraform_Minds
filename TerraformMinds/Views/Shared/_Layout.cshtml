@@ -12,17 +12,16 @@
     <!-- Favicon and title -->
     <link rel="icon" href="/images/terraform-mind-icon.png">
 
-  @*  <script src="https://kit.fontawesome.com/f5e699c3ea.js" crossorigin="anonymous"></script>*@
+      <script src="https://kit.fontawesome.com/f5e699c3ea.js" crossorigin="anonymous"></script>
 
 
 
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow mb-3" style="        background-color: #2F2F75;" >
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">  <img src="/images/terraform-minds-logo.png" height="90" alt=""></a>
-
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="/images/terraform-minds-logo3.png" height="90" alt="Terraform Minds Logo"></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -30,16 +29,16 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link " asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home"></i> Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Course" asp-action="CourseList">Courses</a>
+                            <a class="nav-link" asp-area="" asp-controller="Course" asp-action="CourseList"><i class="fas fa-book"></i> Courses</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy"><i class="fas fa-info-circle"></i> About Us</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="SignIn" asp-action="Index">SignIn</a>
+                            <a class="nav-link" asp-area="" asp-controller="SignIn" asp-action="Index"><i class="fas fa-user"></i> SignIn</a>
                         </li>
 
 
@@ -68,3 +67,6 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+
+@*
+<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">  <img src="/images/terraform-minds-logo3.png" height="90" alt="Terraform Minds Logo"></a>*@
