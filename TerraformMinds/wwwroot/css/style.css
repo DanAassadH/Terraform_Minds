@@ -40,11 +40,25 @@
 
 
 /*---------------------------------------- Home Page Styles-------------------------------------------*/
+/*-----------------------------------------Body---------------------------------------------*/
+
+
+.bg-image-full {
+  /*  background: no-repeat center center scroll;
+    background-size: cover;*/
+
+}
+
 
 /*General*/
-h1, h2, h3, h4, h5 {
+h1 {
+    color: #07769E;
+}
+
+h2, h3, h4, h5 {
     color: #2F2F75;
 }
+
 
 body {
     font-weight: 400;

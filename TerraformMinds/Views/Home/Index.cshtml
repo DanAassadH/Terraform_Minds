@@ -2,97 +2,106 @@
     ViewData["Title"] = "Home Page";
 }
 
-
-<div class="home-intro">
-    <h1 class="text-center">One Stop Learning Solution</h1>
-    <p>Bring quality education to your doorstep</p>
-    <p>Learning opportunities for students from Kindergarten to Grade 12</p>
-</div>
-
-<div class="banner">
-    <img src="~/images/classroom-banner.jpg" height="382" class="img-fluid" alt="classroom photo" />
-    <a asp-controller="Registration" asp-action="Index" class="badge-pill badge-warning">Create a free account</a>
-
-</div>
-
-<div class="site-offering">
-    <h1 class="text-center">State of the art Learning Management System</h1>
-    <p>Terraform Minds provides learning opportunities for students ranging from Kindergarten to Grade 12 who are looking to learn or expand their knowledge in Mathematics, Sciences, Language Arts and Social Studies</p>
-</div>
-
-<div class="content-wrapper home-cards">
-    <div class="card mb-3">
-        <div class="row no-gutters">
-            <div class="col-md-4">
-                <img src="~/images/teacher-students-masks.jpg" class ="card-img" alt="Group of students and teacher waving" />
+<body class="p-0">
+    <div>
+        <h1 class=" p-5 font-weight-bold text-xl-left">One Stop Learning Solution</h1>
+        <div class="d-flex justify-content-between ">
+            <div class=" p-5">
+                <p>Bringing quality education to your doorstep</p>
+                <p>Learning opportunities for students from Kindergarten to Grade 12</p>
             </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title">What Do We Teach</h5>
-                    <p class="card-text">We deliver current course curriculum that aims to teach and improve student’s knowledge in mathematics, sciences, language arts, and social studies.</p>
+            <div class="w-25 align-content-lg-end">
+                <img src="~/images/Study-lamp.jpg" height="100" alt="Study Lamp With Books" />
+            </div>
+        </div>
+    </div>
+
+
+
+  @*  <div class="banner">
+        <img src="~/images/banner-education-desktop.png" height="382" class="img-fluid" alt="classroom photo" />
+        <a asp-controller="Registration" asp-action="Index" class="badge-pill badge-warning">Create a free account</a>
+
+    </div>
+
+    <div class="site-offering">
+        <h1 class="text-center">State of the art Learning Management System</h1>
+        <p>Terraform Minds provides learning opportunities for students ranging from Kindergarten to Grade 12 who are looking to learn or expand their knowledge in Mathematics, Sciences, Language Arts and Social Studies</p>
+    </div>
+
+    <div class="content-wrapper home-cards">
+        <div class="card mb-3">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img src="~/images/teacher-students-masks.jpg" class="card-img" alt="Group of students and teacher waving" />
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">What Do We Teach</h5>
+                        <p class="card-text">We deliver current course curriculum that aims to teach and improve student’s knowledge in mathematics, sciences, language arts, and social studies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <div class="row no-gutters">
+                <div class="col-md-7">
+                    <div class="card-body">
+                        <h5 class="card-title">Why Choose Terraform Minds</h5>
+                        <p class="card-text">We have plenty of courses that range in a variety of subjects that can easily be found and registered for in a few simple clicks.</p>
+                        <a asp-controller="Course" asp-action="CourseList" class="badge-pill badge-warning">View Courses</a>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <img src="~/images/kid-online-course.jpg" class="card-img" alt="A boy at home online learning" />
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <div class="row no-gutters">
+                <div class="col-md-5">
+                    <img src="~/images/group-students-online-course.jpg" class="card-img" alt="A group of students doing online courses." />
+                </div>
+                <div class="col-md-7">
+                    <div class="card-body">
+                        <h5 class="card-title">Easy Access</h5>
+                        <p class="card-text">COVID-19 brings many new challenges and uncertainties that may cause disruptions in learning. With Terraform Minds, you can bring the learning home with flexible online courses and modules that keep students engaged and motivated.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="card mb-3">
-        <div class="row no-gutters">
-            <div class="col-md-7">
-                <div class="card-body">
-                    <h5 class="card-title">Why Choose Terraform Minds</h5>
-                    <p class="card-text">We have plenty of courses that range in a variety of subjects that can easily be found and registered for in a few simple clicks.</p>
-                    <a asp-controller="Course" asp-action="CourseList" class="badge-pill badge-warning">View Courses</a>
-                </div>
+    <div class="site-cards card-group">
+        <div class="teacher-count card" style="width: 18rem;">
+            <img src="~/images/teacher-male.jpg" class="teacher-circle" />
+            <div class="card-body">
+                <p class="card-text">@(ViewBag.InstructorCount)+</p>
+                <p class="card-text">Dedicated Teachers</p>
             </div>
-            <div class="col-md-5">
-                <img src="~/images/kid-online-course.jpg" class ="card-img" alt="A boy at home online learning" />
+        </div>
+        <div class="course-count card" style="width: 18rem;">
+            <img src="~/images/english-textbook.jpg" class="course-circle" />
+            <div class="card-body">
+                <p class="card-text">@(ViewBag.CourseCount)+</p>
+                <p class="card-text">Courses to choose from</p>
+            </div>
+        </div>
+        <div class="student-count card" style="width: 18rem;">
+            <img src="~/images/modern-students.jpg" class="student-circle" />
+            <div class="card-body">
+                <p class="card-text">@(ViewBag.StudentCount)+</p>
+                <p class="card-text">Grade K-12 Happy Students</p>
             </div>
         </div>
     </div>
 
-    <div class="card mb-3">
-        <div class="row no-gutters">
-            <div class="col-md-5">
-                <img src="~/images/group-students-online-course.jpg" class ="card-img" alt="A group of students doing online courses." />
-            </div>
-            <div class="col-md-7">
-                <div class="card-body">
-                    <h5 class="card-title">Easy Access</h5>
-                    <p class="card-text">COVID-19 brings many new challenges and uncertainties that may cause disruptions in learning. With Terraform Minds, you can bring the learning home with flexible online courses and modules that keep students engaged and motivated.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="site-cards card-group" >
-    <div class="teacher-count card" style="width: 18rem;">
-        <img src="~/images/teacher-male.jpg" class="teacher-circle" />
-        <div class="card-body">
-            <p class="card-text">@(ViewBag.InstructorCount)+</p>
-            <p class="card-text">Dedicated Teachers</p>
-        </div>
-    </div>
-    <div class="course-count card" style="width: 18rem;">
-        <img src="~/images/english-textbook.jpg" class="course-circle" />
-        <div class="card-body">
-            <p class="card-text">@(ViewBag.CourseCount)+</p>
-            <p class="card-text">Courses to choose from</p>
-        </div>
-    </div>
-    <div class="student-count card" style="width: 18rem;">
-        <img src="~/images/modern-students.jpg" class="student-circle" />
-        <div class="card-body">
-            <p class="card-text">@(ViewBag.StudentCount)+</p>
-            <p class="card-text">Grade K-12 Happy Students</p>
-        </div>
-    </div>
-</div>
-
-<div>
-    <h1 class="text-center">Getting Started is Easy!</h1>
-    <p>Create your teachers account and start teaching your favourite subjects</p>
-    <p>Register your child in any of the courses in a few easy steps</p>
-    <a asp-controller="Registration" asp-action="Index" class="badge-pill badge-warning">Create your Account</a>
-</div>
-
+    <div>
+        <h1 class="text-center">Getting Started is Easy!</h1>
+        <p>Create your teachers account and start teaching your favourite subjects</p>
+        <p>Register your child in any of the courses in a few easy steps</p>
+        <a asp-controller="Registration" asp-action="Index" class="badge-pill badge-warning">Create your Account</a>
+    </div>*@
+</body>
