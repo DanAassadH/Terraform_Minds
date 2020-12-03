@@ -27,14 +27,19 @@
     background-color: #2F2F75;
 }
 
-.navbar-nav li a {
-    font-size: 20px;
+/*.navbar-nav li a {
+   
     color: #D8EBF6;
-    text-decoration: none;
+    text-decoration:none;
+}*/
+
+.navbar-nav .nav-item .nav-link {
+    color: #D8EBF6;
+    font-size: 20px;
 }
 
 
-    .navbar-nav li a:hover {
+    .navbar-nav .nav-item .nav-link:hover {
         color: #49BCD9;
     }
 
