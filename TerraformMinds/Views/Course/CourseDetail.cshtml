@@ -33,6 +33,7 @@
                 <th>Grade Level</th>
                 <th>Start Date</th>
                 <th>End Date</th>
+                <th>Capactity</th>
             </tr>
             <tr>
                 <td>@(ViewBag.CourseDetails.ID)</td>
@@ -42,6 +43,14 @@
                 <td>@(ViewBag.CourseDetails.GradeLevel)</td>
                 <td>@((ViewBag.CourseDetails.StartDate == null ? "TBA" : ((DateTime)ViewBag.CourseDetails.StartDate).ToString("yyyy-MM-dd")))</td>
                 <td>@((ViewBag.CourseDetails.EndDate == null ? "TBA" : ((DateTime)ViewBag.CourseDetails.EndDate).ToString("yyyy-MM-dd")))</td>
+                @if (ViewBag.CourseDetails.CurrentCapacity == ViewBag.CourseDetails.MaxCapacity)
+                {
+                    <td>FULL</td>
+                }
+                else
+                {
+                    <td>@(ViewBag.CourseDetails.CurrentCapacity + "/" + ViewBag.CourseDetails.MaxCapacity)</td>
+                }
             </tr>
         </thead>
     </table>

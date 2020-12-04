@@ -76,7 +76,7 @@ namespace TerraformMinds.Controllers
             try
             {
                 RegisterCourse(courseID);
-                ViewBag.Message = $"Course sucessfully registered";
+                ViewBag.Message = $"Course successfully  registered";
                 ViewBag.CourseDetails = GetCourseByID(courseID);
             }
 
@@ -101,6 +101,16 @@ namespace TerraformMinds.Controllers
             }
             return courseList;
         }
+
+        //public List<Course> GetCurrentCourses()
+        //{
+        //    List<Course> courseList;
+        //    using (LearningManagementContext context = new LearningManagementContext())
+        //    {
+        //        courseList = context.Courses.Where(x => x.EndDate > DateTime.Today || x.EndDate == null).Include(x => x.User).ToList();
+        //    }
+        //    return courseList;
+        //}
 
         public List<Course> GetCoursesByGrade(string gradeFilter)
         {
@@ -156,48 +166,65 @@ namespace TerraformMinds.Controllers
             {
                 Course enrollCourse = context.Courses.Where(x => x.ID == courseID).SingleOrDefault();
 
-                User userRoll = context.Users.Where(x => x.Role == 3 && x.ID == int.Parse(User.Identity.Name)).SingleOrDefault();
-
-                if (userRoll == null)
+                if(User.Identity.Name == null)
                 {
                     exception.ValidationExceptions.Add(new Exception("Please sign-in to enroll"));
                     throw exception;
                 }
                 else
                 {
-                    if(context.Students.Any(x => x.CourseID == courseID))
+                    User userRoll = context.Users.Where(x => x.Role == 3 && x.ID == int.Parse(User.Identity.Name)).SingleOrDefault();
+
+                    if (userRoll == null)
                     {
-                        exception.ValidationExceptions.Add(new Exception("You have already enrolled for this course."));
+                        exception.ValidationExceptions.Add(new Exception("You must be a student to enroll"));
                         throw exception;
                     }
-
                     else
                     {
-                        if(enrollCourse.CurrentCapacity >= enrollCourse.MaxCapacity)
+                        if (context.Students.Any(x => x.CourseID == courseID))
                         {
-                            exception.ValidationExceptions.Add(new Exception("Sorry, the course you are registering for is already full"));
+                            exception.ValidationExceptions.Add(new Exception("You have already enrolled for this course."));
                             throw exception;
                         }
+
                         else
                         {
-                            if(enrollCourse.StartDate < DateTime.Today)
+                            if (enrollCourse.CurrentCapacity >= enrollCourse.MaxCapacity)
                             {
-                                exception.ValidationExceptions.Add(new Exception("Sorry, registration for that course is now closed"));
+                                exception.ValidationExceptions.Add(new Exception("Sorry, the course you are registering for is already full"));
                                 throw exception;
                             }
-
                             else
                             {
-                                if(enrollCourse.EndDate <= DateTime.Today)
+                                if (enrollCourse.StartDate < DateTime.Today)
                                 {
-                                    exception.ValidationExceptions.Add(new Exception("Sorry, that course has already ended."));
+                                    exception.ValidationExceptions.Add(new Exception("Sorry, registration for that course is now closed"));
                                     throw exception;
+                                }
+
+                                else
+                                {
+                                    if (enrollCourse.EndDate <= DateTime.Today)
+                                    {
+                                        exception.ValidationExceptions.Add(new Exception("Sorry, that course has already ended."));
+                                        throw exception;
+                                    }
+
+                                    else
+                                    {
+                                        if(enrollCourse.StartDate == null)
+                                        {
+                                            exception.ValidationExceptions.Add(new Exception("The start date has yet to be determined.Please check back at a later date"));
+                                            throw exception;
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
-
+                
                 if (exception.ValidationExceptions.Count > 0)
                 {
                     throw exception;
@@ -214,20 +241,5 @@ namespace TerraformMinds.Controllers
                 context.SaveChanges();
             }
         }
-
-        //public void CourseCapacity(int courseID)
-        //{
-
-        //    using (LearningManagementContext context = new LearningManagementContext())
-        //    {
-        //        List<Student> courseCount = context.Students.Where(x => x.CourseID == courseID).ToList();
-        //        Course courses = context.Courses.Where(x => x.ID == courseID).SingleOrDefault();
-
-        //        int courseCurrentCapacity = courseCount.Count();
-
-        //        courses.CurrentCapacity = courseCurrentCapacity;
-                
-        //    }
-        //}
     }
 }
