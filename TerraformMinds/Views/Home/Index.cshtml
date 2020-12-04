@@ -6,11 +6,11 @@
     <div>
         <h1 class=" p-5 font-weight-bold text-xl-left">One Stop Learning Solution</h1>
         <div class="d-flex justify-content-between ">
-            <div class=" p-5">
+            <div class="w-75 p-5">
                 <p>Bringing quality education to your doorstep</p>
                 <p>Learning opportunities for students from Kindergarten to Grade 12</p>
             </div>
-            <div class="w-25 align-content-lg-end">
+            <div class="w-25 align-content-lg-end d-flex align-items-sm-center  align-items-lg-start">
                 <img src="~/images/Study-lamp.jpg" height="100" alt="Study Lamp With Books" />
             </div>
         </div>
@@ -19,63 +19,73 @@
 
     <div class="card text-center">
         <img class="card-img" src="~/images/banner-education-desktop.png" alt="A Photo collection of books pencils and crayons">
-            <div class="card-img-overlay ">
-                <a type="button" asp-controller="Registration" asp-action="Index" class="btn btn-primary btn-lg round ">Create a free account</a>
-            </div>    
+        <div class="card-img-overlay ">
+            <a type="button" asp-controller="Registration" asp-action="Index" class="btn btn-primary btn-lg round ">Create a free account</a>
+        </div>
     </div>
 
 
+
+    <div class="site-offering">
+        <h1 class="text-center p-5">State of the art Learning Management System</h1>
+
+        <div class="d-flex justify-content-between ">
+            <div class="w-75 p-5">
+                <p>Terraform Minds provides learning opportunities for students ranging from Kindergarten to Grade 12 who are looking to learn or expand their knowledge in Mathematics, Sciences, Language Arts and Social Studies</p>
+                <p>We also provide great options for teachers to share their knowledge with our students</p>
+            </div>
+            <div class="w-25 align-content-lg-end d-flex align-items-center">
+                <img src="~/images/science-beaker.png" height="100" alt="beakers and flasks" />
+            </div>
+        </div>
+    </div>
+
+
+    <div class="content-wrapper home-cards">
+        <div class="card mb-5 shadow">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img src="~/images/teacher-students-masks.jpg" class="card-img" alt="Group of students and teacher waving" />
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body text-lg-center">
+                        <h2 class="card-title">What Do We Teach</h2>
+                        <p class="card-text">We deliver current course curriculum that aims to teach and improve student’s knowledge in mathematics, sciences, language arts, and social studies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-5 shadow">
+            <div class="row no-gutters">
+                <div class="col-md-7">
+                    <div class="card-body text-lg-center">
+                        <h2 class="card-title">Why Choose Terraform Minds</h2>
+                        <p class="card-text ">We have plenty of courses that range in a variety of subjects that can easily be found and registered for in a few simple clicks.</p>
+                        <a asp-controller="Course" asp-action="CourseList" class="btn btn-primary btn-lg round ">View Courses</a>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <img src="~/images/kid-online-course.jpg" class="card-img" alt="A boy at home online learning" />
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-5 shadow">
+            <div class="row no-gutters">
+                <div class="col-md-5">
+                    <img src="~/images/group-students-online-course.jpg" class="card-img" alt="A group of students doing online courses." />
+                </div>
+                <div class="col-md-7">
+                    <div class="card-body text-lg-center">
+                        <h2 class="card-title">Easy Access</h2>
+                        <p class="card-text">COVID-19 brings many new challenges and uncertainties that may cause disruptions in learning. With Terraform Minds, you can bring the learning home with flexible online courses and modules that keep students engaged and motivated.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     @*
-        <div class="site-offering">
-            <h1 class="text-center">State of the art Learning Management System</h1>
-            <p>Terraform Minds provides learning opportunities for students ranging from Kindergarten to Grade 12 who are looking to learn or expand their knowledge in Mathematics, Sciences, Language Arts and Social Studies</p>
-        </div>
-
-        <div class="content-wrapper home-cards">
-            <div class="card mb-3">
-                <div class="row no-gutters">
-                    <div class="col-md-4">
-                        <img src="~/images/teacher-students-masks.jpg" class="card-img" alt="Group of students and teacher waving" />
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">What Do We Teach</h5>
-                            <p class="card-text">We deliver current course curriculum that aims to teach and improve student’s knowledge in mathematics, sciences, language arts, and social studies.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card mb-3">
-                <div class="row no-gutters">
-                    <div class="col-md-7">
-                        <div class="card-body">
-                            <h5 class="card-title">Why Choose Terraform Minds</h5>
-                            <p class="card-text">We have plenty of courses that range in a variety of subjects that can easily be found and registered for in a few simple clicks.</p>
-                            <a asp-controller="Course" asp-action="CourseList" class="badge-pill badge-warning">View Courses</a>
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <img src="~/images/kid-online-course.jpg" class="card-img" alt="A boy at home online learning" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="card mb-3">
-                <div class="row no-gutters">
-                    <div class="col-md-5">
-                        <img src="~/images/group-students-online-course.jpg" class="card-img" alt="A group of students doing online courses." />
-                    </div>
-                    <div class="col-md-7">
-                        <div class="card-body">
-                            <h5 class="card-title">Easy Access</h5>
-                            <p class="card-text">COVID-19 brings many new challenges and uncertainties that may cause disruptions in learning. With Terraform Minds, you can bring the learning home with flexible online courses and modules that keep students engaged and motivated.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="site-cards card-group">
             <div class="teacher-count card" style="width: 18rem;">
                 <img src="~/images/teacher-male.jpg" class="teacher-circle" />

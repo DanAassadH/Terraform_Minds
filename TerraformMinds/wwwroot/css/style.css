@@ -34,16 +34,16 @@
     }
 
         .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
-            background: #FBD445;
+            background: #E9B90A;
         }
 
     /* ------------------------------------- Pink Button------------------------------------------------*/
-    .btn-primary {
+    .btn-success {
         background: #FFDA53;
         color: #2F2F75;
     }
 
-        .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+        .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open > .dropdown-toggle.btn-success {
             background: #FBD445;
         }
 
@@ -73,13 +73,10 @@
 
     /*-----------------------------------------General---------------------------------------------*/
 
-    h1 {
-        color: #07769E;
-    }
 
-    h2, h3, h4, h5 {
-        color: #2F2F75;
-    }
+h1, h2, h3, h4, h5 {
+    color: #2F2F75;
+}
 
 
     body {
