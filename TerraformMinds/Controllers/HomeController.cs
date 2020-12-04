@@ -71,12 +71,12 @@ namespace TerraformMinds.Controllers
             return instructorCount;
         }
 
-        public List<Student> StudentCount()
+        public List<User> StudentCount()
         {
-            List<Student> studentCount;
+            List<User> studentCount;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                studentCount = context.Students.ToList();
+                studentCount = context.Users.Where(x => x.Role == 3).ToList();
             }
 
             return studentCount;
