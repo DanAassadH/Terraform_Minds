@@ -121,8 +121,9 @@ h1, h2, h3, h4, h5 {
             margin-right: auto;
         }
 
-    .teacher-circle, .course-circle, .student-circle {
-        border-radius: 100%;
-        width: 125px;
-        height: 125px;
-    }
+.teacher-circle, .course-circle, .student-circle {
+    border-radius: 100%;
+    width: 125px;
+    height: 125px;
+
+}

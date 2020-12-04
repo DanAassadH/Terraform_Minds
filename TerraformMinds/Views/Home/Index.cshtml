@@ -45,7 +45,7 @@
         <div class="card mb-5 shadow">
             <div class="row no-gutters">
                 <div class="col-md-4">
-                    <img src="~/images/teacher-students-masks.jpg" class="card-img" alt="Group of students and teacher waving" />
+                    <img src="~/images/female-book-readers.jpg" class="card-img" alt="Group of students reding books" />
                 </div>
                 <div class="col-md-8">
                     <div class="card-body text-lg-center">
@@ -85,23 +85,26 @@
             </div>
         </div>
     </div>
-    @*
-        <div class="site-cards card-group">
-            <div class="teacher-count card" style="width: 18rem;">
-                <img src="~/images/teacher-male.jpg" class="teacher-circle" />
+    
+        <div class="site-cards card-deck">
+
+            <div class="teacher-count card" >
+                <img src="~/images/teacher-male.jpg" class="teacher-circle shadow-lg" />
                 <div class="card-body">
                     <p class="card-text">@(ViewBag.InstructorCount)+</p>
                     <p class="card-text">Dedicated Teachers</p>
                 </div>
             </div>
-            <div class="course-count card" style="width: 18rem;">
-                <img src="~/images/english-textbook.jpg" class="course-circle" />
+
+            <div class="course-count card" >
+                <img src="~/images/english-textbook.jpg" class="course-circle shadow-lg" />
                 <div class="card-body">
                     <p class="card-text">@(ViewBag.CourseCount)+</p>
                     <p class="card-text">Courses to choose from</p>
                 </div>
             </div>
-            <div class="student-count card" style="width: 18rem;">
+
+            <div class="student-count card" >
                 <img src="~/images/modern-students.jpg" class="student-circle" />
                 <div class="card-body">
                     <p class="card-text">@(ViewBag.StudentCount)+</p>
@@ -110,10 +113,10 @@
             </div>
         </div>
 
-        <div>
-            <h1 class="text-center">Getting Started is Easy!</h1>
-            <p>Create your teachers account and start teaching your favourite subjects</p>
-            <p>Register your child in any of the courses in a few easy steps</p>
-            <a asp-controller="Registration" asp-action="Index" class="badge-pill badge-warning">Create your Account</a>
-        </div>*@
+        <div class="text-center">
+            <h1 class=" m-5">Getting Started is Easy!</h1>
+            <p m-3>Create your teachers account and start teaching your favourite subjects</p>
+            <p m-3>Or Register your child in any of the courses in a few easy steps</p>
+            <a asp-controller="Registration" asp-action="Index" class="btn btn-primary btn-lg round">Create your Account</a>
+        </div>
 </body>
