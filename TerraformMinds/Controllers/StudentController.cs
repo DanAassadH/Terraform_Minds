@@ -345,7 +345,7 @@ namespace TerraformMinds.Controllers
             List<Submit> studentsAssignment = null;
             int parsedId;
 
-            if (!int.TryParse(studentID, out parsedId))
+            if (int.TryParse(studentID, out parsedId))
             {
                 using (LearningManagementContext context = new LearningManagementContext())
                 {

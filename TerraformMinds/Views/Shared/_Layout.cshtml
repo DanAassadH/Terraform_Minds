@@ -9,60 +9,110 @@
 
     <link rel="stylesheet" href="~/css/style.css" type="text/css" />
 
-    <!-- Halfmoon Library -->
-@*    <link rel="icon" href="path/to/fav.png">
-    <link href="https://cdn.jsdelivr.net/npm/halfmoon@1.1.1/css/halfmoon-variables.min.css" rel="stylesheet" />*@
+    <!-- Favicon and title -->
+    <link rel="icon" href="/images/terraform-mind-icon.png">
+
+    <script src="https://kit.fontawesome.com/f5e699c3ea.js" crossorigin="anonymous"></script>
 
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TerraformMinds</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Course" asp-action="CourseList">Courses</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="SignIn" asp-action="Index">SignIn</a>
-                        </li>
 
 
-                    </ul>
-                </div>
+        <!--Navbar -->
+        <nav class="mb-1 navbar navbar-expand-lg navbar-dark default-color ">
+
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index"><img src="/images/terraform-minds-logo.png" height="50" alt="Terraform Minds Logo"></a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
+                    aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
+                <span><i class="fas fa-bars"></i></span>
+            </button>
+
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
+
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item ">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Course" asp-action="CourseList"><i class="fas fa-book"></i> Courses</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Privacy"><i class="fas fa-info-circle"></i> About</a>
+                    </li>
+
+                </ul>
+
+                <ul class="navbar-nav ml-auto nav-flex-icons">
+                    @if (User.Identity.Name == null)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="SignIn" asp-action="Index"><i class="fas fa-user"></i> SignIn</a>
+                        </li>
+                    }
+                    else
+                    {
+                        /* Display Dashboard according to user role*/
+                        if (User.IsInRole("Administrator"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Administrator" asp-action="AdministratorDashboard"><i class="fas fa-sitemap"></i> Dashboard</a>
+                            </li>
+                        }
+                        if (User.IsInRole("Instructor"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Instructor" asp-action="InstructorDashboard"><i class="fas fa-sitemap"></i> Dashboard</a>
+                            </li>
+                        }
+                        if (User.IsInRole("Student"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Student" asp-action="StudentDashboard"><i class="fas fa-sitemap"></i> Dashboard</a>
+                            </li>
+                        }
+
+                    }
+
+                </ul>
+
             </div>
         </nav>
+        <!--/.Navbar -->
+
+
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="p-0 m-0">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="text-muted">
-        <div class="container">
-            &copy; 2020 - TerraformMinds - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-            <img src="~/images/forrest-lake-footer.png" height="382" class="img-fluid" alt="Forrest with a lake" />
+    <footer class="text-muted mt-5">
+
+
+        <div class="card text-left border-0">
+            <img class="card-img" src="~/images/forrest-lake-footer.png" alt="Forrest with a lake">
+            <div class="card-img-overlay ">
+                &copy; 2020 - TerraformMinds - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
         </div>
+
     </footer>
 
-    <!-- Halfmoon JS -->
-    <!--<script src="https://cdn.jsdelivr.net/npm/halfmoon@1.1.1/js/halfmoon.min.js"></script>-->
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+
