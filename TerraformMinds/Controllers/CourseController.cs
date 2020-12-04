@@ -102,6 +102,16 @@ namespace TerraformMinds.Controllers
             return courseList;
         }
 
+        //public List<Course> GetCurrentCourses()
+        //{
+        //    List<Course> courseList;
+        //    using (LearningManagementContext context = new LearningManagementContext())
+        //    {
+        //        courseList = context.Courses.Where(x => x.EndDate > DateTime.Today || x.EndDate == null).Include(x => x.User).ToList();
+        //    }
+        //    return courseList;
+        //}
+
         public List<Course> GetCoursesByGrade(string gradeFilter)
         {
             List<Course> courseListByGrade;
@@ -199,6 +209,15 @@ namespace TerraformMinds.Controllers
                                     {
                                         exception.ValidationExceptions.Add(new Exception("Sorry, that course has already ended."));
                                         throw exception;
+                                    }
+
+                                    else
+                                    {
+                                        if(enrollCourse.StartDate == null)
+                                        {
+                                            exception.ValidationExceptions.Add(new Exception("The start date has yet to be determined.Please check back at a later date"));
+                                            throw exception;
+                                        }
                                     }
                                 }
                             }
