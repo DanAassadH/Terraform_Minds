@@ -116,7 +116,7 @@ namespace TerraformMinds.Controllers
        public IActionResult Signout()
         {
             var login = HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Privacy", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
 
