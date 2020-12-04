@@ -17,13 +17,14 @@
     </div>
 
 
-
-    <div class="banner">
-        <img src="~/images/banner-education-desktop.png" class="img-fluid" alt="A Photo collection of books pencils and crayons" />
-   @*     <a asp-controller="Registration" asp-action="Index" class="badge-pill badge-warning">Create a free account</a>*@
-
-        <a type="button" asp-controller="Registration" asp-action="Index" class="btn btn-primary btn-lg round">Create a free account</a>
+    <div class="card text-center">
+        <img class="card-img" src="~/images/banner-education-desktop.png" alt="A Photo collection of books pencils and crayons">
+            <div class="card-img-overlay ">
+                <a type="button" asp-controller="Registration" asp-action="Index" class="btn btn-primary btn-lg round ">Create a free account</a>
+            </div>    
     </div>
+
+
     @*
         <div class="site-offering">
             <h1 class="text-center">State of the art Learning Management System</h1>
