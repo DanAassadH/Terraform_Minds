@@ -47,7 +47,7 @@ namespace TerraformMinds.Controllers
         /// <param name="currentCapacity"></param>
         /// <param name="maxCapacity"></param>
         /// <returns></returns>
-        public IActionResult CourseCreate(string instructor, string courseName, string subject, string courseDescription, string gradeLevel, DateTime startDate, DateTime endDate, int currentCapacity, int maxCapacity)
+        public IActionResult CourseCreate(string instructor, string courseName, string subject, string courseDescription, string gradeLevel, DateTime? startDate, DateTime? endDate, int currentCapacity, int maxCapacity)
         {
             using(LearningManagementContext context = new LearningManagementContext())
             {
@@ -65,8 +65,8 @@ namespace TerraformMinds.Controllers
                 ViewBag.CourseSubjects = courseSubjectsList;
 
                 ViewBag.Subject = subject;
-                ViewBag.StartDate = startDate.ToLongDateString();
-                ViewBag.EndDate = endDate.ToLongDateString();
+                ViewBag.StartDate = startDate;
+                ViewBag.EndDate = endDate;
                 ViewBag.CourseDescription = courseDescription;
 
                 // Create list of GradeLevels 
@@ -106,7 +106,7 @@ namespace TerraformMinds.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("CourseCreate")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CourseCreate(string instructor, string courseName, string subject, string courseDescription, string gradeLevel, DateTime startDate, DateTime endDate, int currentCapacity, int maxCapacity, [Bind("ID,UserID,CourseName,Subject,CourseDescription,GradeLevel,StartDate,EndDate,MaxCapacity")] Course course)
+        public async Task<IActionResult> CourseCreate(string instructor, string courseName, string subject, string courseDescription, string gradeLevel, DateTime? startDate, DateTime? endDate, int currentCapacity, int maxCapacity, [Bind("ID,UserID,CourseName,Subject,CourseDescription,GradeLevel,StartDate,EndDate,MaxCapacity")] Course course)
         {
             using (LearningManagementContext context = new LearningManagementContext())
             {
@@ -120,29 +120,36 @@ namespace TerraformMinds.Controllers
                 {
                     try
                     {
-                        if (course.CurrentCapacity > course.MaxCapacity)
+                        if(course.MaxCapacity <= 0)
                         {
-                            exception.ValidationExceptions.Add(new Exception("Invalid: Current Capacity cannot exceed Max Capacity."));
+                            exception.ValidationExceptions.Add(new Exception("Invalid Max Capacity: Course must have a minimum of 1 student."));
                         }
                         else
                         {
-                            if (course.StartDate > course.EndDate)
+                            if (course.CurrentCapacity > course.MaxCapacity)
                             {
-                                exception.ValidationExceptions.Add(new Exception("Invalid: Course Start Date cannot be set past End Date."));
+                                exception.ValidationExceptions.Add(new Exception("Invalid Current Capacity: Current Capacity cannot exceed Max Capacity."));
                             }
-
                             else
                             {
-                                if (course.StartDate < DateTime.Today)
+                                if (course.StartDate > course.EndDate)
                                 {
-                                    exception.ValidationExceptions.Add(new Exception("Invalid: Course Start Date cannot be set in the past."));
+                                    exception.ValidationExceptions.Add(new Exception("Invalid Start Date: Course Start Date cannot be set past End Date."));
                                 }
 
                                 else
                                 {
-                                    if (context.Courses.Any(x => x.CourseName == course.CourseName))
+                                    if (course.StartDate < DateTime.Today)
                                     {
-                                        exception.ValidationExceptions.Add(new Exception("Invalid: That course already exists."));
+                                        exception.ValidationExceptions.Add(new Exception("Invalid State Date: Course Start Date cannot be set in the past."));
+                                    }
+
+                                    else
+                                    {
+                                        if (context.Courses.Any(x => x.CourseName == course.CourseName))
+                                        {
+                                            exception.ValidationExceptions.Add(new Exception("Invalid Course Name: That course already exists."));
+                                        }
                                     }
                                 }
                             }
@@ -176,8 +183,8 @@ namespace TerraformMinds.Controllers
                     ViewBag.CourseSubjects = courseSubjectsList;
 
                     ViewBag.Subject = subject;
-                    ViewBag.StartDate = startDate.ToLongDateString();
-                    ViewBag.EndDate = endDate.ToLongDateString();
+                    ViewBag.StartDate = startDate;
+                    ViewBag.EndDate = endDate;
                     ViewBag.CourseDescription = courseDescription;
 
                     // Create list of GradeLevels 
@@ -231,7 +238,7 @@ namespace TerraformMinds.Controllers
             {
                 if (!context.Courses.Any(x => x.ID == courseID))
                 {
-                    exception.ValidationExceptions.Add(new Exception("That Course ID Does Not Exist"));
+                    exception.ValidationExceptions.Add(new Exception("Error: Course ID does not exist"));
                     throw exception;
                 }
                 else
@@ -261,8 +268,12 @@ namespace TerraformMinds.Controllers
                 var course = await context.Courses.FindAsync(id);
                 if (course == null)
                 {
-                    return NotFound();
+                    //return NotFound();
+                    ViewBag.CourseExists = false;
+                    return View(course);
                 }
+
+                ViewBag.CourseExists = true;
 
                 // Create a list based on first name and last name from the User table that has a role equal to 2 (which is "Instructor")
                 var instructors = new SelectList(context.Users.Where(x => x.Role == 2)
@@ -317,15 +328,22 @@ namespace TerraformMinds.Controllers
                 {
                     try
                     {
-                        if (course.CurrentCapacity > course.MaxCapacity)
+                        if (course.MaxCapacity <= 0)
                         {
-                            exception.ValidationExceptions.Add(new Exception("Error: Current Capacity cannot exceed Max Capacity."));
+                            exception.ValidationExceptions.Add(new Exception("Invalid Max Capacity: Course must have a minimum of 1 student."));
                         }
                         else
                         {
-                            if (course.StartDate > course.EndDate)
+                            if (course.CurrentCapacity > course.MaxCapacity)
                             {
-                                exception.ValidationExceptions.Add(new Exception("Error: Course Start Date cannot be after End Date."));
+                                exception.ValidationExceptions.Add(new Exception("Invalid Current Capacity: Current Capacity cannot exceed Max Capacity."));
+                            }
+                            else
+                            {
+                                if (course.StartDate > course.EndDate)
+                                {
+                                    exception.ValidationExceptions.Add(new Exception("Invalid Start Date: Course Start Date cannot be after End Date."));
+                                }
                             }
                         }
 
@@ -333,6 +351,8 @@ namespace TerraformMinds.Controllers
                         {
                             throw exception;
                         }
+
+                        ViewBag.CourseExists = true;
 
                         context.Update(course);
                         await context.SaveChangesAsync();
@@ -399,9 +419,12 @@ namespace TerraformMinds.Controllers
                     .FirstOrDefaultAsync(m => m.ID == id);
                 if (course == null)
                 {
-                    return NotFound();
+                    //return NotFound();
+                    ViewBag.CourseExists = false;
+                    return View();
                 }
 
+                ViewBag.CourseExists = true;
                 return View(course);
             }
         }

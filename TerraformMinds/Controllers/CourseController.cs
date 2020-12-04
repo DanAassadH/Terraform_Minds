@@ -76,7 +76,7 @@ namespace TerraformMinds.Controllers
             try
             {
                 RegisterCourse(courseID);
-                ViewBag.Message = $"Course sucessfully registered";
+                ViewBag.Message = $"Course successfully  registered";
                 ViewBag.CourseDetails = GetCourseByID(courseID);
             }
 

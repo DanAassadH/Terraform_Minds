@@ -44,6 +44,9 @@
     }
 }
 
+@if(ViewBag.CourseExists == true)
+{
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -112,6 +115,13 @@
 <div>
     <a asp-action="CourseList">Back to List</a>
 </div>
+
+}
+
+else
+{
+    <p>Hello Test</p>
+}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
