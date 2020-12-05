@@ -13,9 +13,24 @@ namespace TerraformMinds.Controllers
     public class StudentController : Controller
     {
         /* ------------------------------------------Actions -----------------------------------------------------*/
+        /// <summary>
+        /// Action to display Signed In User dashboard
+        /// </summary>
+        /// <returns>main dashboard view </returns>
         [Authorize(Roles = "Student")]
         public IActionResult StudentDashboard()
         {
+            try
+            {
+                ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
+            }
+            catch (ValidationException e)
+            {
+                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Exception = e;
+                ViewBag.Error = true;
+            }
+
             return View();
 
         }
