@@ -3,7 +3,8 @@
     ViewData["Title"] = "SignIn";
 }
 
-<h1>Sign In To Your Terraform Minds Account</h1>
+
+
 
 
 @if (ViewBag.Message != null)
@@ -24,47 +25,67 @@
 
 
 
-<section>
-
-    <form action="/SignIn/SignIn" method="POST">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="container d-flex justify-content-center">
 
 
-        <div class="form-group">
-            <label for="EMail">Email</label>
-            <div class=" input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-at"></i></span>
-                </div>
-                <input asp-for="EMail" class="form-control" placeholder="Email" aria-describedby="basic-addon1" data-val="true" data-val-required="Email is required" data-val-maxlength-max="50" data-val-maxlength="Email Cannot exceed 50 characters" data-val-regex="Incorrect Email Adress" data-val-regex-pattern="^[\w-!$*%^\.]+@@([\w-]+\.)+[\w-]{2,4}$" />
-            </div>
-                <span asp-validation-for="EMail" class="text-danger" data-valmsg-for="EMail" data-valmsg-replace="true"></span>
-           
+    <div class="card  align-self-center p-5" style="width: 360px;">
 
+        <div class="card-header bg-white">
+            <h2>Sign In To Your Terraform Minds Account</h2>
         </div>
 
-            <div class="form-group">
-                <label for="Password">Password</label>
-                <input asp-for="Password" type="password" class="form-control" placeholder="Password" data-val-required="Password is required" data-val-maxlength-max="50" data-val-maxlength="Password Cannot exceed 50 characters" />
-                <span asp-validation-for="Password" class="text-danger" data-valmsg-for="Password" data-valmsg-replace="true"></span>
-            </div>
+        <div class="card-body">
+            <form action="/SignIn/SignIn" method="POST">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-                <input type="submit" value="Submit" class="btn btn-primary" />
-            </div>
 
-</form>
-</section>
+                <div class="form-group">
+                    <label for="EMail">Email</label>
+                    <div class=" input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-at"></i></span>
+                        </div>
+                        <input asp-for="EMail" class="form-control" placeholder="Email" aria-describedby="basic-addon1" data-val="true" data-val-required="Email is required" data-val-maxlength-max="50" data-val-maxlength="Email Cannot exceed 50 characters" data-val-regex="Incorrect Email Adress" data-val-regex-pattern="^[\w-!$*%^\.]+@@([\w-]+\.)+[\w-]{2,4}$" />
+                    </div>
+                    <span asp-validation-for="EMail" class="text-danger" data-valmsg-for="EMail" data-valmsg-replace="true"></span>
 
-<p> Dont have an account yet</p>
 
-<p>
-    <a asp-controller="Registration" asp-action="RegisterUser">Click Here to Register</a>
-</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="Password">Password</label>
+                    <input asp-for="Password" type="password" class="form-control" placeholder="Password" data-val-required="Password is required" data-val-maxlength-max="50" data-val-maxlength="Password Cannot exceed 50 characters" />
+                    <span asp-validation-for="Password" class="text-danger" data-valmsg-for="Password" data-valmsg-replace="true"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Submit" class="btn btn-primary" />
+                </div>
+
+            </form>
+        </div>
+
+        <div class="card-footer text-muted bg-white">
+            <p> Dont have an account yet</p>
+
+            <p>
+                <a asp-controller="Registration" asp-action="RegisterUser">Click Here to Register</a>
+            </p>
+        </div>
+
+    </div>
+
+
+    
+</div>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+
 
 
 
