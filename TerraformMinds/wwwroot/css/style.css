@@ -106,14 +106,10 @@ h1, h2, h3, h4, h5 {
             font-size: 1.25rem;
         }
 
-    /*home-cards*/
+
+/*------------------------------------------- Counters -------------------------------------------------------*/
 
 
-    /*site-cards*/
-
-    .site-cards, .banner {
-        margin-bottom: 1rem !important;
-    }
 
     .teacher-count {
         background-color: #A2D4DC;
