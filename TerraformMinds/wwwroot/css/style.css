@@ -1,8 +1,8 @@
 ﻿/*---------------------------------------- General Styles-------------------------------------------*/
 /* ------------------------------------- Yellow Button------------------------------------------------*/
-* {
+/** {
     outline: 1px solid #FF0000;
-}
+}*/
 
     .btn {
         padding: 5px 15px;
@@ -20,7 +20,7 @@
     }
 }
 
-        .btn:focus, .btn:active:focus, .btn.active:focus {
+        .btn:focus, .btn:active:focus {
             outline: 0 none;
         }
 
@@ -28,24 +28,29 @@
         border-radius: 30px;
     }
 
-    .btn-primary {
-        background: #FFDA53;
-        color: #2F2F75;
-    }
+.btn-yellow {
+    background: #FFDA53;
+    color: #2F2F75;
+    width: 250px;
+}
 
-        .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
-            background: #E9B90A;
-        }
+    .btn-yellow:hover, .btn-yellow:focus, .btn-yellow:active, .btn-yellow:active:focus {
+        background: #FFE070;
+        box-shadow: 0px 5px 10px #E3AEE1;
+        color: #434381;
+    }
 
     /* ------------------------------------- Pink Button------------------------------------------------*/
-    .btn-success {
-        background: #FFDA53;
-        color: #2F2F75;
-    }
+.btn-pink {
+    background: #E44485;
+    color: #FFF;
+    width:250px;
+}
 
-        .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open > .dropdown-toggle.btn-success {
-            background: #FBD445;
-        }
+    .btn-pink:hover, .btn-pink:focus, .btn-pink:active, .btn-pink.active, .open > .dropdown-toggle.btn-pink {
+        background: #E35790;
+        box-shadow: 0px 5px 10px #E3AEE1;
+    }
 
 /* ------------------------------------- Dashboard ------------------------------------------------*/
 .border-8 {

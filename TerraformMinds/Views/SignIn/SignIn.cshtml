@@ -6,31 +6,12 @@
 
 
 
-
-@if (ViewBag.Message != null)
-{
-   
-    <p class="alert-@(ViewBag.Error != null ? "danger" : "success")">@(ViewBag.Message)</p>
-
-    if (ViewBag.Error != null)
-    {
-        <ul>
-            @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
-            {
-                <li class="alert-danger">@(e.Message)</li>
-            }
-        </ul>
-    }
-}
-
-
-
 <div class="container d-flex justify-content-center">
 
 
-    <div class="card  align-self-center p-5" style="width: 360px;">
+    <div class="card  align-self-center py-5 border-0" style="width: 380px;">
 
-        <div class="card-header bg-white">
+        <div class="card-header bg-white border-0">
             <h2>Sign In To Your Terraform Minds Account</h2>
         </div>
 
@@ -39,14 +20,30 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
 
+
+                @if (ViewBag.Message != null)
+                {
+
+                    <p class="alert-danger">@(ViewBag.Message)</p>
+
+                    if (ViewBag.Error != null)
+                    {
+                        <ul>
+                            @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+                            {
+                                <li class="alert-danger">@(e.Message)</li>
+                            }
+                        </ul>
+                    }
+                }
+
+
+
                 <div class="form-group">
                     <label for="EMail">Email</label>
-                    <div class=" input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-at"></i></span>
-                        </div>
-                        <input asp-for="EMail" class="form-control" placeholder="Email" aria-describedby="basic-addon1" data-val="true" data-val-required="Email is required" data-val-maxlength-max="50" data-val-maxlength="Email Cannot exceed 50 characters" data-val-regex="Incorrect Email Adress" data-val-regex-pattern="^[\w-!$*%^\.]+@@([\w-]+\.)+[\w-]{2,4}$" />
-                    </div>
+
+                    <input asp-for="EMail" class="form-control shadow-sm" placeholder="Email" aria-describedby="basic-addon1" data-val="true" data-val-required="Email is required" data-val-maxlength-max="50" data-val-maxlength="Email Cannot exceed 50 characters" data-val-regex="Incorrect Email Adress" data-val-regex-pattern="^[\w-!$*%^\.]+@@([\w-]+\.)+[\w-]{2,4}$" />
+
                     <span asp-validation-for="EMail" class="text-danger" data-valmsg-for="EMail" data-valmsg-replace="true"></span>
 
 
@@ -54,22 +51,23 @@
 
                 <div class="form-group">
                     <label for="Password">Password</label>
-                    <input asp-for="Password" type="password" class="form-control" placeholder="Password" data-val-required="Password is required" data-val-maxlength-max="50" data-val-maxlength="Password Cannot exceed 50 characters" />
+                    <input asp-for="Password" type="password" class="form-control shadow-sm" placeholder="Password" data-val-required="Password is required" data-val-maxlength-max="50" data-val-maxlength="Password Cannot exceed 50 characters" />
                     <span asp-validation-for="Password" class="text-danger" data-valmsg-for="Password" data-valmsg-replace="true"></span>
                 </div>
 
-                <div class="form-group">
-                    <input type="submit" value="Submit" class="btn btn-primary" />
+
+                <div class="form-group d-flex justify-content-center py-5">
+                    <input type="submit" value=" Sign In " class="btn btn-pink round" />
                 </div>
 
             </form>
         </div>
 
         <div class="card-footer text-muted bg-white">
-            <p> Dont have an account yet</p>
+            <p><small> Dont have an account yet</small></p>
 
             <p>
-                <a asp-controller="Registration" asp-action="RegisterUser">Click Here to Register</a>
+                <a asp-controller="Registration" asp-action="RegisterUser"><small> Click Here to Register</small></a>
             </p>
         </div>
 
