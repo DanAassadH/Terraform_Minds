@@ -38,7 +38,7 @@
         }
 
     /* ------------------------------------- Pink Button------------------------------------------------*/
-    .btn-success {
+    .btn-success:-moz-read-only {
         background: #FFDA53;
         color: #2F2F75;
     }

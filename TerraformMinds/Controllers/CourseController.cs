@@ -70,12 +70,12 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
-        public IActionResult Register (int courseID)
+        public IActionResult Register (int courseID, int userIdentity)
         {
 
             try
             {
-                RegisterCourse(courseID);
+                RegisterCourse(courseID, userIdentity);
                 ViewBag.Message = $"Course successfully  registered";
                 ViewBag.CourseDetails = GetCourseByID(courseID);
             }
@@ -160,7 +160,7 @@ namespace TerraformMinds.Controllers
             }
         }
 
-        public void RegisterCourse(int courseID)
+        public void RegisterCourse(int courseID, int userIndentity)
         {
             using (LearningManagementContext context = new LearningManagementContext())
             {
@@ -169,7 +169,7 @@ namespace TerraformMinds.Controllers
                 if(User.Identity.Name == null)
                 {
                     exception.ValidationExceptions.Add(new Exception("Please sign-in to enroll"));
-                    throw exception;
+                    //throw exception;
                 }
                 else
                 {
@@ -178,14 +178,14 @@ namespace TerraformMinds.Controllers
                     if (userRoll == null)
                     {
                         exception.ValidationExceptions.Add(new Exception("You must be a student to enroll"));
-                        throw exception;
+                        //throw exception;
                     }
                     else
                     {
-                        if (context.Students.Any(x => x.CourseID == courseID))
+                        if (context.Students.Any(x => x.CourseID == courseID && x.UserID == int.Parse(User.Identity.Name)))
                         {
                             exception.ValidationExceptions.Add(new Exception("You have already enrolled for this course."));
-                            throw exception;
+                            //throw exception;
                         }
 
                         else
@@ -193,31 +193,21 @@ namespace TerraformMinds.Controllers
                             if (enrollCourse.CurrentCapacity >= enrollCourse.MaxCapacity)
                             {
                                 exception.ValidationExceptions.Add(new Exception("Sorry, the course you are registering for is already full"));
-                                throw exception;
+                                //throw exception;
                             }
                             else
                             {
-                                if (enrollCourse.StartDate < DateTime.Today)
+                                if (enrollCourse.EndDate <= DateTime.Today)
                                 {
-                                    exception.ValidationExceptions.Add(new Exception("Sorry, registration for that course is now closed"));
-                                    throw exception;
+                                    exception.ValidationExceptions.Add(new Exception("Sorry, that course has already ended."));
+                                    //throw exception;
                                 }
-
                                 else
                                 {
-                                    if (enrollCourse.EndDate <= DateTime.Today)
+                                    if(enrollCourse.StartDate == null)
                                     {
-                                        exception.ValidationExceptions.Add(new Exception("Sorry, that course has already ended."));
-                                        throw exception;
-                                    }
-
-                                    else
-                                    {
-                                        if(enrollCourse.StartDate == null)
-                                        {
-                                            exception.ValidationExceptions.Add(new Exception("The start date has yet to be determined.Please check back at a later date"));
-                                            throw exception;
-                                        }
+                                        exception.ValidationExceptions.Add(new Exception("The start date has yet to be determined.Please check back at a later date"));
+                                        //throw exception;
                                     }
                                 }
                             }
