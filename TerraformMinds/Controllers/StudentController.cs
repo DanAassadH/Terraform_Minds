@@ -71,6 +71,7 @@ namespace TerraformMinds.Controllers
         
             try
             {
+                ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
                 ViewBag.SingleCourseDetail = GetCourseDetailsByID(id);
                 if (ViewBag.SingleCourseDetail != null)
                 {
