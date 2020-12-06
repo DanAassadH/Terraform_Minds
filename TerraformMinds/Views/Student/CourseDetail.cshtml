@@ -67,9 +67,9 @@
 
             @if (ViewBag.SingleCourseDetail != null)
             {
-                <div class="card m-5 shadow-lg" >
+                <div class="card m-5 shadow-lg">
 
-                    <div class="card-header bg-@(ViewBag.SingleCourseDetail.Subject) text-right">
+                    <div class="card-header bg-@(ViewBag.SingleCourseDetail.Subject)">
 
                         <h2 class="card-text"> @(ViewBag.SingleCourseDetail.Subject)</h2>
 
@@ -78,7 +78,7 @@
 
                     <div class="card-body">
                         <h4 class="card-title">@(ViewBag.SingleCourseDetail.CourseName)</h4>
-                     
+
                         <p class="card-text">@(ViewBag.SingleCourseDetail.CourseDescription)</p>
 
                         <hr class="my-1">
@@ -98,58 +98,65 @@
                         </div>
 
                     </div>
-                    
+
                 </div>
 
                 @*-------------------------------------- Assignments Info -------------------------------------------------*@
 
 
+                <div class="card m-5 shadow-lg">
+
+                    <div class="card-header bg-@(ViewBag.SingleCourseDetail.Subject)">
+
+                        <h4 class="card-text">List of Assignments</h4>
+
+                    </div>
 
 
+                    <div class="card-body">
 
 
+                        @if (ViewBag.AssignmentsForCourse != null && ViewBag.AssignmentsForCourse.Count > 0)
+                        {
+                            <table class="table border-0">
+                                <thead>
+                                    <tr>
+                                        <th>Due Date</th>
+                                        <th>Total Score</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                     
+                                    @foreach (Assignment assignment in ViewBag.AssignmentsForCourse)
+                                    {
+                                        <tr>
+                                            <td>@assignment.DueDate.ToLongDateString()</td>
+                                            <td>@assignment.TotalScore</td>
 
 
+                                            <td>
+                                                @if (ViewBag.SubmittedIds.Contains(assignment.ID))
+                                                {
+                                                    <p><small>Submitted</small></p>
+                                                }
+                                                else
+                                                {
+                                                    <a class="teal-text" asp-controller="Student" asp-action="AssignmentAttempt" asp-route-id="@assignment.ID">Attempt</a>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                            </table>
 
-                <h5> Assignments in this course</h5>
+                        }
+                        else
+                        {
+                            <p><strong>No available assignments for this  course yet</strong></p>
+                        }
 
-                @if (ViewBag.AssignmentsForCourse != null && ViewBag.AssignmentsForCourse.Count > 0)
-                {
-                    <table class="table">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Question</th>
-                                <th>Due Date</th>
-                                <th>Total Score</th>
-                                <th>Actions</th>
-                            </tr>
-                            @foreach (Assignment assignment in ViewBag.AssignmentsForCourse)
-                            {
-                                <tr>
-                                    <td>@assignment.Question</td>
-                                    <td>@assignment.DueDate.ToLongDateString()</td>
-                                    <td>@assignment.TotalScore</td>
+                    </div>
 
+                </div>
 
-                                    <td>
-                                        @if (ViewBag.SubmittedIds.Contains(assignment.ID))
-                                        {
-                                            <p>Submitted</p>
-                                        }
-                                        else
-                                        {
-                                            <a asp-controller="Student" asp-action="AssignmentAttempt" asp-route-id="@assignment.ID">Attempt</a>
-                                        }
-                                    </td>
-                                </tr>
-                            }
-                    </table>
-
-                }
-                else
-                {
-                    <p><strong>No Assignments for this  course yet</strong></p>
-                }
 
                 @*-------------------------------------- Submitted Assignments Info -------------------------------------------------*@
 
