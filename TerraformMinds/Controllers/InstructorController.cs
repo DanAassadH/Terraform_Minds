@@ -16,10 +16,24 @@ namespace TerraformMinds.Controllers
     public class InstructorController : Controller
     {
         /* ------------------------------------------Actions -----------------------------------------------------*/
+        /// <summary>
+        /// Action to display signed in user's dashboard
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "Instructor")]
         public IActionResult InstructorDashboard()
         {
-            // return RedirectToAction("CourseList");
+            try
+            {
+                ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
+            }
+            catch (ValidationException e)
+            {
+                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Exception = e;
+                ViewBag.Error = true;
+            }
+
             return View();
 
         }
@@ -31,11 +45,12 @@ namespace TerraformMinds.Controllers
         /// <returns> View() </returns>
 
         [Authorize(Roles = "Instructor")]
-        public IActionResult CourseList(string id)
+        public IActionResult CourseList()
         {
             try
             {
-                ViewBag.InstructorsCourses = GetCourseByInstructorID(id);
+                string userId = User.Identity.Name;
+                ViewBag.InstructorsCourses = GetCourseByInstructorID(userId);
             }
             catch (ValidationException e)
             {

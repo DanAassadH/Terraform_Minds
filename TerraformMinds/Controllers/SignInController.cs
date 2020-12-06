@@ -5,7 +5,7 @@ using TerraformMinds.Models;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Text;
 using TerraformMinds.Models.Exceptions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
@@ -22,6 +22,12 @@ namespace TerraformMinds.Controllers
 
         }
 
+        /// <summary>
+        /// Action to sign in already existing user and send them to appropriate dashboard according to their role
+        /// </summary>
+        /// <param name="EMail"></param>
+        /// <param name="Password"></param>
+        /// <returns></returns>
         public IActionResult SignIn(string EMail, string Password)
         {
             ClaimsIdentity identity = null;
@@ -94,7 +100,7 @@ namespace TerraformMinds.Controllers
                     }
                     else
                     {
-                        ViewBag.Message = "The email or password you've entered is incorrect. Please try again.d email ";
+                        ViewBag.Message = "The email or password you've entered is incorrect. Please try again";
                     }
 
                 }
@@ -112,7 +118,10 @@ namespace TerraformMinds.Controllers
         }
 
         /* ----------------------------------------------- Signout ----------------------------------------*/
-
+        /// <summary>
+        /// Action to signout user and redirect them to home page
+        /// </summary>
+        /// <returns></returns>
        public IActionResult Signout()
         {
             var login = HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
