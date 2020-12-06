@@ -19,8 +19,8 @@
     <header>
 
 
-        <!--Navbar -->
-        <nav class="mb-1 navbar navbar-expand-lg navbar-dark default-color ">
+        <!-- Start Navbar -->
+        <nav class="mb-0 navbar navbar-expand-lg navbar-dark default-color ">
 
             <a class="navbar-brand" asp-controller="Home" asp-action="Index"><img src="/images/terraform-minds-logo.png" height="50" alt="Terraform Minds Logo"></a>
 
@@ -58,7 +58,7 @@
                     }
                     else
                     {
-                        /* Display Dashboard according to user role*/
+                        /*---------------------------Display Dashboard according to user role----------------------*/
                         if (User.IsInRole("Administrator"))
                         {
                             <li class="nav-item">
@@ -84,28 +84,26 @@
 
             </div>
         </nav>
-        <!--/.Navbar -->
-
-
+        <!-- End Navbar -->
     </header>
-    <div class="container">
-        <main role="main" class="p-0 m-0">
+
+
+    <div class="p-0 m-0 border-0">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="text-muted mt-5">
-
-
+    <!-- Start Navbar -->
+    <footer class="text-muted mt-0">
         <div class="card text-left border-0">
             <img class="card-img" src="~/images/forrest-lake-footer.png" alt="Forrest with a lake">
             <div class="card-img-overlay ">
-                &copy; 2020 - TerraformMinds - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                &copy; 2020 - TerraformMinds - <a asp-area="" asp-controller="Home" asp-action="Privacy">About Us</a>
             </div>
         </div>
-
     </footer>
-
+    <!-- Start Navbar -->
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

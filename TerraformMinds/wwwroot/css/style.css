@@ -1,14 +1,14 @@
 ﻿/*---------------------------------------- General Styles-------------------------------------------*/
-
-
 /* ------------------------------------- Yellow Button------------------------------------------------*/
+/** {
+    outline: 1px solid #FF0000;
+}*/
 
-
-    .btn {
-        padding: 5px 15px;
-        border: 0 none;
-        letter-spacing: 1px;
-    }
+.btn {
+    padding: 5px 15px;
+    border: 0 none;
+    letter-spacing: 1px;
+}
 
 
 
@@ -20,110 +20,148 @@
     }
 }
 
-        .btn:focus, .btn:active:focus, .btn.active:focus {
-            outline: 0 none;
-        }
+.btn:focus, .btn:active:focus {
+    outline: 0 none;
+}
 
-    .round {
-        border-radius: 30px;
+.round {
+    border-radius: 30px;
+}
+
+.btn-yellow {
+    background: #FFDA53;
+    color: #2F2F75;
+    width: 250px;
+}
+
+    .btn-yellow:hover, .btn-yellow:focus, .btn-yellow:active, .btn-yellow:active:focus {
+        background: #FFE070;
+        box-shadow: 0px 5px 10px #E3AEE1;
+        color: #434381;
     }
 
-    .btn-primary {
-        background: #FFDA53;
-        color: #2F2F75;
-    }
+/* ------------------------------------- Pink Button------------------------------------------------*/
+.btn-pink {
+    background: #E44485;
+    color: #FFF;
+    width: 250px;
+}
 
-        .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
-            background: #E9B90A;
-        }
+
+    .btn-pink:hover, .btn-pink:focus, .btn-pink:active, .btn-pink.active {
+        background: #E35790;
+        box-shadow: 0px 5px 10px #E3AEE1;
 
     /* ------------------------------------- Pink Button------------------------------------------------*/
-    .btn-success:-moz-read-only {
-        background: #FFDA53;
-        color: #2F2F75;
+
     }
 
-        .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open > .dropdown-toggle.btn-success {
-            background: #FBD445;
-        }
+/* ------------------------------------- Dashboard ------------------------------------------------*/
+.border-8 {
+    border-width: 0px !important;
+}
 
 
+@media screen and ( min-width: 768px) {
+    .border-8 {
+        border-width: 8px !important;
+        border-color: #2F2F75 !important;
+    }
+}
 
 
-    /*-----------------------------------------Nav Bar ----------------------------------------------------*/
+/*----------------------------------------- Text with teal color ----------------------------------------------------*/
 
+.teal-text {
+    color: #07769E !important;
+}
 
-    .navbar {
-        min-height: 90px;
-        background-color: #2F2F75;
+    .teal-text:hover {
+        color: #5E9AC1 !important;
     }
 
-    .navbar-nav .nav-item .nav-link {
-        color: #D8EBF6;
-        font-size: 20px;
+
+/*----------------------------------------- Card Header colors accourding to course sbujects---------------------------*/
+.bg-English {
+    background-color: #E299BA;
+}
+
+.bg-Math {
+    background-color: #A2D4DC;
+}
+
+.bg-Science {
+    background-color: #838AC0;
+}
+
+
+/*-----------------------------------------Nav Bar ----------------------------------------------------*/
+
+
+.navbar {
+    min-height: 90px;
+    background-color: #2F2F75;
+}
+
+.navbar-nav .nav-item .nav-link {
+    color: #D8EBF6;
+    font-size: 20px;
+}
+
+
+    .navbar-nav .nav-item .nav-link:hover {
+        color: #49BCD9;
     }
 
 
-        .navbar-nav .nav-item .nav-link:hover {
-            color: #49BCD9;
-        }
-
-
-    /*---------------------------------------- Home Page Styles-------------------------------------------*/
-
-    /*-----------------------------------------General---------------------------------------------*/
-
+/*---------------------------------------- Home Page Styles-------------------------------------------*/
 
 h1, h2, h3, h4, h5 {
     color: #2F2F75;
 }
 
 
-    body {
-        font-weight: 400;
+body {
+    font-weight: 400;
+}
+
+    body p {
+        font-size: 1.25rem;
     }
 
-        body p {
-            font-size: 1.25rem;
-        }
 
-    /*home-cards*/
+/*------------------------------------------- Counters -------------------------------------------------------*/
 
+.site-cards {
+    margin-bottom: 1rem !important;
+}
 
-    /*site-cards*/
+.teacher-count {
+    background-color: #A2D4DC;
+}
 
-    .site-cards, .banner {
-        margin-bottom: 1rem !important;
-    }
+.course-count {
+    background-color: #8389C0;
+}
 
-    .teacher-count {
-        background-color: #A2D4DC;
-    }
+.student-count {
+    background-color: #E399BA;
+}
 
-    .course-count {
-        background-color: #8389C0;
-    }
-
-    .student-count {
-        background-color: #E399BA;
-    }
-
-    .teacher-count, .course-count, .student-count {
-        padding-top: 10px;
-        display: flex;
-        flex-wrap: wrap;
-        text-align: center;
-    }
-
-        .teacher-count img, .course-count img, .student-count img {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
+.teacher-count, .course-count, .student-count {
+    padding-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+}
+.teacher-count img, .course-count img, .student-count img {
+     display: block;
+     margin-left: auto;
+     margin-right: auto;
+}
 
 .teacher-circle, .course-circle, .student-circle {
     border-radius: 100%;
     width: 125px;
     height: 125px;
-
 }

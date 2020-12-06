@@ -13,15 +13,30 @@ namespace TerraformMinds.Controllers
     public class StudentController : Controller
     {
         /* ------------------------------------------Actions -----------------------------------------------------*/
+        /// <summary>
+        /// Action to display Signed In User dashboard
+        /// </summary>
+        /// <returns>main dashboard view </returns>
         [Authorize(Roles = "Student")]
         public IActionResult StudentDashboard()
         {
+            try
+            {
+                ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
+            }
+            catch (ValidationException e)
+            {
+                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Exception = e;
+                ViewBag.Error = true;
+            }
+
             return View();
 
         }
 
         /// <summary>
-        /// This is the Action for course List page for individual student , it shows that how many courses that student has
+        /// This is the Action for course List page for individual student , it shows that how many courses that student is enrolled in
         /// </summary>
         /// <param name="id"></param>
         /// <returns> View() </returns>
@@ -31,6 +46,7 @@ namespace TerraformMinds.Controllers
         {
             try
             {
+                ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
                 ViewBag.StudentsCourses = GetCourseByStudentID();
             }
             catch (ValidationException e)
@@ -44,7 +60,7 @@ namespace TerraformMinds.Controllers
         }
 
         /// <summary>
-        /// Action for Course details page this page gives detail about Course and its assignments
+        /// Action for Course details page this page gives detail about a Course and its assignments 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -55,6 +71,7 @@ namespace TerraformMinds.Controllers
         
             try
             {
+                ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
                 ViewBag.SingleCourseDetail = GetCourseDetailsByID(id);
                 if (ViewBag.SingleCourseDetail != null)
                 {
@@ -100,11 +117,14 @@ namespace TerraformMinds.Controllers
 
             try
             {
+                ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
+
                 if (Request.Method == "POST")
                 {
                     SubmitAssignment(id, Answer, CourseID);
-                    ViewBag.Message = $"Successfully Submitted Assignment!";
+                    ViewBag.SuccessMessage = $"Successfully Submitted Assignment!";
                     ViewBag.SubmitYes = true;
+                    ViewBag.BackCourseID = CourseID;
                 }
                 else
                 {
@@ -114,7 +134,7 @@ namespace TerraformMinds.Controllers
             }
             catch (ValidationException e)
             {
-                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Message = "There exist problem(s) with your submission";
                 ViewBag.Exception = e;
                 ViewBag.Error = true;
             }
@@ -174,7 +194,7 @@ namespace TerraformMinds.Controllers
             // check if id is non integer
             if (!int.TryParse(id, out parsedId))
             {
-                exception.ValidationExceptions.Add(new Exception("Invalid ID , Go back to main Student Dashboard and select course again"));
+                exception.ValidationExceptions.Add(new Exception("Course Details Not Available. Please go back to Main dashboard and try again"));
             }
             else
             {
@@ -322,13 +342,29 @@ namespace TerraformMinds.Controllers
         /// <returns>student Id</returns>
         public static int GetStudentId(string courseID , string userID)
         {
-            int id;
+            ValidationException exception = new ValidationException();
+            int id = -100 ; // setting a ID value that dont exist in database
+
+
             using (LearningManagementContext context = new LearningManagementContext())
             {
                Student studentID = context.Students.Where(x => x.CourseID == int.Parse(courseID) && x.UserID==int.Parse(userID)).SingleOrDefault();
 
-                id = studentID.ID;
+                if(studentID == null)
+                {
+                    exception.ValidationExceptions.Add(new Exception("Unable to access this record"));
+                }
+                else
+                {
+                    id = studentID.ID;
+                }              
             }
+
+            if (exception.ValidationExceptions.Count > 0)
+            {
+                throw exception;
+            }
+
             return id;
         }
 

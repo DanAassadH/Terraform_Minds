@@ -94,7 +94,7 @@ namespace TerraformMinds.Controllers
                     }
                     else
                     {
-                        ViewBag.Message = "Email and Password dont match";
+                        ViewBag.Message = "The email or password you've entered is incorrect. Please try again.d email ";
                     }
 
                 }
