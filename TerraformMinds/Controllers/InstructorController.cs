@@ -49,8 +49,8 @@ namespace TerraformMinds.Controllers
         {
             try
             {
-                string userId = User.Identity.Name;
-                ViewBag.InstructorsCourses = GetCourseByInstructorID(userId);
+                ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
+                ViewBag.InstructorsCourses = GetCourseByInstructorID(User.Identity.Name);
             }
             catch (ValidationException e)
             {
@@ -183,19 +183,18 @@ namespace TerraformMinds.Controllers
         /// <summary>
         /// This function grabs course List for individual instructor
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="UserId"></param>
         /// <returns>List of courses</returns>
-        public List<Course> GetCourseByInstructorID(string id)
+        public List<Course> GetCourseByInstructorID(string UserId)
         {
             ValidationException exception = new ValidationException();
             List<Course> instructorsCourses = null;
 
-            // Prevent user from accessing any other user's record
-            if (User.Identity.Name == id)
+            if (UserId!=null)
             {
                 using (LearningManagementContext context = new LearningManagementContext())
                 {
-                    instructorsCourses = context.Courses.Where(x => x.UserID == int.Parse(id)).ToList();
+                    instructorsCourses = context.Courses.Where(x => x.UserID == int.Parse(UserId)).ToList();
                 }
             }
             else
