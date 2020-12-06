@@ -202,14 +202,6 @@ namespace TerraformMinds.Controllers
                                     exception.ValidationExceptions.Add(new Exception("Sorry, that course has already ended."));
                                     //throw exception;
                                 }
-                                else
-                                {
-                                    if(enrollCourse.StartDate == null)
-                                    {
-                                        exception.ValidationExceptions.Add(new Exception("The start date has yet to be determined.Please check back at a later date"));
-                                        //throw exception;
-                                    }
-                                }
                             }
                         }
                     }
