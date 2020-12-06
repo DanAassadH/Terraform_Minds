@@ -90,37 +90,40 @@
 
                 }
 
-                <form action="/Instructor/AssignmentCreate" method="POST">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @if (ViewBag.AssignmentCreated != true)
+                {
+                    <form action="/Instructor/AssignmentCreate" method="POST">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <input type="hidden" name="id" value="@ViewBag.PassingCourseID" />
+                        <input type="hidden" name="id" value="@ViewBag.PassingCourseID" />
 
-                    <div class="form-group">
-                        <label for="Question">Question</label>
-                        <textarea asp-for="Question" class="form-control shadow-sm" placeholder="Type Assignment " data-val="true" data-val-required="Question Required !" data-val-maxlength-max="500" data-val-maxlength="Question Cannot exceed 500 characters"></textarea>
-                        <span asp-validation-for="Question" class="text-danger" data-valmsg-for="Question" data-valmsg-replace="true"></span>
-                    </div>
+                        <div class="form-group">
+                            <label for="Question">Question</label>
+                            <textarea asp-for="Question" class="form-control shadow-sm" placeholder="Type Assignment " data-val="true" data-val-required="Question Required !" data-val-maxlength-max="500" data-val-maxlength="Question Cannot exceed 500 characters"></textarea>
+                            <span asp-validation-for="Question" class="text-danger" data-valmsg-for="Question" data-valmsg-replace="true"></span>
+                        </div>
 
-                    <div class="form-group">
-                        <label asp-for="DueDate" class="control-label">Due Date</label>
-                        <input asp-for="DueDate" class="form-control shadow-sm" type="date" value="" data-val-range="Due Date Can not be before today" data-val-range-min="@DateTime.Now" />
-                        <span asp-validation-for="DueDate" class="text-danger" data-valmsg-for="DueDate" data-valmsg-replace="true"></span>
-                    </div>
+                        <div class="form-group">
+                            <label asp-for="DueDate" class="control-label">Due Date</label>
+                            <input asp-for="DueDate" class="form-control shadow-sm" type="date" value="" data-val-range="Due Date Can not be before today" data-val-range-min="@DateTime.Now" />
+                            <span asp-validation-for="DueDate" class="text-danger" data-valmsg-for="DueDate" data-valmsg-replace="true"></span>
+                        </div>
 
-                    <div class="form-group">
-                        <label asp-for="TotalScore" class="control-label">Total Score</label>
-                        <input asp-for="TotalScore" class="form-control shadow-sm" value="" data-val="true" data-val-required="Total Score Required" data-val-range="Enter Total Score between 0 and 100" data-val-range-max="100" data-val-range-min="0" />
-                        <span asp-validation-for="TotalScore" class="text-danger" data-valmsg-for="TotalScore"
-                              data-valmsg-replace="true"></span>
-                    </div>
+                        <div class="form-group">
+                            <label asp-for="TotalScore" class="control-label">Total Score</label>
+                            <input asp-for="TotalScore" class="form-control shadow-sm" value="" data-val="true" data-val-required="Total Score Required" data-val-range="Enter Total Score between 0 and 100" data-val-range-max="100" data-val-range-min="0" />
+                            <span asp-validation-for="TotalScore" class="text-danger" data-valmsg-for="TotalScore"
+                                  data-valmsg-replace="true"></span>
+                        </div>
 
-                    <div class="form-group">
-                        <input type="submit" value="Submit" class="btn btn-pink round" />
-                    </div>
+                        <div class="form-group">
+                            <input type="submit" value="Submit" class="btn btn-pink round" />
+                        </div>
 
 
-                </form>
-            </div>
+                    </form>
+                }
+                </div>
         </main>
         <!--End Main -->
     </div>

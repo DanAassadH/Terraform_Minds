@@ -110,6 +110,7 @@ namespace TerraformMinds.Controllers
                 {
                     CreateNewAssignment(Question, DueDate, TotalScore, id);
                     ViewBag.Message = $"Successfully Created Assignment!";
+                    ViewBag.AssignmentCreated = true;
                 }
             }
             catch (ValidationException e)
@@ -334,7 +335,8 @@ namespace TerraformMinds.Controllers
         }
 
         /// <summary>
-        /// Function to insert assignment values by instructor into assignment table
+        /// Function to insert assignment values by instructor into assignment table 
+        /// Validation # 1 : Due Date for assignment Cannot be before Course start date
         /// </summary>
         /// <param name="question"></param>
         /// <param name="dueDate"></param>
@@ -424,18 +426,22 @@ namespace TerraformMinds.Controllers
 
             }
 
-            if (exception.ValidationExceptions.Count > 0)
-            {
-                throw exception;
-            }
-
 
             if (flag == false)
             {
 
                 using (LearningManagementContext context = new LearningManagementContext())
                 {
+                    Course course = GetCourseDetailsByID(id);
 
+                    if(DateTime.Parse(dueDate) < course.StartDate)
+                    {
+                        exception.ValidationExceptions.Add(new Exception("Due date for an assignment cannot be before course start date"));
+                        flag = true;
+                    }
+
+                    if(flag == false)
+                    { 
                     // Add Values in assignment Table if all validations are passed
                     context.Assignments.Add(new Assignment()
                     {
@@ -446,9 +452,14 @@ namespace TerraformMinds.Controllers
 
                     });
                     context.SaveChanges();
-
+                    }
                 }
 
+            }
+
+            if (exception.ValidationExceptions.Count > 0)
+            {
+                throw exception;
             }
 
         }
