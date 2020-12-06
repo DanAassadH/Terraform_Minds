@@ -56,7 +56,7 @@
 
 
             <div class="jumbotron bg-white flex-row">
-                <h2 class="display-1">Course Detail</h2>
+                <h2 class="display-3">Course Detail</h2>
             </div>
 
             @if (ViewBag.Error != null)
@@ -173,68 +173,68 @@
                     @*--------------------------------------Assignments Information -------------------------------------------------*@
 
 
-            <div class="card m-5 shadow-lg">
+                    <div class="card m-5 shadow-lg">
 
-                <div class="card-header bg-@(ViewBag.SingleCourseDetail.Subject)">
+                        <div class="card-header bg-@(ViewBag.SingleCourseDetail.Subject)">
 
-                    <h4 class="card-text">Assignments</h4>
+                            <h4 class="card-text">Assignments</h4>
 
-                </div>
-
-
-                <div class="card-body">
+                        </div>
 
 
-                    @if (ViewBag.AssignmentsForCourse != null && ViewBag.AssignmentsForCourse.Count > 0)
-                    {
+                        <div class="card-body">
 
-                        <div class="card-deck">
 
-                            @foreach (Assignment assignment in ViewBag.AssignmentsForCourse)
+                            @if (ViewBag.AssignmentsForCourse != null && ViewBag.AssignmentsForCourse.Count > 0)
                             {
-                                <div class="card m-4 shadow-lg" style="min-width:200px; max-width: 220px;">
 
-                                    <div class="card-header text-right">
+                                <div class="card-deck">
 
-                                        <hp class="card-text"><small>Due Date : @assignment.DueDate.ToLongDateString()</small></hp>
+                                    @foreach (Assignment assignment in ViewBag.AssignmentsForCourse)
+                                    {
+                                        <div class="card m-4 shadow-lg" style="min-width:200px; max-width: 220px;">
 
-                                    </div>
+                                            <div class="card-header text-right">
+
+                                                <hp class="card-text"><small>Due Date : @assignment.DueDate.ToLongDateString()</small></hp>
+
+                                            </div>
 
 
-                                    <div class="card-body">
+                                            <div class="card-body">
 
-                                        <div class="text-right">
+                                                <div class="text-right">
 
-                                            <p class="card-text">
-                                                <small>Total Score : @assignment.TotalScore</small>
-                                            </p>
+                                                    <p class="card-text">
+                                                        <small>Total Score : @assignment.TotalScore</small>
+                                                    </p>
+                                                </div>
+
+                                                <hr class="my-1">
+
+                                                <p>Question : <small>@assignment.Question</small></p>
+
+                                            </div>
+
                                         </div>
-
-                                        <hr class="my-1">
-
-                                        <p>Question : <small>@assignment.Question</small></p>
-
-                                    </div>
+                                    }
 
                                 </div>
+
+                            }
+                            else
+                            {
+                                <p><strong>No Assignments for this  course yet</strong></p>
                             }
 
                         </div>
 
-                    }
-                    else
-                    {
-                        <p><strong>No Assignments for this  course yet</strong></p>
-                    }
-
-                </div>
-
-                <div class="card-footer text-muted text-right">
-                    <a class="btn btn-yellow round" asp-controller="Instructor" asp-action="AssignmentCreate" asp-route-id="@(ViewBag.SingleCourseDetail.ID)">
-                        Create New Assignment
-                    </a>
-                </div>
-            </div>
+                        <div class="card-footer text-muted text-right">
+                            <a class="btn btn-yellow round" asp-controller="Instructor" asp-action="AssignmentCreate" asp-route-id="@(ViewBag.SingleCourseDetail.ID)">
+                                Create New Assignment
+                            </a>
+                        </div>
+                    </div>
 
                 }@*-------------------------------------- End starting if -------------------------------------------------*@
 
