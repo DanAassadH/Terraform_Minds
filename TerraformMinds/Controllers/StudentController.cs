@@ -46,6 +46,7 @@ namespace TerraformMinds.Controllers
         {
             try
             {
+                ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
                 ViewBag.StudentsCourses = GetCourseByStudentID();
             }
             catch (ValidationException e)

@@ -3,89 +3,156 @@
     ViewData["Title"] = "CourseList";
 }
 
-<h1>Course List For Students</h1>
-
-<ul>
-    <li>
-        <a asp-action="StudentDashboard" asp-controller="Student">
-            Main
-        </a>
-    </li>
-    <li>
-        <a asp-controller="Student" asp-action="CourseList">
-            My Courses
-        </a>
-    </li>
-    <li>
-        <a asp-action="Signout" asp-controller="SignIn">
-            Signout
-        </a>
-    </li>
-
-</ul>
 
 
-@if (ViewBag.Error != null)
-{
-    <ul>
-        @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
-        {
-            <li class="alert-danger">@(e.Message)</li>
-        }
-    </ul>
-}
 
 
-<section>
-      
-        @if (ViewBag.StudentsCourses != null && ViewBag.StudentsCourses.Count > 0)
-        {
-            <div class="card-columns">
+<div class="container-fluid">
+    <div class="row min-vh-100 flex-column flex-md-row">
 
-                @foreach (Course course in ViewBag.StudentsCourses)
+        <!--Start Side panel-->
+        <aside class="col-12 col-md-3 p-0 bg-light border-right border-8 ">
+            <nav class="navbar navbar-expand navbar-light bg-light flex-md-column flex-row align-items-md-center p-0  ">
+                <div class="collapse navbar-collapse p-0 py-md-5 ">
+                    <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-around">
+                        <li class="nav-item  py-md-2">
+
+                            <h5> <span class="d-none d-md-inline font-weight-bold">Dashboard Menu</span></h5>
+
+                        </li>
+
+                        <li class="nav-item  py-md-2">
+                            <a class="nav-link teal-text" asp-action="StudentDashboard" asp-controller="Student"><i class="fas fa-house-user"></i> <span class="d-none d-md-inline">Main</span></a>
+                        </li>
+
+                        <li class="nav-item  py-md-2">
+
+                            <a class="nav-link teal-text" asp-controller="Student" asp-action="CourseList" asp-route-id="@User.Identity.Name"><i class="fas fa-book"></i> <span class="d-none d-md-inline"> My Courses</span></a>
+                        </li>
+
+                        <li class="nav-item  py-md-2">
+
+                            <a class="nav-link teal-text" asp-action="Signout" asp-controller="SignIn"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline">Sign Out</span></a>
+                        </li>
+
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+        <!--End Side panel-->
+        <!--Start Main -->
+        <main class="col py-3 flex-grow-1">
+
+            <div class="text-right mt-4 ">
+                <h3>Welcome @ViewBag.UserInformation.FirstName @ViewBag.UserInformation.FirstName</h3>
+            </div>
+
+
+
+
+            <div class="jumbotron bg-white flex-row">
+                <h2 class="display-3">Course List</h2>
+
+                <hr class="my-4">
+                <p>Here you will find list of all the courses you are enrolled in</p>
+            </div>
+
+
+            @if (ViewBag.Error != null)
+            {
+                <ul class="list-group">
+                    @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+                    {
+                        <li class="list-group-item list-group-item-danger">@(e.Message)</li>
+                    }
+                </ul>
+            }
+
+
+
+            <div class="container">
+
+                @if (ViewBag.StudentsCourses != null && ViewBag.StudentsCourses.Count > 0)
                 {
-                    <div class="card">
-                        <img class="card-img-top" src="..." alt="Card image cap">
+                    <div class="card-deck">
 
-                        <div class="card-body">
-                            <h4 class="card-title">@(course.CourseName)</h4>
-                            <h5>@(course.Subject)</h5>
-                            <p class="card-text">@(course.CourseDescription)</p>
-                            <p class="card-text">
-                                @(course.GradeLevel)
-                            </p>
+                        @foreach (Course course in ViewBag.StudentsCourses)
+                        {
+                            <div class="card m-4 shadow-lg" style="min-width:300px; max-width: 320px;">
 
-                            <p>Instructor : @(course.User.FirstName)  @(course.User.LastName)</p>
-                            <p class="card-text">
-                                @((course.StartDate == null ? "TBA" : ((DateTime)course.StartDate).ToLongDateString()))
-                            </p>
-                            <p class="card-text">
-                                @((course.EndDate == null ? "TBA" : ((DateTime)course.EndDate).ToLongDateString()))
-                            </p>
+                                <div class="card-header bg-@(course.Subject) text-right">
 
-                        </div>
-                        <div class="card-footer text-muted">
-                            <a asp-controller="Student" asp-action="CourseDetail"
-                               asp-route-id="@(course.ID)">
-                                Details
-                            </a>
-                            <p>@(course.ID)</p>
-                        </div>
+                                    <h2 class="card-text">@(course.Subject)</h2>
+
+                                </div>
+
+
+                                <div class="card-body">
+                                    <h4 class="card-title">@(course.CourseName)</h4>
+                                    <p><small>Taught By : @(course.User.FirstName)  @(course.User.LastName)</small></p>
+                                    <p class="card-text">@(course.CourseDescription)</p>
+
+                                    <hr class="my-1">
+
+                                    <div class="text-right">
+                                        <p class="card-text">
+                                            <small>
+                                                @(course.GradeLevel)
+                                            </small>
+                                        </p>
+                                        <p class="card-text">
+                                            <small>Start date : @((course.StartDate == null ? "TBA" : ((DateTime)course.StartDate).ToLongDateString()))</small>
+                                        </p>
+                                        <p class="card-text">
+                                            <small>End date : @((course.EndDate == null ? "TBA" : ((DateTime)course.EndDate).ToLongDateString()))</small>
+                                        </p>
+                                    </div>
+
+                                </div>
+                                <div class="card-footer text-muted text-right">
+                                    <a class="teal-text" asp-controller="Student" asp-action="CourseDetail"
+                                       asp-route-id="@(course.ID)">
+                                        Details
+                                    </a>
+
+                                </div>
+
+                            </div>
+                        }
 
                     </div>
+
+
+                }
+
+                else
+                {
+                    <p class="my-5">You are not enrolled in any course yet. Go to course page and select one of the course you are interested in</p>
                 }
 
             </div>
 
 
-        }
 
-        else
-        {
-            <p>You dont have any Courses yet</p>
-        }
 
-</section>
+
+
+
+        </main>
+        <!--End Main -->
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
 
 
 

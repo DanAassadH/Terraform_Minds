@@ -4,11 +4,11 @@
     outline: 1px solid #FF0000;
 }*/
 
-    .btn {
-        padding: 5px 15px;
-        border: 0 none;
-        letter-spacing: 1px;
-    }
+.btn {
+    padding: 5px 15px;
+    border: 0 none;
+    letter-spacing: 1px;
+}
 
 
 
@@ -20,13 +20,13 @@
     }
 }
 
-        .btn:focus, .btn:active:focus {
-            outline: 0 none;
-        }
+.btn:focus, .btn:active:focus {
+    outline: 0 none;
+}
 
-    .round {
-        border-radius: 30px;
-    }
+.round {
+    border-radius: 30px;
+}
 
 .btn-yellow {
     background: #FFDA53;
@@ -40,14 +40,14 @@
         color: #434381;
     }
 
-    /* ------------------------------------- Pink Button------------------------------------------------*/
+/* ------------------------------------- Pink Button------------------------------------------------*/
 .btn-pink {
     background: #E44485;
     color: #FFF;
-    width:250px;
+    width: 250px;
 }
 
-    .btn-pink:hover, .btn-pink:focus, .btn-pink:active, .btn-pink.active, .open > .dropdown-toggle.btn-pink {
+    .btn-pink:hover, .btn-pink:focus, .btn-pink:active, .btn-pink.active {
         background: #E35790;
         box-shadow: 0px 5px 10px #E3AEE1;
     }
@@ -73,79 +73,91 @@
 }
 
     .teal-text:hover {
-        color: #E44485 !important;
+        color: #5E9AC1 !important;
     }
 
 
-    /*-----------------------------------------Nav Bar ----------------------------------------------------*/
+/*----------------------------------------- Card Header colors accourding to course sbujects---------------------------*/
+.bg-English {
+    background-color: #E299BA;
+}
+
+.bg-Math {
+    background-color: #A2D4DC;
+}
+
+.bg-Science {
+    background-color: #838AC0;
+}
 
 
-    .navbar {
-        min-height: 90px;
-        background-color: #2F2F75;
+/*-----------------------------------------Nav Bar ----------------------------------------------------*/
+
+
+.navbar {
+    min-height: 90px;
+    background-color: #2F2F75;
+}
+
+.navbar-nav .nav-item .nav-link {
+    color: #D8EBF6;
+    font-size: 20px;
+}
+
+
+    .navbar-nav .nav-item .nav-link:hover {
+        color: #49BCD9;
     }
 
-    .navbar-nav .nav-item .nav-link {
-        color: #D8EBF6;
-        font-size: 20px;
-    }
 
-
-        .navbar-nav .nav-item .nav-link:hover {
-            color: #49BCD9;
-        }
-
-
-    /*---------------------------------------- Home Page Styles-------------------------------------------*/
+/*---------------------------------------- Home Page Styles-------------------------------------------*/
 
 h1, h2, h3, h4, h5 {
     color: #2F2F75;
 }
 
 
-    body {
-        font-weight: 400;
-    }
+body {
+    font-weight: 400;
+}
 
-        body p {
-            font-size: 1.25rem;
-        }
+    body p {
+        font-size: 1.25rem;
+    }
 
 
 /*------------------------------------------- Counters -------------------------------------------------------*/
 
-.site-cards,{
+.site-cards {
     margin-bottom: 1rem !important;
 }
 
-    .teacher-count {
-        background-color: #A2D4DC;
-    }
+.teacher-count {
+    background-color: #A2D4DC;
+}
 
-    .course-count {
-        background-color: #8389C0;
-    }
+.course-count {
+    background-color: #8389C0;
+}
 
-    .student-count {
-        background-color: #E399BA;
-    }
+.student-count {
+    background-color: #E399BA;
+}
 
-    .teacher-count, .course-count, .student-count {
-        padding-top: 10px;
-        display: flex;
-        flex-wrap: wrap;
-        text-align: center;
-    }
-
-        .teacher-count img, .course-count img, .student-count img {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
+.teacher-count, .course-count, .student-count {
+    padding-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+}
+.teacher-count img, .course-count img, .student-count img {
+     display: block;
+     margin-left: auto;
+     margin-right: auto;
+}
 
 .teacher-circle, .course-circle, .student-circle {
     border-radius: 100%;
     width: 125px;
     height: 125px;
-
 }
