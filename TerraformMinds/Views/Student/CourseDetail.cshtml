@@ -125,7 +125,7 @@
                                         <th>Total Score</th>
                                         <th>Actions</th>
                                     </tr>
-                                     
+
                                     @foreach (Assignment assignment in ViewBag.AssignmentsForCourse)
                                     {
                                         <tr>
@@ -150,7 +150,7 @@
                         }
                         else
                         {
-                            <p><strong>No available assignments for this  course yet</strong></p>
+                            <p class=><strong>No available assignments for this  course yet</strong></p>
                         }
 
                     </div>
@@ -160,37 +160,64 @@
 
                 @*-------------------------------------- Submitted Assignments Info -------------------------------------------------*@
 
-                <h5> Submitted Assignments</h5>
+               
+        <div class="card m-5 shadow-lg">
+
+            <div class="card-header bg-@(ViewBag.SingleCourseDetail.Subject)">
+
+                <h4 class="card-text">Submitted Assignments</h4>
+
+            </div>
+
+
+            <div class="card-body">
+
 
                 @if (ViewBag.SubmittedAssignments != null && ViewBag.SubmittedAssignments.Count > 0)
                 {
-                    <table class="table">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Question</th>
-                                <th>Due Date</th>
-                                <th>Total Score</th>
-                                <th>Date Submitted</th>
-                                <th>Answer</th>
-                                <th>Score obtained</th>
-                                <th>Remarks</th>
-                            </tr>
-                            @foreach (Submit assignment in ViewBag.SubmittedAssignments)
-                            {
-                                <tr>
-                                    <td>@assignment.Assignment.Question</td>
-                                    <td>@assignment.Assignment.DueDate.ToLongDateString()</td>
-                                    <td>@assignment.Assignment.TotalScore</td>
 
-                                    <td>@assignment.DateSubmitted.ToLongDateString()</td>
-                                    <td>@assignment.Answer</td>
-                                    <td>@assignment.ScoreObtained</td>
-                                    <td>@assignment.Remarks</td>
+                    <div class="card-deck">
+
+                        @foreach (Submit assignment in ViewBag.SubmittedAssignments)
+                        {
+                            <div class="card m-4 shadow-lg" style="min-width:280px; max-width: 300px;">
+
+                                <div class="card-header text-right">
+
+                                    @if (assignment.ScoreObtained == null)
+                                    {
+                                        <h5 class="card-text">To Be Marked <i class="fas fa-paperclip"></i></h5>
+                                    }
+                                    else
+                                    {
+                                     <h5 class="card-text">Score Obtained @assignment.ScoreObtained / @assignment.Assignment.TotalScore</h5>
+                                    }
+                                </div>
 
 
-                                </tr>
-                            }
-                    </table>
+                                <div class="card-body">
+                                    <h4 class="card-title"><strong>Question : </strong>@assignment.Assignment.Question</h4>
+                                    <p><strong>Answer : </strong><small> @assignment.Answer</small></p>
+                                    <p class="card-text"><strong>Instructors remarks : </strong><small>@assignment.Remarks</small></p>
+
+                                    <hr class="my-1">
+
+                                    <div class="text-right">
+
+                                        <p class="card-text">
+                                            <small>Date Submitted : @assignment.DateSubmitted.ToLongDateString()</small>
+                                        </p>
+                                        <p class="card-text">
+                                            <small>Date Due : @assignment.Assignment.DueDate.ToLongDateString()</small>
+                                        </p>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
 
                 }
                 else
@@ -198,12 +225,12 @@
                     <p><strong>No submitted assignment yet</strong></p>
                 }
 
-
-
-            }
+            </div>
+        </div>
+            } @*-------------------------------------- End starting if -------------------------------------------------*@
             else
             {
-                <p>Course Details Not Available. Please go back to Main and try again</p>
+            <h3 class="ml-5">Course Details Not Available. Please go back to Main and try again</h3>
             }
 
 
@@ -211,7 +238,7 @@
 
         </div>
 
-        </main>
+</main>
         <!--End Main -->
     </div>
 </div>
