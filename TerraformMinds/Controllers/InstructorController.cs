@@ -72,6 +72,7 @@ namespace TerraformMinds.Controllers
         {
             try
             {
+                ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
                 ViewBag.SingleCourseDetail = GetCourseDetailsByID(id);
                 if(ViewBag.SingleCourseDetail != null)
                 {
@@ -82,7 +83,7 @@ namespace TerraformMinds.Controllers
             }
             catch (ValidationException e)
             {
-                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Message = "There exist problem(s) with your submission";
                 ViewBag.Exception = e;
                 ViewBag.Error = true;
             }

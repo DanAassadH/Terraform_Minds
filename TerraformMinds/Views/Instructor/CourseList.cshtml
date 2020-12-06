@@ -144,7 +144,7 @@
 
             else
             {
-                <p class="my-5">You dont have any Courses yet</p>
+        <p class="my-5">You dont have any assigned Courses  yet</p>
             }
 
         </div>    <!--End Container -->
@@ -155,69 +155,6 @@
 </div>
 
 
-
-
-
-
-
-<section>
-
-    @if (ViewBag.InstructorsCourses != null && ViewBag.InstructorsCourses.Count > 0)
-    {
-        <div class="card-columns">
-
-            @foreach (Course course in ViewBag.InstructorsCourses)
-            {
-                <div class="card">
-                    <img class="card-img-top" src="..." alt="Card image cap">
-
-                    <div class="card-body">
-                        <h4 class="card-title">@(course.CourseName)</h4>
-                        <h5>@(course.Subject)</h5>
-                        <p class="card-text">@(course.CourseDescription)</p>
-                        <p class="card-text">
-                            @(course.GradeLevel)
-                        </p>
-                        <p class="card-text">
-                            @((course.StartDate == null ? "TBA" : ((DateTime)course.StartDate).ToLongDateString()))
-                        </p>
-                        <p class="card-text">
-                            @((course.EndDate == null ? "TBA" : ((DateTime)course.EndDate).ToLongDateString()))
-                        </p>
-
-                        @if (course.CurrentCapacity == course.MaxCapacity)
-                        {
-                            <p>FULL</p>
-                        }
-                        else
-                        {
-                            <p>@(course.CurrentCapacity + "/" + course.MaxCapacity)</p>
-                        }
-
-
-                    </div>
-                    <div class="card-footer text-muted">
-                        <a asp-controller="Instructor" asp-action="CourseDetail"
-                           asp-route-id="@(course.ID)">
-                            Details
-                        </a>
-                        <p>@(course.ID)</p>
-                    </div>
-
-                </div>
-            }
-
-        </div>
-
-
-    }
-
-    else
-    {
-        <p>You dont have any Courses yet</p>
-    }
-
-</section>
 
 
 
