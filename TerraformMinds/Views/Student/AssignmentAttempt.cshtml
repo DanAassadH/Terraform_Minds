@@ -3,76 +3,143 @@
     ViewData["Title"] = "AssignmentAttempt";
 }
 
-<h1>Assignment Attempt</h1>
 
-<ul>
-    <li>
-        <a asp-action="StudentDashboard" asp-controller="Student">
-            Main
-        </a>
-    </li>
-    <li>
-        <a asp-controller="Student" asp-action="CourseList">
-            My Courses
-        </a>
-    </li>
-    <li>
-        <a asp-action="Signout" asp-controller="SignIn">
-            Signout
-        </a>
-    </li>
+<div class="container-fluid">
+    <div class="row min-vh-100 flex-column flex-md-row">
 
-</ul>
+        <!--Start Side panel-->
+        <aside class="col-12 col-md-3 p-0 bg-light border-right border-8 ">
+            <nav class="navbar navbar-expand navbar-light bg-light flex-md-column flex-row align-items-md-center p-0  ">
+                <div class="collapse navbar-collapse p-0 py-md-5 ">
+                    <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-around">
+                        <li class="nav-item  py-md-2">
 
-@if (ViewBag.Error != null)
-{
-    <ul>
-        @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
-        {
-            <li class="alert-danger">@(e.Message)</li>
-        }
-    </ul>
-}
+                            <h5> <span class="d-none d-md-inline font-weight-bold">Dashboard Menu</span></h5>
+
+                        </li>
+
+                        <li class="nav-item  py-md-2">
+                            <a class="nav-link teal-text" asp-action="StudentDashboard" asp-controller="Student"><i class="fas fa-house-user"></i> <span class="d-none d-md-inline">Main</span></a>
+                        </li>
+
+                        <li class="nav-item  py-md-2">
+
+                            <a class="nav-link teal-text" asp-controller="Student" asp-action="CourseList" asp-route-id="@User.Identity.Name"><i class="fas fa-book"></i> <span class="d-none d-md-inline"> My Courses</span></a>
+                        </li>
+
+                        <li class="nav-item  py-md-2">
+
+                            <a class="nav-link teal-text" asp-action="Signout" asp-controller="SignIn"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline">Sign Out</span></a>
+                        </li>
+
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+        <!--End Side panel-->
+        <!--Start Main -->
+        <main class="col py-3 flex-grow-1">
+
+            <div class="text-right mt-4 ">
+                <h3>Welcome @ViewBag.UserInformation.FirstName @ViewBag.UserInformation.FirstName</h3>
+            </div>
+
+            <div class="container">
+
+                @if (ViewBag.Error != null)
+                {
+                    <ul class="list-group">
+                        @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+                        {
+                            <li class="list-group-item list-group-item-danger">@(e.Message)</li>
+                        }
+                    </ul>
+                }
 
 
-@if (ViewBag.SubmitYes != true)
-{ 
-<div class="card">
-    <div class="card-body">
-        <h4 class="card-title">Question : @(ViewBag.AssignmentDetails.Question) </h4>
+                <div class="card m-5 shadow-lg">
 
-        <p class="card-text">Due Date :  @(ViewBag.AssignmentDetails.DueDate)</p>
+                    <div class="card-header">
 
-        <p class="card-text"> Total Score :  @(ViewBag.AssignmentDetails.TotalScore)</p>
+                        <h2 class="card-text"> Attempt Assignment</h2>
 
+                    </div>
+
+                    @if ((ViewBag.SubmitYes != true) && (ViewBag.AssignmentDetails != null))
+                    {
+                <div class="card-body">
+                    <h4 class="card-title">Question : @(ViewBag.AssignmentDetails.Question)</h4>
+
+                    <hr class="my-1">
+
+                    <div class="text-right">
+                        <p class="card-text">
+                            <small>
+                                Due Date :  @(ViewBag.AssignmentDetails.DueDate)
+                            </small>
+                        </p>
+                        <p class="card-text">
+                            <small> Total Score :  @(ViewBag.AssignmentDetails.TotalScore)</small>
+                        </p>
+
+                    </div>
+
+                    <hr class="mt-1">
+
+                  
+
+                    <form action="/Student/AssignmentAttempt" method="POST">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <input type="hidden" name="CourseID" value="@(ViewBag.AssignmentDetails.CourseID)" />
+                        <div class="form-group">
+                            <label for="Answer">Type Your Answer here </label>
+                            <input asp-for="Answer" class="form-control " placeholder="Answer" data-val="true" data-val-required="Answer is required" data-val-maxlength-max="2000" data-val-maxlength="Email Cannot exceed 2000 characters" />
+                            <span asp-validation-for="Answer" class="text-danger" data-valmsg-for="Answer" data-valmsg-replace="true"></span>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <input type="submit" value="Submit" class="btn btn-primary" />
+                        </div>
+
+
+                        <input type="hidden" name="id" value="@(ViewBag.AssignmentDetails.ID)" />
+                    </form>
+
+
+                </div>
+                    }
+                    else
+                    {
+                     <div class="card-body">
+
+                    <p>@(ViewBag.SuccessMessage)</p>
+                    <p>
+                        <a class="teal-text" asp-controller="Student" asp-action="CourseDetail"
+                           asp-route-id="@(ViewBag.BackCourseID)">
+                            Back
+                        </a>
+
+                        to course details page
+                    </p>
+
+                </div>
+                    }
+
+                </div>
+
+
+
+
+            </div>    <!------End Container div------>
+        </main>   <!--End Main -->
     </div>
 </div>
 
 
-<form action="/Student/AssignmentAttempt" method="POST">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-
-    <div class="form-group">
-        <label for="Answer">Type Your Answer here </label>
-        <input asp-for="Answer" class="form-control" placeholder="Answer" data-val="true" data-val-required="Answer is required" data-val-maxlength-max="2000" data-val-maxlength="Email Cannot exceed 2000 characters" />
-        <span asp-validation-for="Answer" class="text-danger" data-valmsg-for="Answer" data-valmsg-replace="true"></span>
-    </div>
-
-    <input type="text" name="CourseID" value="@(ViewBag.AssignmentDetails.CourseID)" />
-    <input type="text" name="id" value="@(ViewBag.AssignmentDetails.ID)" />
-
-    <div class="form-group">
-        <input type="submit" value="Submit" class="btn btn-primary" />
-    </div>
-
-
-</form>
-}
-else
-{
-    <p>@(ViewBag.Message)</p>
-}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

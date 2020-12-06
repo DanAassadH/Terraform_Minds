@@ -49,12 +49,14 @@
 
             @if (ViewBag.Error != null)
             {
-                <ul class="list-group">
-                    @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
-                    {
-                        <li class="list-group-item list-group-item-danger">@(e.Message)</li>
-                    }
-                </ul>
+        <div class="m-5">
+            <ul class="list-group">
+                @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+                {
+                    <li class="list-group-item list-group-item-danger">@(e.Message)</li>
+                }
+            </ul>
+        </div>
             }
 
 
@@ -150,7 +152,7 @@
                         }
                         else
                         {
-                            <p class=><strong>No available assignments for this  course yet</strong></p>
+                            <p ><strong>No available assignments for this  course yet</strong></p>
                         }
 
                     </div>
@@ -227,7 +229,9 @@
 
             </div>
         </div>
+
             } @*-------------------------------------- End starting if -------------------------------------------------*@
+          
             else
             {
             <h3 class="ml-5">Course Details Not Available. Please go back to Main and try again</h3>
