@@ -32,6 +32,11 @@
 
                         <li class="nav-item  py-md-2">
 
+                            <a class="nav-link teal-text" asp-controller="Instructor" asp-action="AssignmentCreate" asp-route-id="@(ViewBag.SingleCourseDetail.ID)"><i class="fas fa-plus-circle"></i><span class="d-none d-md-inline"> Create New Assignment</span></a>
+                        </li>
+
+                        <li class="nav-item  py-md-2">
+
                             <a class="nav-link teal-text" asp-action="Signout" asp-controller="SignIn"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline">Sign Out</span></a>
                         </li>
 
@@ -51,7 +56,7 @@
 
 
             <div class="jumbotron bg-white flex-row">
-                <h2 class="display-3">Course List</h2>
+                <h2 class="display-1">Course Detail</h2>
             </div>
 
             @if (ViewBag.Error != null)
@@ -63,204 +68,189 @@
                     }
                 </ul>
             }
-         
-        <div class="container">
 
-            @*--------------------------------------Details about course -------------------------------------------------*@
+            <div class="container">
 
-            @if (ViewBag.SingleCourseDetail != null)
-            {
-                <div class="card m-5 shadow-lg">
+                @*--------------------------------------Details about course -------------------------------------------------*@
 
-                    <div class="card-header bg-@(ViewBag.SingleCourseDetail.Subject)">
+                @if (ViewBag.SingleCourseDetail != null)
+                {
+                    <div class="card m-5 shadow-lg">
 
-                        <h2 class="card-text"> @(ViewBag.SingleCourseDetail.Subject)</h2>
+                        <div class="card-header bg-@(ViewBag.SingleCourseDetail.Subject)">
 
-                    </div>
+                            <h2 class="card-text"> @(ViewBag.SingleCourseDetail.Subject)</h2>
+
+                        </div>
 
 
-                    <div class="card-body">
-                        <h4 class="card-title">@(ViewBag.SingleCourseDetail.CourseName)</h4>
+                        <div class="card-body">
+                            <h4 class="card-title">@(ViewBag.SingleCourseDetail.CourseName)</h4>
 
-                        <p class="card-text">@(ViewBag.SingleCourseDetail.CourseDescription)</p>
+                            <p class="card-text">@(ViewBag.SingleCourseDetail.CourseDescription)</p>
 
-                        <hr class="my-1">
+                            <hr class="my-1">
 
-                        <div class="text-right">
-                            <p class="card-text">
-                                <small>
-                                    @(ViewBag.SingleCourseDetail.GradeLevel)
-                                </small>
-                            </p>
-                            <p class="card-text">
-                                <small>Start date :  @((ViewBag.SingleCourseDetail.StartDate == null ? "TBA" : ((DateTime)ViewBag.SingleCourseDetail.StartDate).ToLongDateString()))</small>
-                            </p>
-                            <p class="card-text">
-                                <small>End date : @((ViewBag.SingleCourseDetail.EndDate == null ? "TBA" : ((DateTime)ViewBag.SingleCourseDetail.EndDate).ToLongDateString()))</small>
-                            </p>
+                            <div class="text-right">
+                                <p class="card-text">
+                                    <small>
+                                        @(ViewBag.SingleCourseDetail.GradeLevel)
+                                    </small>
+                                </p>
+                                <p class="card-text">
+                                    <small>Start date :  @((ViewBag.SingleCourseDetail.StartDate == null ? "TBA" : ((DateTime)ViewBag.SingleCourseDetail.StartDate).ToLongDateString()))</small>
+                                </p>
+                                <p class="card-text">
+                                    <small>End date : @((ViewBag.SingleCourseDetail.EndDate == null ? "TBA" : ((DateTime)ViewBag.SingleCourseDetail.EndDate).ToLongDateString()))</small>
+                                </p>
 
-                            
-                            @if (ViewBag.SingleCourseDetail.CurrentCapacity == ViewBag.SingleCourseDetail.MaxCapacity)
-                            {
-                        <p>  <small> Capacity : FULL</small></p>
-                            }
-                            else
-                            {
-                                <p><small> Capacity : @(ViewBag.SingleCourseDetail.CurrentCapacity + "/" + ViewBag.SingleCourseDetail.MaxCapacity)</small></p>
-                            }
+
+                                @if (ViewBag.SingleCourseDetail.CurrentCapacity == ViewBag.SingleCourseDetail.MaxCapacity)
+                                {
+                                    <p>  <small> Capacity : FULL</small></p>
+                                }
+                                else
+                                {
+                                    <p><small> Capacity : @(ViewBag.SingleCourseDetail.CurrentCapacity + "/" + ViewBag.SingleCourseDetail.MaxCapacity)</small></p>
+                                }
+
+                            </div>
 
                         </div>
 
                     </div>
 
+                    @*--------------------------------------------Students Information -------------------------------------------------*@
+
+                    <div class="card m-5 shadow-lg">
+
+                        <div class="card-header bg-@(ViewBag.SingleCourseDetail.Subject)">
+
+                            <h4 class="card-text">Students Details</h4>
+
+                        </div>
+
+
+                        <div class="card-body">
+                            <p class="card-text">Click on student name to view and mark assignments submitted by them</p>
+
+                            @if (ViewBag.StudentsForCourse != null && ViewBag.StudentsForCourse.Count > 0)
+                            {
+
+                                <div class="card-deck">
+
+                                    @foreach (User student in ViewBag.StudentsForCourse)
+                                    {
+                                        <div class="card m-4 shadow-lg" style="min-width:80px; max-width: 100px;">
+
+                                            <div class="card-header text-right">
+
+                                                <h5 class="card-text"><i class="fas fa-user-graduate"></i></h5>
+                                            </div>
+
+                                            <div class="card-body">
+                                                <p class="card-text">
+                                                    <small>
+                                                        <a asp-controller="Instructor" asp-action="AssignmentList" asp-route-cid="@(ViewBag.SingleCourseDetail.ID)" asp-route-uid="@(student.ID)">@student.FirstName  @student.LastName</a>
+                                                    </small>
+                                                </p>
+                                            </div>
+
+                                        </div>
+                                    }
+
+                                </div>
+
+                            }
+                            else
+                            {
+                                <p><strong>No student enrolled in this course yet</strong></p>
+                            }
+
+                        </div>
+                    </div>
+
+                    @*--------------------------------------Assignments Information -------------------------------------------------*@
+
+
+            <div class="card m-5 shadow-lg">
+
+                <div class="card-header bg-@(ViewBag.SingleCourseDetail.Subject)">
+
+                    <h4 class="card-text">Assignments</h4>
+
                 </div>
 
 
+                <div class="card-body">
+
+
+                    @if (ViewBag.AssignmentsForCourse != null && ViewBag.AssignmentsForCourse.Count > 0)
+                    {
+
+                        <div class="card-deck">
+
+                            @foreach (Assignment assignment in ViewBag.AssignmentsForCourse)
+                            {
+                                <div class="card m-4 shadow-lg" style="min-width:200px; max-width: 220px;">
+
+                                    <div class="card-header text-right">
+
+                                        <hp class="card-text"><small>Due Date : @assignment.DueDate.ToLongDateString()</small></hp>
+
+                                    </div>
+
+
+                                    <div class="card-body">
+
+                                        <div class="text-right">
+
+                                            <p class="card-text">
+                                                <small>Total Score : @assignment.TotalScore</small>
+                                            </p>
+                                        </div>
+
+                                        <hr class="my-1">
+
+                                        <p>Question : <small>@assignment.Question</small></p>
+
+                                    </div>
+
+                                </div>
+                            }
+
+                        </div>
+
+                    }
+                    else
+                    {
+                        <p><strong>No Assignments for this  course yet</strong></p>
+                    }
+
+                </div>
+
+                <div class="card-footer text-muted text-right">
+                    <a class="btn btn-yellow round" asp-controller="Instructor" asp-action="AssignmentCreate" asp-route-id="@(ViewBag.SingleCourseDetail.ID)">
+                        Create New Assignment
+                    </a>
+                </div>
+            </div>
+
+                }@*-------------------------------------- End starting if -------------------------------------------------*@
+
+                else
+                {
+                    <h3 class="ml-5">Course Details Not Available. Please go back to Main and try again</h3>
+                }
 
 
 
 
+            </div>    <!--End Container -->
 
-            }@*-------------------------------------- End starting if -------------------------------------------------*@
-
-            else
-            {
-                <h3 class="ml-5">Course Details Not Available. Please go back to Main and try again</h3>
-            }
-
-
-
-
-        </div>    <!--End Container -->
-          
         </main>
         <!--End Main -->
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@*--------------------------------------Details about course -------------------------------------------------*@
-
-@if (ViewBag.SingleCourseDetail != null)
-{
-
-    <div class="card">
-
-        <img class="card-img-top" src="..." alt="Card image cap">
-
-        <div class="card-body">
-            <h4 class="card-title">@(ViewBag.SingleCourseDetail.CourseName)</h4>
-            <h5>Subject : @(ViewBag.SingleCourseDetail.Subject)</h5>
-            <strong> Course Description : </strong>
-            <p class="card-text">@(ViewBag.SingleCourseDetail.CourseDescription)</p>
-            <strong> Grade </strong>
-            <p class="card-text">
-                @(ViewBag.SingleCourseDetail.GradeLevel)
-            </p>
-
-            <p class="card-text">
-                <strong>Start Date : </strong>
-                @((ViewBag.SingleCourseDetail.StartDate == null ? "TBA" : ((DateTime)ViewBag.SingleCourseDetail.StartDate).ToLongDateString()))
-            </p>
-            <p class="card-text">
-                <strong>End Date : </strong>
-                @((ViewBag.SingleCourseDetail.EndDate == null ? "TBA" : ((DateTime)ViewBag.SingleCourseDetail.EndDate).ToLongDateString()))
-            </p>
-
-            <strong> Capacity </strong>
-            @if (ViewBag.SingleCourseDetail.CurrentCapacity == ViewBag.SingleCourseDetail.MaxCapacity)
-            {
-                <p>FULL</p>
-            }
-            else
-            {
-                <p>@(ViewBag.SingleCourseDetail.CurrentCapacity + "/" + ViewBag.SingleCourseDetail.MaxCapacity)</p>
-            }
-
-        </div>
-    </div>
-
-    @*--------------------------------------Students Info -------------------------------------------------*@
-
-    <h5> Students in this course</h5>
-    @if (ViewBag.StudentsForCourse != null && ViewBag.StudentsForCourse.Count > 0)
-    {
-
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Name</th>
-
-                    <th>Action</th>
-                </tr>
-                @foreach (User student in ViewBag.StudentsForCourse)
-                {
-                    <tr>
-                        <td>@student.FirstName + @student.LastName</td>
-
-                        <td><a asp-controller="Instructor" asp-action="AssignmentList" asp-route-cid="@(ViewBag.SingleCourseDetail.ID)" asp-route-uid="@(student.ID)">Mark Assignments</a></td>
-                    </tr>
-                }
-        </table>
-
-    }
-    else
-    {
-        <p><strong>No student enrolled in this course yet</strong></p>
-    }
-
-    @*--------------------------------------Assignments Info -------------------------------------------------*@
-
-    <h5> Assignments in this course</h5>
-
-    <a asp-controller="Instructor" asp-action="AssignmentCreate" asp-route-id="@(ViewBag.SingleCourseDetail.ID)" class="badge-pill badge-warning">Create a new assignment</a>
-
-    @if (ViewBag.AssignmentsForCourse != null && ViewBag.AssignmentsForCourse.Count > 0)
-    {
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Question</th>
-                    <th>Due Date</th>
-                    <th>Total Score</th>
-
-                </tr>
-                @foreach (Assignment assignment in ViewBag.AssignmentsForCourse)
-                {
-                    <tr>
-                        <td>@assignment.Question</td>
-                        <td>@assignment.DueDate.ToLongDateString()</td>
-                        <td>@assignment.TotalScore</td>
-
-                    </tr>
-                }
-        </table>
-
-    }
-    else
-    {
-        <p><strong>No Assignments for this  course yet</strong></p>
-    }
-
-}
-else
-{
-    <p>Course Details Not Available. Please head back to Main and try again</p>
-}
-
-
-
 
 
