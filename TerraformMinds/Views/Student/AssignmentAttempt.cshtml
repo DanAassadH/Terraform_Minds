@@ -37,6 +37,7 @@
             </nav>
         </aside>
         <!--End Side panel-->
+
         <!--Start Main -->
         <main class="col py-3 flex-grow-1">
 
@@ -67,65 +68,65 @@
 
                     @if ((ViewBag.SubmitYes != true) && (ViewBag.AssignmentDetails != null))
                     {
-                <div class="card-body">
-                    <h4 class="card-title">Question : @(ViewBag.AssignmentDetails.Question)</h4>
+                        <div class="card-body">
+                            <h4 class="card-title">Question : @(ViewBag.AssignmentDetails.Question)</h4>
 
-                    <hr class="my-1">
+                            <hr class="my-1">
 
-                    <div class="text-right">
-                        <p class="card-text">
-                            <small>
-                                Due Date :  @(ViewBag.AssignmentDetails.DueDate)
-                            </small>
-                        </p>
-                        <p class="card-text">
-                            <small> Total Score :  @(ViewBag.AssignmentDetails.TotalScore)</small>
-                        </p>
+                            <div class="text-right">
+                                <p class="card-text">
+                                    <small>
+                                        Due Date :  @(ViewBag.AssignmentDetails.DueDate)
+                                    </small>
+                                </p>
+                                <p class="card-text">
+                                    <small> Total Score :  @(ViewBag.AssignmentDetails.TotalScore)</small>
+                                </p>
 
-                    </div>
+                            </div>
 
-                    <hr class="mt-1">
+                            <hr class="mt-1">
 
-                  
 
-                    <form action="/Student/AssignmentAttempt" method="POST">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                        <input type="hidden" name="CourseID" value="@(ViewBag.AssignmentDetails.CourseID)" />
-                        <div class="form-group">
-                            <label for="Answer">Type Your Answer here </label>
-                            <input asp-for="Answer" class="form-control " placeholder="Answer" data-val="true" data-val-required="Answer is required" data-val-maxlength-max="2000" data-val-maxlength="Email Cannot exceed 2000 characters" />
-                            <span asp-validation-for="Answer" class="text-danger" data-valmsg-for="Answer" data-valmsg-replace="true"></span>
+                            <form action="/Student/AssignmentAttempt" method="POST">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                                <input type="hidden" name="CourseID" value="@(ViewBag.AssignmentDetails.CourseID)" />
+                                <div class="form-group">
+                                    <label for="Answer">Type Your Answer here </label>
+                                    <input asp-for="Answer" class="form-control " placeholder="Answer" data-val="true" data-val-required="Answer is required" data-val-maxlength-max="2000" data-val-maxlength="Email Cannot exceed 2000 characters" />
+                                    <span asp-validation-for="Answer" class="text-danger" data-valmsg-for="Answer" data-valmsg-replace="true"></span>
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    <input type="submit" value="Submit" class="btn btn-pink round" />
+                                </div>
+
+
+                                <input type="hidden" name="id" value="@(ViewBag.AssignmentDetails.ID)" />
+                            </form>
+
+
                         </div>
-
-
-
-                        <div class="form-group">
-                            <input type="submit" value="Submit" class="btn btn-primary" />
-                        </div>
-
-
-                        <input type="hidden" name="id" value="@(ViewBag.AssignmentDetails.ID)" />
-                    </form>
-
-
-                </div>
                     }
                     else
                     {
-                     <div class="card-body">
+                        <div class="card-body">
 
-                    <p>@(ViewBag.SuccessMessage)</p>
-                    <p>
-                        <a class="teal-text" asp-controller="Student" asp-action="CourseDetail"
-                           asp-route-id="@(ViewBag.BackCourseID)">
-                            Back
-                        </a>
+                            <p>@(ViewBag.SuccessMessage)</p>
+                            <p>
+                                <a class="teal-text" asp-controller="Student" asp-action="CourseDetail"
+                                   asp-route-id="@(ViewBag.BackCourseID)">
+                                    Back
+                                </a>
 
-                        to course details page
-                    </p>
+                                to course details page
+                            </p>
 
-                </div>
+                        </div>
                     }
 
                 </div>
