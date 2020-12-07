@@ -134,9 +134,13 @@ namespace TerraformMinds.Controllers
         public IActionResult AssignmentList(string cid, string uid)
         {
 
+            ViewBag.CourseId = cid;
+
             try
             {
+                ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
                 int studentId = StudentController.GetStudentId(cid, uid);
+                /* Call function to get student name ~ */
                 ViewBag.SubmittedAssignments = StudentController.GetSubmittedAssignments(studentId.ToString());
 
             }
@@ -316,7 +320,7 @@ namespace TerraformMinds.Controllers
             {
                 using (LearningManagementContext context = new LearningManagementContext())
                 {
-                    assignmentDetails = context.Assignments.Where(x => x.CourseID == parsedId).ToList();
+                    assignmentDetails = context.Assignments.Where(x => x.CourseID == parsedId).OrderBy(x => x.DueDate).ToList();
                 }
             }
             else

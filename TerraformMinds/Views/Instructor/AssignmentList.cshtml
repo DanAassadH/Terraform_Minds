@@ -3,111 +3,153 @@
     ViewData["Title"] = "AssignmentList";
 }
 
-<h1>Display Assignments for student</h1>
-
-<ul>
-    <li>
-        <a asp-action="InstructorDashboard" asp-controller="Instructor">
-            Main
-        </a>
-    </li>
-    <li>
-        <a asp-controller="Instructor" asp-action="CourseList"
-           asp-route-id="@User.Identity.Name">
-            My Courses
-        </a>
-    </li>
-    <li>
-        <a asp-action="Signout" asp-controller="SignIn">
-            Signout
-        </a>
-    </li>
-
-</ul>
-
-@if (ViewBag.Error != null)
-{
-    <ul>
-        @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
-        {
-            <li class="alert-danger">@(e.Message)</li>
-        }
-    </ul>
-}
 
 
 
-@*--------------------------------------Details about Assignments for student-------------------------------------------------*@
+<div class="container-fluid">
+    <div class="row min-vh-100 flex-column flex-md-row">
 
+        <!--Start Side panel-->
+        <aside class="col-12 col-md-3 p-0 bg-light border-right border-8 ">
+            <nav class="navbar navbar-expand navbar-light bg-light flex-md-column flex-row align-items-md-center p-0  ">
+                <div class="collapse navbar-collapse p-0 py-md-5 ">
+                    <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-around">
+                        <li class="nav-item  py-md-2">
 
-@if (ViewBag.SubmittedAssignments != null && ViewBag.SubmittedAssignments.Count > 0)
-{
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th>Question</th>
-                <th>Due Date</th>
-                <th>Total Score</th>
-                <th>Date Submitted</th>
-                <th>Answer</th>
-                <th>Score obtained</th>
-                <th>Remarks</th>
-                <th>Action</th>
-            </tr>
-            @foreach (Submit assignment in ViewBag.SubmittedAssignments)
-            {
-        <tr>
-            <td>@assignment.Assignment.Question</td>
-            <td>@assignment.Assignment.DueDate.ToLongDateString()</td>
-            <td>@assignment.Assignment.TotalScore</td>
+                            <h5> <span class="d-none d-md-inline font-weight-bold">Dashboard Menu</span></h5>
 
-            <td>@assignment.DateSubmitted.ToLongDateString()</td>
-            <td>@assignment.Answer</td>
+                        </li>
 
+                        <li class="nav-item  py-md-2">
+                            <a class="nav-link teal-text" asp-action="InstructorDashboard" asp-controller="Instructor"><i class="fas fa-house-user"></i> <span class="d-none d-md-inline">Main</span></a>
+                        </li>
 
-            @if (@assignment.ScoreObtained == null)
-            {
-                <td>Not Scored</td>
-            }
-            else
-            {
-                <td>@assignment.ScoreObtained</td>
+                        <li class="nav-item  py-md-2">
 
-            }
+                            <a class="nav-link teal-text" asp-controller="Instructor" asp-action="CourseList"><i class="fas fa-book"></i> <span class="d-none d-md-inline"> My Courses</span></a>
+                        </li>
 
-            @if (@assignment.Remarks == null)
-            {
-                <td>Not Remarked</td>
-            }
-            else
-            {
-                <td>@assignment.Remarks</td>
+                        <li class="nav-item  py-md-2">
 
-            }
+                            <a class="nav-link teal-text" asp-controller="Instructor" asp-action="CourseDetail"
+                               asp-route-id="@ViewBag.CourseId"><i class="fas fa-chevron-circle-left"></i> <span class="d-none d-md-inline"> Course Detail</span></a>
+                        </li>
 
-            @if (@assignment.ScoreObtained == null)
-            {
-                <td>
-                    <a asp-controller="Instructor" asp-action="AssignmentMark"
-                       asp-route-submitId="@assignment.ID">
-                        Mark
+                        <li class="nav-item  py-md-2">
+
+                            <a class="nav-link teal-text" asp-action="Signout" asp-controller="SignIn"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline">Sign Out</span></a>
+                        </li>
+
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+        <!--End Side panel-->
+        <!--Start Main -->
+        <main class="col bg-faded py-3 flex-grow-1">
+
+            <div class="text-right mt-4">
+
+                <h3>Welcome @ViewBag.UserInformation.FirstName @ViewBag.UserInformation.FirstName</h3>
+
+            </div>
+
+            <div class="jumbotron bg-white">
+                <h5 class="display-4">Student Details</h5>
+
+                <hr class="my-4">
+                <p>Here you will find the list of all the assignments submitted by this student.</p>
+                <p>
+                    <a class="teal-text"asp-controller="Instructor" asp-action="CourseDetail"
+                               asp-route-id="@ViewBag.CourseId">
+                        Click Here
                     </a>
-                </td>
-            }
-            else
+                    to go to back to Course detail
+                </p>
+            </div>
+
+            @if (ViewBag.Error != null)
             {
-                <td></td>
+                <ul class="list-group">
+                    @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+                    {
+                        <li class="list-group-item list-group-item-danger">@(e.Message)</li>
+                    }
+                </ul>
             }
 
 
-        </tr>
-            }
-    </table>
+            @*--------------------------Details about Assignments for student----------------------------*@
 
-}
-else
-{
-    <p><strong>No Assignment For This Student yet</strong></p>
-}
+
+            <div class="card mx-5 shadow-lg">
+
+                <div class="card-body">
+
+
+                    @if (ViewBag.SubmittedAssignments != null && ViewBag.SubmittedAssignments.Count > 0)
+                    {
+
+                        <div class="card-deck">
+
+                            @foreach (Submit assignment in ViewBag.SubmittedAssignments)
+                            {
+                                <div class="card m-4 shadow-lg" style="min-width:280px; max-width: 300px;">
+
+                                    <div class="card-header text-right">
+
+                                        @if (assignment.ScoreObtained == null)
+                                        {
+                                           <h5 class="card-text">
+                                                <a asp-controller="Instructor" asp-action="AssignmentMark"
+                                                   asp-route-submitId="@assignment.ID">
+                                                    Mark <i class="fas fa-edit"></i>
+                                                </a>
+                                            </h5>
+                                        }
+                                        else
+                                        {
+                                            <h5 class="card-text">Score Obtained @assignment.ScoreObtained / @assignment.Assignment.TotalScore</h5>
+                                        }
+                                    </div>
+
+
+                                    <div class="card-body">
+                                        <h4 class="card-title"><strong>Question : </strong>@assignment.Assignment.Question</h4>
+                                        <p><strong>Answer : </strong><small> @assignment.Answer</small></p>
+                                        <p class="card-text"><strong>Instructors remarks : </strong><small>@assignment.Remarks</small></p>
+
+                                        <hr class="my-1">
+
+                                        <div class="text-right">
+
+                                            <p class="card-text">
+                                                <small>Date Submitted : @assignment.DateSubmitted.ToLongDateString()</small>
+                                            </p>
+                                            <p class="card-text">
+                                                <small>Date Due : @assignment.Assignment.DueDate.ToLongDateString()</small>
+                                            </p>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            }
+
+                        </div>
+
+                    }
+                    else
+                    {
+                        <p><strong>No Assignment For This Student yet</strong></p>
+                    }
+
+                </div>
+            </div>  <!--End Card Div -->
+        </main>
+        <!--End Main -->
+    </div>
+</div>
+
 
 
