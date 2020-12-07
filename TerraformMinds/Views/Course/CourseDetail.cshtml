@@ -3,62 +3,105 @@
     ViewData["Title"] = "Details";
 }
 
-@if (ViewBag.Message != null)
-{
-    @*TERNARY EXPRESSION*@
-    <p class="alert-@(ViewBag.Error != null ? "danger" : "success")">@(ViewBag.Message)</p>
 
-    if (ViewBag.Error != null)
-    {
-        <ul>
-            @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
-            {
-                <li class="alert-danger">@(e.Message)</li>
-            }
-        </ul>
-    }
-}
+<div class="container d-flex justify-content-center">
 
-@if (ViewBag.CourseDetails != null)
-{
-    <h1>Course Details for @(ViewBag.CourseDetails.CourseName)</h1>
 
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th>Course ID</th>
-                <th>Course Name</th>
-                <th>Subject</th>
-                <th>Course Description</th>
-                <th>Grade Level</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Capactity</th>
-            </tr>
-            <tr>
-                <td>@(ViewBag.CourseDetails.ID)</td>
-                <td>@(ViewBag.CourseDetails.CourseName)</td>
-                <td>@(ViewBag.CourseDetails.Subject)</td>
-                <td>@(ViewBag.CourseDetails.CourseDescription)</td>
-                <td>@(ViewBag.CourseDetails.GradeLevel)</td>
-                <td>@((ViewBag.CourseDetails.StartDate == null ? "TBA" : ((DateTime)ViewBag.CourseDetails.StartDate).ToString("yyyy-MM-dd")))</td>
-                <td>@((ViewBag.CourseDetails.EndDate == null ? "TBA" : ((DateTime)ViewBag.CourseDetails.EndDate).ToString("yyyy-MM-dd")))</td>
-                @if (ViewBag.CourseDetails.CurrentCapacity == ViewBag.CourseDetails.MaxCapacity)
+
+    <div class="card align-self-center py-5 border-0">
+
+        @if (ViewBag.Message != null)
+        {
+            <div class="align-self-center">
+                @*TERNARY EXPRESSION*@
+                <p class="alert-@(ViewBag.Error != null ? "danger" : "success")">@(ViewBag.Message)</p>
+
+                @if (ViewBag.Error != null)
                 {
-                    <td>FULL</td>
+                    <ul class="list-group">
+                        @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+                        {
+                            <li class="list-group-item list-group-item-danger">@(e.Message)</li>
+                        }
+                    </ul>
                 }
-                else
-                {
-                    <td>@(ViewBag.CourseDetails.CurrentCapacity + "/" + ViewBag.CourseDetails.MaxCapacity)</td>
-                }
-            </tr>
-        </thead>
-    </table>
 
-    <a asp-action="CourseList" asp-controller="Course" class="badge-pill badge-warning">Course List</a>
-    <a asp-action="Register" asp-controller="Course" asp-route-courseID="@(ViewBag.CourseDetails.ID)" class="badge-pill badge-warning">Enroll</a>
+            </div>
+        }
 
-    @*@if (User.Identity.Name == null)
+        @if (ViewBag.CourseDetails != null)
+        {
+
+            <div class="card-header bg-white">
+
+                <h2 class="card-text">Course Details</h2>
+
+            </div>
+
+
+            <div class="card-body">
+                <h5 class="card-title">Course Name: @(ViewBag.CourseDetails.CourseName)</h5>
+
+                <p class="card-text">Subject : @(ViewBag.CourseDetails.Subject)</p>
+
+                <p class="card-text">@(ViewBag.CourseDetails.CourseDescription)</p>
+
+                <hr class="my-1">
+
+                <div class="text-right">
+                    <p class="card-text">
+                        <small>
+                            @(ViewBag.CourseDetails.GradeLevel)
+                        </small>
+                    </p>
+                    <p class="card-text">
+                        <small>Start date :  @((ViewBag.CourseDetails.StartDate == null ? "TBA" : ((DateTime)ViewBag.CourseDetails.StartDate).ToLongDateString()))</small>
+                    </p>
+                    <p class="card-text">
+                        <small>End date : @((ViewBag.CourseDetails.EndDate == null ? "TBA" : ((DateTime)ViewBag.CourseDetails.EndDate).ToLongDateString()))</small>
+                    </p>
+                    <p class="card-text">
+                        <small>Capacity : @((ViewBag.CourseDetails.EndDate == null ? "TBA" : ((DateTime)ViewBag.CourseDetails.EndDate).ToLongDateString()))</small>
+                    </p>
+
+
+                    @if (ViewBag.CourseDetails.CurrentCapacity == ViewBag.CourseDetails.MaxCapacity)
+                    {
+                        <p class="card-text">
+                            <small>Capacity : FULL</small>
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="card-text">
+                            <small>Capacity : @(ViewBag.CourseDetails.CurrentCapacity + "/" + ViewBag.CourseDetails.MaxCapacity)</small>
+                        </p>
+
+                    }
+
+
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-white">
+
+                <a asp-action="CourseList" asp-controller="Course" class="btn btn-yellow round mx-5 my-1">Back to Courses</a>
+                <a asp-action="Register" asp-controller="Course" asp-route-courseID="@(ViewBag.CourseDetails.ID)" class="btn btn-yellow round mx-5 my-1">Enroll</a>
+
+            </div>
+        }
+        else
+        {
+            <h1>Details</h1>
+            <p>An error occured trying to populate course information. <a asp-action="CourseList" asp-controller="Course">Click here to return to the course list.</a></p>
+        }
+
+    </div> <!--End Card-->
+
+
+</div> <!--End Container-->
+@*@if (User.Identity.Name == null)
     {
         <a asp-action="Index" asp-controller="SignIn">SignIn to Enroll</a>
     }
@@ -66,9 +109,4 @@
     {
         <a asp-action="Register" asp-controller="Course" asp-route-courseID="@(ViewBag.CourseDetails.ID)" class="badge-pill badge-warning">Enroll</a>
     }*@
-}
-else
-{
-    <h1>Details</h1>
-    <p>An error occured trying to populate course information. <a asp-action="CourseList" asp-controller="Course">Click here to return to the course list.</a></p>
-}
+
