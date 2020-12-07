@@ -85,61 +85,62 @@
                         }
                     </ul>
                 }
-          
-            <div class="card-deck d-flex justify-content-center align-self-center">
 
                 @if (ViewBag.Instructor != null)
                 {
- 
-                    @foreach (Course instructorCourses in ViewBag.InstructorCourses)
-                    {
-                        <div class="card m-4 shadow-lg" style="min-width:240px; max-width: 260px;">
-
-                            <div class="card-header bg-@(instructorCourses.Subject) text-right">
-
-                                <h2 class="card-text">@(instructorCourses.Subject)</h2>
-
-                            </div>
-
-                            <div class="card-body">
-
-                                <h5 class="card-title">Course Name :  @(instructorCourses.CourseName)</h5>
-
-                                <p class="card-text">Description : @(instructorCourses.CourseDescription)</p>
-
-                                <hr class="my-1">
-
-                                <div class="text-right">
-                                    <p class="card-text">
-                                        <small>
-                                            @(instructorCourses.GradeLevel)
-                                        </small>
-                                    </p>
-                                    <p class="card-text">
-                                        <small>
-                                            Start date :
-                                            @((instructorCourses.StartDate == null ? "TBA" : ((DateTime)instructorCourses.StartDate).ToLongDateString()))
-                                        </small>
-                                    </p>
-                                    <p class="card-text">
-                                        <small>
-                                            End date : @((instructorCourses.EndDate == null ? "TBA" : ((DateTime)instructorCourses.EndDate).ToLongDateString()))</small>
-                                    </p>
+                    <div class="card-deck d-flex justify-content-center align-self-center">
 
 
-                                    <p class="card-text">
-                                        <small>Capacity :  @(instructorCourses.CurrentCapacity) / @(instructorCourses.MaxCapacity)</small>
-                                    </p>
+                        @foreach (Course instructorCourses in ViewBag.InstructorCourses)
+                        {
+                            <div class="card m-4 shadow-lg" style="min-width:240px; max-width: 260px;">
+
+                                <div class="card-header bg-@(instructorCourses.Subject) text-right">
+
+                                    <h2 class="card-text">@(instructorCourses.Subject)</h2>
 
                                 </div>
 
+                                <div class="card-body">
+
+                                    <h5 class="card-title">Course Name :  @(instructorCourses.CourseName)</h5>
+
+                                    <p class="card-text">Description : @(instructorCourses.CourseDescription)</p>
+
+                                    <hr class="my-1">
+
+                                    <div class="text-right">
+                                        <p class="card-text">
+                                            <small>
+                                                @(instructorCourses.GradeLevel)
+                                            </small>
+                                        </p>
+                                        <p class="card-text">
+                                            <small>
+                                                Start date :
+                                                @((instructorCourses.StartDate == null ? "TBA" : ((DateTime)instructorCourses.StartDate).ToLongDateString()))
+                                            </small>
+                                        </p>
+                                        <p class="card-text">
+                                            <small>
+                                                End date : @((instructorCourses.EndDate == null ? "TBA" : ((DateTime)instructorCourses.EndDate).ToLongDateString()))
+                                            </small>
+                                        </p>
+
+
+                                        <p class="card-text">
+                                            <small>Capacity :  @(instructorCourses.CurrentCapacity) / @(instructorCourses.MaxCapacity)</small>
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+
                             </div>
+                        }
 
-
-                        </div>
-                    }
-        
-
+                    </div> <!--End Card deck-->
                 }
                 else
                 {
@@ -148,7 +149,7 @@
                 }
 
 
-            </div> <!--End Card-->
+
             </div> <!--End Container-->
         </main>
         <!--End Main -->
