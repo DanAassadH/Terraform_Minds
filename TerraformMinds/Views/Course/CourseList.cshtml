@@ -46,19 +46,17 @@
 
             <form asp-action="CourseList" asp-controller="Course" method="get">
                 <div class="d-flex justify-content-around">
-                    <div class="align-self-start">
-                        <p>Filter : </p>
-                    </div>
+                    
 
                     <div class="align-self-center">
-                        <label for="gradeFilter">Grade</label>
-                        <select id="gradeFilter" name="gradeFilter" asp-items="ViewBag.GradeLevels">
+                        <label for="gradeFilter">Filter by Grade</label>
+                        <select class="shadow-sm" id="gradeFilter" name="gradeFilter" asp-items="ViewBag.GradeLevels">
                             <option value="">Select Grade </option>
                         </select>
                     </div>
                     <div class="align-self-center">
-                        <label for="subjectFilter">Subject </label>
-                        <select id="subjectFilter" name="subjectFilter" asp-items="ViewBag.CourseSubjects">
+                        <label for="subjectFilter">Filter by Subject </label>
+                        <select class="shadow-sm" id="subjectFilter" name="subjectFilter" asp-items="ViewBag.CourseSubjects">
                             <option value="">Select Subject</option>
                         </select>
                     </div>

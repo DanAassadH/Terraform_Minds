@@ -3,86 +3,178 @@
     ViewData["Title"] = "Course List";
 }
 
-<ul>
-    <li>
-        <a asp-action="AdministratorDashboard" asp-controller="Administrator">Main</a>
-    </li>
-    <li class="nav-item">
-        <a asp-controller="Administrator" asp-action="InstructorList">Instructor List</a>
-    </li>
-    <li class="nav-item">
-        <a asp-controller="Administrator" asp-action="StudentList">Student List</a>
-    </li>
-    <li class="nav-item">
-        <a asp-controller="Administrator" asp-action="CourseList">Course List</a>
-    </li>
-    <li class="nav-item">
-        <a asp-controller="Administrator" asp-action="CourseCreate">Create Course</a>
-    </li>
-    <li>
-        <a asp-action="Signout" asp-controller="SignIn">Signout</a>
-    </li>
 
-</ul>
+<div class="container-fluid">
+    <div class="row min-vh-100 flex-column flex-md-row">
 
-<h1>Course List</h1>
+        <!--Start Side panel-->
+        <aside class="col-12 col-md-3 p-0 bg-light border-right border-8 ">
+            <nav class="navbar navbar-expand navbar-light bg-light flex-md-column flex-row align-items-md-center p-0  ">
+                <div class="collapse navbar-collapse p-0 py-md-5 ">
+                    <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-around">
+                        <li class="nav-item  py-md-2">
 
-<form asp-action="CourseList" asp-controller="Administrator" method="get">
-    <label for="gradeFilter">Filter by Grade Level:</label>
-    <select id="gradeFilter" name="gradeFilter" asp-items="ViewBag.GradeLevels">
-        <option value="">Select Grade Level</option>
-    </select>
-    <label for="subjectFilter">Filter by Subject:</label>
-    <select id="subjectFilter" name="subjectFilter" asp-items="ViewBag.CourseSubjects">
-        <option value="">Select Subject</option>
-    </select>
-    <input type="submit" value="Go!" />
-    <input type="submit" value="Show All" />
-</form>
+                            <h5> <span class="d-none d-md-inline font-weight-bold">Dashboard Menu</span></h5>
 
-@if (ViewBag.Courses != null && ViewBag.Courses.Count > 0)
- {
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th>Course ID</th>
-                <th>Instructor</th>
-                <th>Course Name</th>
-                <th>Subject</th>
-                <th>Course Description</th>
-                <th>Grade Level</th>
-                <th>Start Date</th>
-                <th>End Data</th>
-                <th>Capactity</th>
-                <th>Action</th>
-            </tr>
-        @foreach (Course course in ViewBag.Courses)
-         {
-            <tr>
-                <td>@(course.ID)</td>
-                <td>@(course.User.FirstName + " " + course.User.LastName)</td>
-                <td>@(course.CourseName)</td>
-                <td>@(course.Subject)</td>
-                <td>@(course.CourseDescription)</td>
-                <td>@(course.GradeLevel)</td>
-                <td>@((course.StartDate == null ? "TBA" : ((DateTime)course.StartDate).ToString("yyyy-MM-dd")))</td>
-                <td>@((course.EndDate == null ? "TBA" : ((DateTime)course.EndDate).ToString("yyyy-MM-dd")))</td>
-                @if (course.CurrentCapacity == course.MaxCapacity)
+                        </li>
+
+                        <li class="nav-item  py-md-2">
+                            <a class="nav-link teal-text" asp-action="AdministratorDashboard" asp-controller="Administrator"><i class="fas fa-house-user"></i> <span class="d-none d-md-inline"> Main</span></a>
+                        </li>
+
+                        <li class="nav-item  py-md-2">
+
+                            <a class="nav-link teal-text" asp-controller="Administrator" asp-action="InstructorList"><i class="fas fa-chalkboard-teacher"></i> <span class="d-none d-md-inline"> Instructor List</span></a>
+                        </li>
+
+
+                        <li class="nav-item  py-md-2">
+
+                            <a class="nav-link teal-text" asp-controller="Administrator" asp-action="StudentList"><i class="fas fa-user-graduate"></i> <span class="d-none d-md-inline"> Student List</span></a>
+                        </li>
+
+
+                        <li class="nav-item  py-md-2">
+
+                            <a class="nav-link teal-text" asp-controller="Administrator" asp-action="CourseList"><i class="far fa-list-alt"></i> <span class="d-none d-md-inline"> Course List</span></a>
+                        </li>
+
+                        <li class="nav-item  py-md-2">
+
+                            <a class="nav-link teal-text" asp-controller="Administrator" asp-action="CourseCreate"><i class="fas fa-plus-circle"></i> <span class="d-none d-md-inline"> Create Course</span></a>
+                        </li>
+
+
+
+                        <li class="nav-item  py-md-2">
+
+                            <a class="nav-link teal-text" asp-action="Signout" asp-controller="SignIn"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline"> Sign Out</span></a>
+                        </li>
+
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+        <!--End Side panel-->
+        <!--Start Main -->
+        <main class="col bg-faded py-3 flex-grow-1">
+            <div class="container">
+
+                <div class="text-right mt-4">
+
+                    <h3>Welcome</h3>
+
+                </div>
+
+                <div class="jumbotron bg-white">
+                    <h4 class="display-3">Course List</h4>
+
+                    <hr class="my-1">
+                    <p>
+                        Here You will find list of all the Courses
+                    </p>
+                </div>
+
+
+                @if (ViewBag.Error != null)
                 {
-                    <td>FULL</td>
+                    <ul class="list-group">
+                        @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+                        {
+                            <li class="list-group-item list-group-item-danger">@(e.Message)</li>
+                        }
+                    </ul>
+                }
+
+
+                <div class="Card my-5">
+
+                    <form asp-action="CourseList" asp-controller="Administrator" method="get">
+                        <div class="d-flex justify-content-around">
+
+
+                            <div class="align-self-center">
+                                <label for="gradeFilter">Filter by Grade</label>
+                                <select id="gradeFilter" name="gradeFilter" asp-items="ViewBag.GradeLevels">
+                                    <option value="">Select Grade </option>
+                                </select>
+                            </div>
+                            <div class="align-self-center">
+                                <label for="subjectFilter">Filter by Subject </label>
+                                <select id="subjectFilter" name="subjectFilter" asp-items="ViewBag.CourseSubjects">
+                                    <option value="">Select Subject</option>
+                                </select>
+                            </div>
+                            <div class="align-self-start">
+                                <input type="submit" value="Go!" class="btn btn-light round" />
+                            </div>
+
+                            <div class="align-self-start">
+                                <input type="submit" value="Show All" class="btn btn-light round" />
+                            </div>
+
+                        </div>
+                    </form>
+
+                </div>
+
+
+
+                @if (ViewBag.Courses != null && ViewBag.Courses.Count > 0)
+                {
+                    <div class="card ">
+                        <table class="table table-striped table-hover table-sm table-responsive" style="width:inherit;">
+                            <thead>
+                                <tr>
+                                    <th>Instructor</th>
+                                    <th>Course Name</th>
+                                    <th>Subject</th>
+                                    <th>Course Description</th>
+                                    <th>Grade </th>
+                                    <th>Start Date</th>
+                                    <th>End Data</th>
+                                    <th>Capactity</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            @foreach (Course course in ViewBag.Courses)
+                            {
+                                <tr>
+                                    <td>@(course.User.FirstName + " " + course.User.LastName)</td>
+                                    <td>@(course.CourseName)</td>
+                                    <td>@(course.Subject)</td>
+                                    <td>@(course.CourseDescription)</td>
+                                    <td>@(course.GradeLevel)</td>
+                                    <td>@((course.StartDate == null ? "TBA" : ((DateTime)course.StartDate).ToString("yyyy-MM-dd")))</td>
+                                    <td>@((course.EndDate == null ? "TBA" : ((DateTime)course.EndDate).ToString("yyyy-MM-dd")))</td>
+                                    @if (course.CurrentCapacity == course.MaxCapacity)
+                                    {
+                                        <td>FULL</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@(course.CurrentCapacity + "/" + course.MaxCapacity)</td>
+                                    }
+                                    <td><a class="teal-text" asp-action="CourseEdit" asp-controller="Administrator" asp-route-id="@(course.ID)"><i class="fas fa-edit"></i></a> | <a class="teal-text" asp-action="CourseDelete" asp-controller="Administrator" asp-route-id="@(course.ID)"><i class="fas fa-trash-alt"></i></a></td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
                 }
                 else
                 {
-                    <td>@(course.CurrentCapacity + "/" + course.MaxCapacity)</td>
+                    <p>No courses found</p>
                 }
-                <td><a asp-action="CourseEdit" asp-controller="Administrator" asp-route-id="@(course.ID)">Edit</a> | <a asp-action="CourseDelete" asp-controller="Administrator" asp-route-id="@(course.ID)">Delete</a></td>
-            </tr>
-         }
-    </table>
- }
 
-else
-{
-    <p>There are no courses found</p>
-}
+
+            </div> <!--End Container -->
+
+        </main>
+        <!--End Main -->
+    </div>
+</div>
+
+
+
+
 
