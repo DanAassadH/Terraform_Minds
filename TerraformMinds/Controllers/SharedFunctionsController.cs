@@ -12,10 +12,8 @@ namespace TerraformMinds.Controllers
     public class SharedFunctionsController : Controller
     {
         /* This file contains list of functions that are resued in more than one controller*/
-        /*        public IActionResult Index()
-                {
-                    return View();
-                }*/
+
+
         /// <summary>
         /// Function to get the information about user using their Signed in user ID  
         /// </summary>

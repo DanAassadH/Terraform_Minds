@@ -3,78 +3,134 @@
     ViewData["Title"] = "AssignmentCreate";
 }
 
-<h1>Create an Assignment</h1>
+<div class="container-fluid">
+    <div class="row min-vh-100 flex-column flex-md-row">
 
-<ul>
-    <li>
-        <a asp-action="InstructorDashboard" asp-controller="Instructor">
-            Main
-        </a>
-    </li>
-    <li>
-        <a asp-controller="Instructor" asp-action="CourseList"
-           asp-route-id="@User.Identity.Name">
-            My Courses
-        </a>
-    </li>
-    <li>
-        <a asp-action="Signout" asp-controller="SignIn">
-            Signout
-        </a>
-    </li>
+        <!--Start Side panel-->
+        <aside class="col-12 col-md-3 p-0 bg-light border-right border-8 ">
+            <nav class="navbar navbar-expand navbar-light bg-light flex-md-column flex-row align-items-md-center p-0  ">
+                <div class="collapse navbar-collapse p-0 py-md-5 ">
+                    <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-around">
+                        <li class="nav-item  py-md-2">
 
-</ul>
+                            <h5> <span class="d-none d-md-inline font-weight-bold">Dashboard Menu</span></h5>
 
-<a asp-controller="Instructor" asp-action="CourseDetail"
-   asp-route-id="@ViewBag.PassingCourseID">
-    Back to course detail page
-</a>
+                        </li>
 
-@if (ViewBag.Message != null)
-{
-    <p class="alert-@(ViewBag.Error != null ? "danger" : "success")">@(ViewBag.Message)</p>
+                        <li class="nav-item  py-md-2">
+                            <a class="nav-link teal-text" asp-action="InstructorDashboard" asp-controller="Instructor"><i class="fas fa-house-user"></i> <span class="d-none d-md-inline">Main</span></a>
+                        </li>
 
-    @if (ViewBag.Error != null)
-    {
-        <ul>
-            @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
-            {
-                <li class="alert-danger">@(e.Message)</li>
-            }
-        </ul>
-    }
+                        <li class="nav-item  py-md-2">
 
-}
+                            <a class="nav-link teal-text" asp-controller="Instructor" asp-action="CourseList"><i class="fas fa-book"></i> <span class="d-none d-md-inline"> My Courses</span></a>
+                        </li>
 
-<form action="/Instructor/AssignmentCreate" method="POST">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <li class="nav-item  py-md-2">
 
-    <input type="hidden" name="id" value="@ViewBag.PassingCourseID" />
+                            <a class="nav-link teal-text" asp-controller="Instructor" asp-action="CourseDetail"
+                   asp-route-id="@ViewBag.PassingCourseID"><i class="fas fa-chevron-circle-left"></i> <span class="d-none d-md-inline"> Course Detail</span></a>
+                        </li>
 
-    <div class="form-group">
-        <label for="Question">Question</label>
-        <input asp-for="Question" class="form-control" placeholder="Type Assignment " data-val="true" data-val-required="Question Required !" data-val-maxlength-max="500" data-val-maxlength="Question Cannot exceed 500 characters" />
-        <span asp-validation-for="Question" class="text-danger" data-valmsg-for="Question" data-valmsg-replace="true"></span>
+                        <li class="nav-item  py-md-2">
+
+                            <a class="nav-link teal-text" asp-action="Signout" asp-controller="SignIn"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline">Sign Out</span></a>
+                        </li>
+
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+        <!--End Side panel-->
+        <!--Start Main -->
+        <main class="col bg-faded py-3 flex-grow-1">
+
+            <div class="text-right mt-4">
+
+                <h3>Welcome @ViewBag.UserInformation.FirstName @ViewBag.UserInformation.LastName</h3>
+
+            </div>
+
+            <div class="jumbotron bg-white">
+                <h4>Create new assignment</h4>
+
+                <hr class="my-4">
+
+                <p>
+                    <a class="teal-text" asp-controller="Instructor" asp-action="CourseDetail"
+                   asp-route-id="@ViewBag.PassingCourseID">
+                        Click Here
+                    </a>
+
+                    to go back to course details page
+                </p>
+               
+            </div>
+
+
+            <div class="card mx-5 px-md-5 shadow border-0">
+
+                @if (ViewBag.Message != null)
+                {
+                    <p class="alert-@(ViewBag.Error != null ? "danger" : "success")">@(ViewBag.Message)</p>
+
+                    @if (ViewBag.Error != null)
+                    {
+                        <ul class="list-group">
+                            @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+                            {
+                                <li class="list-group-item list-group-item-danger">@(e.Message)</li>
+                            }
+                        </ul>
+                    }
+
+                }
+
+                @if (ViewBag.AssignmentCreated != true)
+                {
+                    <form action="/Instructor/AssignmentCreate" method="POST">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <input type="hidden" name="id" value="@ViewBag.PassingCourseID" />
+
+                        <div class="form-group">
+                            <label for="Question">Question</label>
+                            <textarea asp-for="Question" class="form-control shadow-sm" placeholder="Type Assignment " data-val="true" data-val-required="Question Required !" data-val-maxlength-max="500" data-val-maxlength="Question Cannot exceed 500 characters"></textarea>
+                            <span asp-validation-for="Question" class="text-danger" data-valmsg-for="Question" data-valmsg-replace="true"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="DueDate" class="control-label">Due Date</label>
+                            <input asp-for="DueDate" class="form-control shadow-sm" type="date" value="" data-val-range="Due Date Can not be before today" data-val-range-min="@DateTime.Now" />
+                            <span asp-validation-for="DueDate" class="text-danger" data-valmsg-for="DueDate" data-valmsg-replace="true"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="TotalScore" class="control-label">Total Score</label>
+                            <input asp-for="TotalScore" class="form-control shadow-sm" value="" data-val="true" data-val-required="Total Score Required" data-val-range="Enter Total Score between 0 and 100" data-val-range-max="100" data-val-range-min="0" />
+                            <span asp-validation-for="TotalScore" class="text-danger" data-valmsg-for="TotalScore"
+                                  data-valmsg-replace="true"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" value="Submit" class="btn btn-pink round" />
+                        </div>
+
+
+                    </form>
+                }
+                </div>
+        </main>
+        <!--End Main -->
     </div>
+</div>
 
-    <div class="form-group">
-        <label asp-for="DueDate" class="control-label">Due Date</label>
-        <input asp-for="DueDate" class="form-control" type="date" value="" data-val-range="Due Date Can not be before today" data-val-range-min="@DateTime.Now"/>
-        <span asp-validation-for="DueDate" class="text-danger" data-valmsg-for="DueDate" data-valmsg-replace="true"></span>
-    </div>
 
-    <div>
-        <label asp-for="TotalScore" class="control-label">Total Score</label>
-        <input asp-for="TotalScore" class="form-control" value="" data-val="true" data-val-required="Total Score Required" data-val-range="Enter Total Score between 0 and 100" data-val-range-max="100" data-val-range-min="0" />
-        <span asp-validation-for="TotalScore" class="text-danger" data-valmsg-for="TotalScore"
-              data-valmsg-replace="true"></span>
-    </div>
 
-    <div class="form-group">
-        <input type="submit" value="Submit" class="btn btn-primary" />
-    </div>
 
-</form>
+
+
+
 
 
 @section Scripts {
