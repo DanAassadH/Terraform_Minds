@@ -28,7 +28,7 @@ namespace TerraformMinds.Controllers
                 try
                 {
                     Register(FirstName, LastName, EMail, Password, Role);
-                    ViewBag.Message = $"Successfully Registered User!";
+                    ViewBag.Message = $"Successfully Registered, Sign In to view dashboard";
                 }
                 catch (ValidationException e)
                 {
