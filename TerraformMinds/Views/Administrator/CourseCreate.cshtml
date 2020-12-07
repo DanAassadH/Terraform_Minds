@@ -154,24 +154,6 @@
 
 
 
-
-@if (ViewBag.Message != null)
-{
-    @*TERNARY EXPRESSION*@
-    <p class="alert-@(ViewBag.Error != null ? "danger" : "success")">@(ViewBag.Message)</p>
-
-    if (ViewBag.Error != null)
-    {
-        <ul>
-            @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
-            {
-                <li class="alert-danger">@(e.Message)</li>
-            }
-        </ul>
-    }
-}
-
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
