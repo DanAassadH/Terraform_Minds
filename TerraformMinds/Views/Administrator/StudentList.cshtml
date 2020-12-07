@@ -20,7 +20,7 @@
                         </li>
 
                         <li class="nav-item  py-md-2">
-                            <a class="nav-link teal-text" asp-action="StudentDashboard" asp-controller="Student"><i class="fas fa-house-user"></i> <span class="d-none d-md-inline"> Main</span></a>
+                            <a class="nav-link teal-text" asp-action="AdministratorDashboard" asp-controller="Administrator"><i class="fas fa-house-user"></i> <span class="d-none d-md-inline"> Main</span></a>
                         </li>
 
                         <li class="nav-item  py-md-2">
@@ -97,12 +97,12 @@
                             <th>Action</th>
                         </tr>
                         </thead>
-                        @foreach (Student student in ViewBag.Students)
+                        @foreach (User student in ViewBag.Students)
                         {
                             <tr>
-                                <td>@(student.User.FirstName + " " + student.User.LastName)</td>
-                                <td>@(student.User.EMail)</td>
-                                <td>@(student.User.JoinDate.ToLongDateString())</td>
+                                <td>@(student.FirstName + " " + student.LastName)</td>
+                                <td>@(student.EMail)</td>
+                                <td>@(student.JoinDate.ToLongDateString())</td>
                                 <td><a asp-action="StudentDetail" asp-controller="Administrator" asp-route-studentID="@(student.ID)">Details</a></td>
                             </tr>
                         }
