@@ -37,7 +37,7 @@
 
 @if (ViewBag.Student != null)
 {
-    <h1>Course List for @(ViewBag.Student.User.FirstName + " " + ViewBag.Student.User.LastName)</h1>
+    <h1>Course List for @(ViewBag.Student.FirstName + " " + ViewBag.Student.LastName)</h1>
 
     <table class="table">
         <thead class="thead-dark">
@@ -54,7 +54,7 @@
             @foreach (Course studentCourses in ViewBag.StudentCourses)
             {
                 <tr>
-                    <td>@(ViewBag.Student.ID)</td>
+                    <td>@(studentCourses.ID)</td>
                     <td>@(studentCourses.User.FirstName + " " + studentCourses.User.LastName)</td>
                     <td>@(studentCourses.CourseName)</td>
                     <td>@(studentCourses.Subject)</td>
