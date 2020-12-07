@@ -67,7 +67,9 @@
 
             <div class="jumbotron bg-white">
                 <h5 class="display-4">
-                    Course List for @(ViewBag.Instructor.FirstName + " " + ViewBag.Instructor.LastName)
+                    Course List for    @if (ViewBag.Instructor != null)
+                    {@(ViewBag.Instructor.FirstName + " " + ViewBag.Instructor.LastName)
+                    }
                 </h5>
 
                 <p>Return to <a asp-action="InstructorList" asp-controller="Administrator" class="teal-text">Instructor List</a></p>
@@ -88,63 +90,73 @@
 
                 @if (ViewBag.Instructor != null)
                 {
-                    <div class="card-deck d-flex justify-content-center align-self-center">
+                    if (ViewBag.InstructorCourses.Count > 0)
+                    {
+                        <div class="card-deck d-flex justify-content-center align-self-center">
 
 
-                        @foreach (Course instructorCourses in ViewBag.InstructorCourses)
-                        {
-                            <div class="card m-4 shadow-lg" style="min-width:240px; max-width: 260px;">
 
-                                <div class="card-header bg-@(instructorCourses.Subject) text-right">
+                            @foreach (Course instructorCourses in ViewBag.InstructorCourses)
+                            {
+                                <div class="card m-4 shadow-lg" style="min-width:240px; max-width: 260px;">
 
-                                    <h2 class="card-text">@(instructorCourses.Subject)</h2>
+                                    <div class="card-header bg-@(instructorCourses.Subject) text-right">
 
-                                </div>
-
-                                <div class="card-body">
-
-                                    <h5 class="card-title">Course Name :  @(instructorCourses.CourseName)</h5>
-
-                                    <p class="card-text">Description : @(instructorCourses.CourseDescription)</p>
-
-                                    <hr class="my-1">
-
-                                    <div class="text-right">
-                                        <p class="card-text">
-                                            <small>
-                                                @(instructorCourses.GradeLevel)
-                                            </small>
-                                        </p>
-                                        <p class="card-text">
-                                            <small>
-                                                Start date :
-                                                @((instructorCourses.StartDate == null ? "TBA" : ((DateTime)instructorCourses.StartDate).ToLongDateString()))
-                                            </small>
-                                        </p>
-                                        <p class="card-text">
-                                            <small>
-                                                End date : @((instructorCourses.EndDate == null ? "TBA" : ((DateTime)instructorCourses.EndDate).ToLongDateString()))
-                                            </small>
-                                        </p>
-
-
-                                        <p class="card-text">
-                                            <small>Capacity :  @(instructorCourses.CurrentCapacity) / @(instructorCourses.MaxCapacity)</small>
-                                        </p>
+                                        <h2 class="card-text">@(instructorCourses.Subject)</h2>
 
                                     </div>
 
+                                    <div class="card-body">
+
+                                        <h5 class="card-title">Course Name :  @(instructorCourses.CourseName)</h5>
+
+                                        <p class="card-text">Description : @(instructorCourses.CourseDescription)</p>
+
+                                        <hr class="my-1">
+
+                                        <div class="text-right">
+                                            <p class="card-text">
+                                                <small>
+                                                    @(instructorCourses.GradeLevel)
+                                                </small>
+                                            </p>
+                                            <p class="card-text">
+                                                <small>
+                                                    Start date :
+                                                    @((instructorCourses.StartDate == null ? "TBA" : ((DateTime)instructorCourses.StartDate).ToLongDateString()))
+                                                </small>
+                                            </p>
+                                            <p class="card-text">
+                                                <small>
+                                                    End date : @((instructorCourses.EndDate == null ? "TBA" : ((DateTime)instructorCourses.EndDate).ToLongDateString()))
+                                                </small>
+                                            </p>
+
+
+                                            <p class="card-text">
+                                                <small>Capacity :  @(instructorCourses.CurrentCapacity) / @(instructorCourses.MaxCapacity)</small>
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+
                                 </div>
+                            }
 
+                        </div> <!--End Card deck-->
+                    }
+                    else
+                    {
+                        
+                        <p> This Instructor has no courses yet <a asp-action="InstructorList" asp-controller="Administrator" class="teal-text">Click here</a> to return to the instructor list</p>
+                    }
 
-                            </div>
-                        }
-
-                    </div> <!--End Card deck-->
                 }
                 else
                 {
-                    <h1>Details</h1>
+                    
                     <p>An error occured trying to populate instructor data. <a asp-action="InstructorList" asp-controller="Administrator" class="teal-text">Click here</a> to return to the instructor list</p>
                 }
 

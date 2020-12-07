@@ -3,73 +3,170 @@
     ViewData["Title"] = "Details";
 }
 
-<ul>
-    <li>
-        <a asp-action="AdministratorDashboard" asp-controller="Administrator">Main</a>
-    </li>
-    <li class="nav-item">
-        <a asp-controller="Administrator" asp-action="InstructorList">Instructor List</a>
-    </li>
-    <li class="nav-item">
-        <a asp-controller="Administrator" asp-action="StudentList">Student List</a>
-    </li>
-    <li class="nav-item">
-        <a asp-controller="Administrator" asp-action="CourseList">Course List</a>
-    </li>
-    <li class="nav-item">
-        <a asp-controller="Administrator" asp-action="CourseCreate">Create Course</a>
-    </li>
-    <li>
-        <a asp-action="Signout" asp-controller="SignIn">Signout</a>
-    </li>
 
-</ul>
+<div class="container-fluid">
+    <div class="row min-vh-100 flex-column flex-md-row">
 
-@if (ViewBag.Error != null)
-{
-    <ul>
-        @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
-        {
-            <li class="alert-danger">@(e.Message)</li>
-        }
-    </ul>
-}
+        <!--Start Side panel-->
+        <aside class="col-12 col-md-3 p-0 bg-light border-right border-8 ">
+            <nav class="navbar navbar-expand navbar-light bg-light flex-md-column flex-row align-items-md-center p-0  ">
+                <div class="collapse navbar-collapse p-0 py-md-5 ">
+                    <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-around">
+                        <li class="nav-item  py-md-2">
 
-@if (ViewBag.Student != null)
-{
-    <h1>Course List for @(ViewBag.Student.User.FirstName + " " + ViewBag.Student.User.LastName)</h1>
+                            <h5> <span class="d-none d-md-inline font-weight-bold">Dashboard Menu</span></h5>
 
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th>Course ID</th>
-                <th>Instructor</th>
-                <th>Course Name</th>
-                <th>Subject</th>
-                <th>Course Description</th>
-                <th>Grade Level</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-            </tr>
-            @foreach (Course studentCourses in ViewBag.StudentCourses)
-            {
-                <tr>
-                    <td>@(ViewBag.Student.ID)</td>
-                    <td>@(studentCourses.User.FirstName + " " + studentCourses.User.LastName)</td>
-                    <td>@(studentCourses.CourseName)</td>
-                    <td>@(studentCourses.Subject)</td>
-                    <td>@(studentCourses.CourseDescription)</td>
-                    <td>@(studentCourses.GradeLevel)</td>
-                    <td>@((studentCourses.StartDate == null ? "TBA" : ((DateTime)studentCourses.StartDate).ToLongDateString()))</td>
-                    <td>@((studentCourses.EndDate == null ? "TBA" : ((DateTime)studentCourses.EndDate).ToLongDateString()))</td>
-                </tr>
-            }
-        </thead>
-    </table>
-    <p>Return to <a asp-action="StudentList" asp-controller="Administrator">Student List</a></p>
-}
-else
-{
-    <h1>Details</h1>
-    <p>An error occured trying to populate student data. <a asp-action="StudentList" asp-controller="Administrator">Click here to return to the student list</a>.</p>
+                        </li>
+
+                        <li class="nav-item  py-md-2">
+                            <a class="nav-link teal-text" asp-action="StudentDashboard" asp-controller="Student"><i class="fas fa-house-user"></i> <span class="d-none d-md-inline"> Main</span></a>
+                        </li>
+
+                        <li class="nav-item  py-md-2">
+
+                            <a class="nav-link teal-text" asp-controller="Administrator" asp-action="InstructorList"><i class="far fa-list-alt"></i> <span class="d-none d-md-inline"> Instructor List</span></a>
+                        </li>
+
+
+                        <li class="nav-item  py-md-2">
+
+                            <a class="nav-link teal-text" asp-controller="Administrator" asp-action="StudentList"><i class="far fa-list-alt"></i> <span class="d-none d-md-inline"> Student List</span></a>
+                        </li>
+
+
+                        <li class="nav-item  py-md-2">
+
+                            <a class="nav-link teal-text" asp-controller="Administrator" asp-action="CourseList"><i class="far fa-list-alt"></i> <span class="d-none d-md-inline"> Course List</span></a>
+                        </li>
+
+                        <li class="nav-item  py-md-2">
+
+                            <a class="nav-link teal-text" asp-controller="Administrator" asp-action="CourseCreate"><i class="far fa-list-alt"></i> <span class="d-none d-md-inline"> Create Course</span></a>
+                        </li>
+
+
+
+                        <li class="nav-item  py-md-2">
+
+                            <a class="nav-link teal-text" asp-action="Signout" asp-controller="SignIn"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline"> Sign Out</span></a>
+                        </li>
+
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+        <!--End Side panel-->
+        <!--Start Main -->
+        <main class="col bg-faded py-3 flex-grow-1">
+
+            <div class="text-right mt-4">
+
+                <h3>Welcome</h3>
+
+            </div>
+
+            <div class="jumbotron bg-white">
+                <h5 class="display-4">
+                    Course List for Student
+
+                    @if (ViewBag.Student != null)
+                    {@(ViewBag.Student.User.FirstName + " " + ViewBag.Student.User.LastName)
+                    }
+                </h5>
+
+                <p>Return to <a asp-action="InstructorList" asp-controller="Administrator" class="teal-text">Instructor List</a></p>
+            </div>
+
+            <div class="container d-flex justify-content-center">
+
+
+                @if (ViewBag.Error != null)
+                {
+                    <ul class="list-group">
+                        @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+                        {
+                            <li class="list-group-item list-group-item-danger">@(e.Message)</li>
+                        }
+                    </ul>
+                }
+
+                @if (ViewBag.Student != null)
+                {
+                    if (ViewBag.StudentCourses.Count > 0)
+                    {
+                        <div class="card-deck d-flex justify-content-center align-self-center">
+
+
+                            @foreach (Course studentCourses in ViewBag.StudentCourses)
+                            {
+                                <div class="card m-4 shadow-lg" style="min-width:240px; max-width: 260px;">
+
+                                    <div class="card-header bg-@(studentCourses.Subject) text-right">
+
+                                        <h2 class="card-text">@(studentCourses.Subject)</h2>
+
+                                    </div>
+
+                                    <div class="card-body">
+
+                                        <h5 class="card-title">Course Name :  @(studentCourses.CourseName)</h5>
+
+                                        <p class="card-text">Description : @(studentCourses.CourseDescription)</p>
+
+
+                                        <p class="card-text">
+                                            <small>Instructor :  @(studentCourses.User.FirstName + " " + studentCourses.User.LastName)</small>
+                                        </p>
+
+                                        <hr class="my-1">
+
+                                        <div class="text-right">
+                                            <p class="card-text">
+                                                <small>
+                                                    @(studentCourses.GradeLevel)
+                                                </small>
+                                            </p>
+                                            <p class="card-text">
+                                                <small>
+                                                    Start date :
+                                                    @((studentCourses.StartDate == null ? "TBA" : ((DateTime)studentCourses.StartDate).ToLongDateString()))
+                                                </small>
+                                            </p>
+                                            <p class="card-text">
+                                                <small>
+                                                    End date : @((studentCourses.EndDate == null ? "TBA" : ((DateTime)studentCourses.EndDate).ToLongDateString()))
+                                                </small>
+                                            </p>
+
+
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                            }
+
+                        </div> <!--End Card deck-->
+                    }
+                    else
+                    {
+                        <p>This Student is not enrolled in any course <a class="teal-text" asp-action="StudentList" asp-controller="Administrator">Click here to return to the student list</a>.</p>
+                    }
+                }
+                else
+                {
+                    <p>An error occured trying to populate student data. <a class="teal-text" asp-action="StudentList" asp-controller="Administrator">Click here to return to the student list</a>.</p>
+                }
+
+
+
+            </div> <!--End Container-->
+        </main>
+        <!--End Main -->
+    </div>
+</div>
+
+
 }
