@@ -539,9 +539,9 @@ namespace TerraformMinds.Controllers
         {
             try
             {
-                Student student = GetStudentByID(studentID);
+                User student = GetStudentByID(studentID);
                 ViewBag.Student = student;
-                ViewBag.StudentCourses = GetEnrolledCoursesByStudentID(student.UserID);
+                ViewBag.StudentCourses = GetEnrolledCoursesByStudentID(student.ID);
 
             }
             catch (ValidationException e)
@@ -560,17 +560,17 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
-        public Student GetStudentByID(int studentID)
+        public User GetStudentByID(int studentID)
         {
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                if (!context.Students.Any(x => x.ID == studentID))
+                if (!context.Users.Any(x => x.ID == studentID))
                 {
                     exception.ValidationExceptions.Add(new Exception("Error: Cannot find Student"));
                     throw exception;
                 }
 
-                Student student = context.Students.Where(x => x.ID == studentID).Include(x => x.User).SingleOrDefault();
+                User student = context.Users.Where(x => x.ID == studentID).Include(x => x.Students).SingleOrDefault();
                 return student;
             }
         }
@@ -599,12 +599,12 @@ namespace TerraformMinds.Controllers
             }
         }
 
-        public List<Student> GetStudents()
+        public List<User> GetStudents()
         {
-            List<Student> studentList;
+            List<User> studentList;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                studentList = context.Students.Where(x => x.User.Role == 3).Include(x => x.User).ToList();
+                studentList = context.Users.Where(x => x.Role == 3).Include(x => x.Students).ToList();
             }
             return studentList;
         }

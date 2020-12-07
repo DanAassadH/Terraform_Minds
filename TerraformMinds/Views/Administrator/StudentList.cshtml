@@ -38,13 +38,13 @@
                 <th>Join Date</th>
                 <th>Action</th>
             </tr>
-            @foreach (Student student in ViewBag.Students)
+            @foreach (User student in ViewBag.Students)
             {
         <tr>
             <td>@(student.ID)</td>
-            <td>@(student.User.FirstName + " " + student.User.LastName)</td>
-            <td>@(student.User.EMail)</td>
-            <td>@(student.User.JoinDate.ToLongDateString())</td>
+            <td>@(student.FirstName + " " + student.LastName)</td>
+            <td>@(student.EMail)</td>
+            <td>@(student.JoinDate.ToLongDateString())</td>
             <td><a asp-action="StudentDetail" asp-controller="Administrator" asp-route-studentID="@(student.ID)">View Details</a></td>
         </tr>
             }
