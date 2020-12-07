@@ -21,6 +21,8 @@ namespace TerraformMinds.Controllers
 
     public class AdministratorController : Controller
     {
+
+        /* ------------------------------------------Administrator Main Actions -----------------------------------------------------*/
         ValidationException exception = new ValidationException();
 
         [Authorize(Roles = "Administrator")]
@@ -47,6 +49,7 @@ namespace TerraformMinds.Controllers
         /// <param name="currentCapacity"></param>
         /// <param name="maxCapacity"></param>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator")]
         public IActionResult CourseCreate(string instructor, string courseName, string subject, string courseDescription, string gradeLevel, DateTime? startDate, DateTime? endDate, int currentCapacity, int maxCapacity)
         {
             using(LearningManagementContext context = new LearningManagementContext())
@@ -106,6 +109,7 @@ namespace TerraformMinds.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("CourseCreate")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CourseCreate(string instructor, string courseName, string subject, string courseDescription, string gradeLevel, DateTime? startDate, DateTime? endDate, int currentCapacity, int maxCapacity, [Bind("ID,UserID,CourseName,Subject,CourseDescription,GradeLevel,StartDate,EndDate,MaxCapacity")] Course course)
         {
             using (LearningManagementContext context = new LearningManagementContext())
@@ -141,14 +145,22 @@ namespace TerraformMinds.Controllers
                                 {
                                     if (course.StartDate < DateTime.Today)
                                     {
-                                        exception.ValidationExceptions.Add(new Exception("Invalid State Date: Course Start Date cannot be set in the past."));
+                                        exception.ValidationExceptions.Add(new Exception("Invalid Start Date: Course Start Date cannot be set prior to todays date."));
                                     }
 
                                     else
                                     {
-                                        if (context.Courses.Any(x => x.CourseName == course.CourseName))
+                                        if(course.EndDate < DateTime.Today)
                                         {
-                                            exception.ValidationExceptions.Add(new Exception("Invalid Course Name: That course already exists."));
+                                            exception.ValidationExceptions.Add(new Exception("Invalid End Date: Course End Date cannot be set prior to todays date."));
+                                        }
+
+                                        else
+                                        {
+                                            if (context.Courses.Any(x => x.CourseName == course.CourseName))
+                                            {
+                                                exception.ValidationExceptions.Add(new Exception("Invalid Course Name: That course already exists."));
+                                            }
                                         }
                                     }
                                 }
@@ -205,49 +217,41 @@ namespace TerraformMinds.Controllers
         /// Populates a list of courses in View/CourseList 
         /// </summary>
         /// <returns>Showcases a list of courses in View.CourseList</returns>
-        public IActionResult CourseList()
+        [Authorize(Roles = "Administrator")]
+        public IActionResult CourseList(string subjectFilter, string gradeFilter)
         {
-            ViewBag.Courses = GetCourses();
+            var gradeLevels = new List<string>() { "Kindergarten", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12" };
+            var gradeLevelList = new SelectList(gradeLevels.ToDictionary(g => g, g => g), "Key", "Value", gradeLevels);
+            ViewBag.GradeLevels = gradeLevelList;
 
-            return View();
-        }
+            var courseSubjects = new List<string>() { "English", "Math", "Science", "Social Studies" };
+            var courseSubjectsList = new SelectList(courseSubjects.ToDictionary(s => s, s => s), "Key", "Value", courseSubjects);
+            ViewBag.CourseSubjects = courseSubjectsList;
 
-        /// <summary>
-        /// Creates a list of courses using LINQ queries to select information from the database.
-        /// Used Include to join User table
-        /// </summary>
-        /// <returns> A list of Courses based on data from the database</returns>
-        public List<Course> GetCourses()
-        {
-            List<Course> courseList;
-            using (LearningManagementContext context = new LearningManagementContext())
+            if (gradeLevels.Contains(gradeFilter) && !courseSubjects.Contains(subjectFilter))
             {
-                courseList = context.Courses.Include(x => x.User).ToList();
+                ViewBag.Courses = GetCoursesByGrade(gradeFilter);
+                ViewBag.Filter = true;
             }
-            return courseList;
-        }
 
-        /// <summary>
-        /// Gets a Course based on its unique ID
-        /// </summary>
-        /// <param name="courseID"></param>
-        /// <returns>Returns a course based on its unique ID</returns>
-        public Course GetCourseByID(int courseID)
-        {
-            using (LearningManagementContext context = new LearningManagementContext())
+            else if (courseSubjects.Contains(subjectFilter) && !gradeLevels.Contains(gradeFilter))
             {
-                if (!context.Courses.Any(x => x.ID == courseID))
-                {
-                    exception.ValidationExceptions.Add(new Exception("Error: Course ID does not exist"));
-                    throw exception;
-                }
-                else
-                {
-                    Course course = context.Courses.Where(x => x.ID == courseID).Include(x => x.User).SingleOrDefault();
-
-                    return course;
-                }
+                ViewBag.Courses = GetCoursesBySubject(subjectFilter);
+                ViewBag.Filter = true;
             }
+
+            else if (courseSubjects.Contains(subjectFilter) && gradeLevels.Contains(gradeFilter))
+            {
+                ViewBag.Courses = GetCoursesByGradeAndSubject(subjectFilter, gradeFilter);
+                ViewBag.Filter = true;
+            }
+
+            else
+            {
+                ViewBag.Courses = GetCoursesAll();
+                ViewBag.Filter = false;
+            }
+            return View("CourseList");
         }
 
         /// <summary>
@@ -256,13 +260,14 @@ namespace TerraformMinds.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Pre-populated fields in Views/CourseEdit with database information </returns>
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CourseEdit(int? id)
         {
             using (LearningManagementContext context = new LearningManagementContext())
             {
                 if (id == null)
                 {
-                return NotFound();
+                    return NotFound();
                 }
 
                 var course = await context.Courses.FindAsync(id);
@@ -311,6 +316,7 @@ namespace TerraformMinds.Controllers
         /// <returns>Updates the values for course in the database</returns>
         [HttpPost, ActionName("CourseEdit")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CourseEdit(int id, [Bind("ID,UserID,CourseName,Subject,CourseDescription,GradeLevel,StartDate,EndDate,CurrentCapacity,MaxCapacity")] Course course)
         {
             course.CourseName = course.CourseName != null ? course.CourseName.Trim() : null;
@@ -343,6 +349,21 @@ namespace TerraformMinds.Controllers
                                 if (course.StartDate > course.EndDate)
                                 {
                                     exception.ValidationExceptions.Add(new Exception("Invalid Start Date: Course Start Date cannot be after End Date."));
+                                }
+                                else
+                                {
+                                    if (course.StartDate < DateTime.Today)
+                                    {
+                                        exception.ValidationExceptions.Add(new Exception("Invalid Start Date: Course Start Date cannot be set prior to todays date."));
+                                    }
+
+                                    else
+                                    {
+                                        if (course.EndDate < DateTime.Today)
+                                        {
+                                            exception.ValidationExceptions.Add(new Exception("Invalid End Date: Course End Date cannot be set prior to todays date."));
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -396,9 +417,9 @@ namespace TerraformMinds.Controllers
                     ViewBag.GradeLevel = course.GradeLevel;
                     ViewBag.CurrentCapacity = course.CurrentCapacity;
                     ViewBag.MaxCapacity = course.MaxCapacity;
-                }   
+                }
             }
-            return View(course);
+            return View();
         }
 
         /// <summary>
@@ -406,6 +427,7 @@ namespace TerraformMinds.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CourseDelete(int? id)
         {
             using (LearningManagementContext context = new LearningManagementContext())
@@ -431,10 +453,11 @@ namespace TerraformMinds.Controllers
 
         [HttpPost, ActionName("CourseDelete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             using (LearningManagementContext context = new LearningManagementContext())
-            {                
+            {
                 var course = await context.Courses.FindAsync(id);
 
                 try
@@ -468,10 +491,79 @@ namespace TerraformMinds.Controllers
             }
         }
 
-        /************************************
-         * ADMINISTRATOR INSTRUCTOR COMMANDS
-         ************************************/
+        /* ------------------------------------------Administrator Main Data -----------------------------------------------------*/
 
+        /// <summary>
+        /// Creates a list of courses using LINQ queries to select information from the database.
+        /// Used Include to join User table
+        /// </summary>
+        /// <returns> A list of Courses based on data from the database</returns>
+        public List<Course> GetCoursesAll()
+        {
+            List<Course> courseList;
+            using (LearningManagementContext context = new LearningManagementContext())
+            {
+                courseList = context.Courses.Include(x => x.User).ToList();
+            }
+            return courseList;
+        }
+
+        public List<Course> GetCoursesByGrade(string gradeFilter)
+        {
+            List<Course> courseListByGrade;
+            using (LearningManagementContext context = new LearningManagementContext())
+            {
+                courseListByGrade = context.Courses.Where(x => x.GradeLevel == gradeFilter).Include(x => x.User).ToList();
+            }
+            return courseListByGrade;
+        }
+
+        public List<Course> GetCoursesBySubject(string subjectFilter)
+        {
+            List<Course> courseListBySubject;
+            using (LearningManagementContext context = new LearningManagementContext())
+            {
+                courseListBySubject = context.Courses.Where(x => x.Subject == subjectFilter).Include(x => x.User).ToList();
+            }
+            return courseListBySubject;
+        }
+
+        public List<Course> GetCoursesByGradeAndSubject(string subjectFilter, string gradeFilter)
+        {
+            List<Course> courseListBySubject;
+            using (LearningManagementContext context = new LearningManagementContext())
+            {
+                courseListBySubject = context.Courses.Where(x => x.Subject == subjectFilter && x.GradeLevel == gradeFilter).Include(x => x.User).ToList();
+            }
+            return courseListBySubject;
+        }
+
+        /// <summary>
+        /// Gets a Course based on its unique ID
+        /// </summary>
+        /// <param name="courseID"></param>
+        /// <returns>Returns a course based on its unique ID</returns>
+        public Course GetCourseByID(int courseID)
+        {
+            using (LearningManagementContext context = new LearningManagementContext())
+            {
+                if (!context.Courses.Any(x => x.ID == courseID))
+                {
+                    exception.ValidationExceptions.Add(new Exception("Error: Course ID does not exist"));
+                    throw exception;
+                }
+                else
+                {
+                    Course course = context.Courses.Where(x => x.ID == courseID).Include(x => x.User).SingleOrDefault();
+
+                    return course;
+                }
+            }
+        }
+
+        /* ------------------------------------------Administrator Instructor Actions -----------------------------------------------------*/
+
+        [Authorize(Roles = "Administrator")]
         public IActionResult InstructorDetail(int instructorID)
         {
             try
@@ -489,12 +581,15 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Administrator")]
         public IActionResult InstructorList()
         {
             ViewBag.Instructors = GetInstructors();
 
             return View();
         }
+
+        /* ------------------------------------------Administrator Instructor Data -----------------------------------------------------*/
 
         public List<User> GetInstructors()
         {
@@ -532,16 +627,14 @@ namespace TerraformMinds.Controllers
             }
         }
 
-        /************************************
-        * ADMINISTRATOR STUDENT COMMANDS
-        ************************************/
+        /* ------------------------------------------Administrator Student Actions -----------------------------------------------------*/
         public IActionResult StudentDetail(int studentID)
         {
             try
             {
-                Student student = GetStudentByID(studentID);
+                User student = GetStudentByID(studentID);
                 ViewBag.Student = student;
-                ViewBag.StudentCourses = GetEnrolledCoursesByStudentID(student.UserID);
+                ViewBag.StudentCourses = GetEnrolledCoursesByStudentID(student.ID);
 
             }
             catch (ValidationException e)
@@ -553,6 +646,7 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Administrator")]
         public IActionResult StudentList()
         {
             ViewBag.Students = GetStudents();
@@ -560,17 +654,18 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
-        public Student GetStudentByID(int studentID)
+        /* ------------------------------------------Administrator Student Data -----------------------------------------------------*/
+        public User GetStudentByID(int studentID)
         {
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                if (!context.Students.Any(x => x.ID == studentID))
+                if (!context.Users.Any(x => x.ID == studentID))
                 {
                     exception.ValidationExceptions.Add(new Exception("Error: Cannot find Student"));
                     throw exception;
                 }
 
-                Student student = context.Students.Where(x => x.ID == studentID).Include(x => x.User).SingleOrDefault();
+                User student = context.Users.Where(x => x.ID == studentID).Include(x => x.Students).SingleOrDefault();
                 return student;
             }
         }
@@ -599,12 +694,12 @@ namespace TerraformMinds.Controllers
             }
         }
 
-        public List<Student> GetStudents()
+        public List<User> GetStudents()
         {
-            List<Student> studentList;
+            List<User> studentList;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                studentList = context.Students.Where(x => x.User.Role == 3).Include(x => x.User).ToList();
+                studentList = context.Users.Where(x => x.Role == 3).Include(x => x.Students).ToList();
             }
             return studentList;
         }
