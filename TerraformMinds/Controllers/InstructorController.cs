@@ -167,6 +167,7 @@ namespace TerraformMinds.Controllers
 
             try
             {
+                ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
                 ViewBag.SubmittedAssignmentAnswer = GetSubmittedAssignmentBySubmitID(submitId);
 
                 if (Request.Method == "POST")
