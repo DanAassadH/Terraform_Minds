@@ -29,7 +29,7 @@ namespace TerraformMinds.Controllers
             }
             catch (ValidationException e)
             {
-                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Message = "There is an issue(s) with the submission, please see the following details:";
                 ViewBag.Exception = e;
                 ViewBag.Error = true;
             }
@@ -54,7 +54,7 @@ namespace TerraformMinds.Controllers
             }
             catch (ValidationException e)
             {
-                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Message = "There is an issue(s) with the submission, please see the following details:";
                 ViewBag.Exception = e;
                 ViewBag.Error = true;
             }
@@ -83,7 +83,7 @@ namespace TerraformMinds.Controllers
             }
             catch (ValidationException e)
             {
-                ViewBag.Message = "There exist problem(s) with your submission";
+                ViewBag.Message = "There is an issue(s) with the submission, please see the following details:";
                 ViewBag.Exception = e;
                 ViewBag.Error = true;
             }
@@ -115,7 +115,7 @@ namespace TerraformMinds.Controllers
             }
             catch (ValidationException e)
             {
-                ViewBag.Message = "There exist problem(s) with your submission";
+                ViewBag.Message = "There is an issue(s) with the submission, please see the following details:";
                 ViewBag.Exception = e;
                 ViewBag.Error = true;
             }
@@ -146,7 +146,7 @@ namespace TerraformMinds.Controllers
             }
             catch (ValidationException e)
             {
-                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Message = "There is an issue(s) with the submission, please see the following details:";
                 ViewBag.Exception = e;
                 ViewBag.Error = true;
             }
@@ -162,11 +162,12 @@ namespace TerraformMinds.Controllers
         /// <param name="ScoreObtained"></param>
         /// <returns>View of the assignment answer </returns>
         [Authorize(Roles = "Instructor")]
-        public IActionResult AssignmentMark(string submitId, string Remarks, string ScoreObtained, string TotalScore)
+        public IActionResult AssignmentMark(string submitId, string Remarks, string ScoreObtained, string TotalScore, string courseId)
         {
 
             try
             {
+                ViewBag.BackCourseID = courseId;
                 ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
                 ViewBag.SubmittedAssignmentAnswer = GetSubmittedAssignmentBySubmitID(submitId);
 
@@ -180,7 +181,7 @@ namespace TerraformMinds.Controllers
             }
             catch (ValidationException e)
             {
-                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Message = "There is an issue(s) with the submission, please see the following details:";
                 ViewBag.Exception = e;
                 ViewBag.Error = true;
             }
@@ -248,7 +249,7 @@ namespace TerraformMinds.Controllers
             }
             else
             {
-                exception.ValidationExceptions.Add(new Exception("Invalid ID , Go back to main Instructor Dsahboard and select course again"));
+                exception.ValidationExceptions.Add(new Exception("Invalid ID : Go back to main Instructor Dsahboard and select course again"));
             }
 
 
@@ -289,7 +290,7 @@ namespace TerraformMinds.Controllers
             }
             else
             {
-                exception.ValidationExceptions.Add(new Exception("Invalid Course ID , Go back to main Instructor Dsahboard and select course again"));
+                exception.ValidationExceptions.Add(new Exception("Invalid Course ID : Go back to main Instructor Dsahboard and select course again"));
             }
 
 
@@ -326,7 +327,7 @@ namespace TerraformMinds.Controllers
             }
             else
             {
-                exception.ValidationExceptions.Add(new Exception("Invalid Course ID , Go back to main Dsahboard and select course again"));
+                exception.ValidationExceptions.Add(new Exception("Invalid Course ID : Go back to main Dsahboard and select course again"));
             }
 
 
@@ -342,6 +343,7 @@ namespace TerraformMinds.Controllers
         /// <summary>
         /// Function to insert assignment values by instructor into assignment table 
         /// Validation # 1 : Due Date for assignment Cannot be before Course start date
+        /// Validation # 2 : Due date for assignment cannot be set before today
         /// </summary>
         /// <param name="question"></param>
         /// <param name="dueDate"></param>
@@ -365,29 +367,29 @@ namespace TerraformMinds.Controllers
             // Validation for courseID
             if (id == null)
             {
-                exception.ValidationExceptions.Add(new Exception("ID not found, Go back to details page and try again"));
+                exception.ValidationExceptions.Add(new Exception("Invalid ID : Go back to details page and try again"));
                 flag = true;
             }
             else
             {
                 if (!int.TryParse(id, out parsedId))
                 {
-                    exception.ValidationExceptions.Add(new Exception("Invalid Course ID , Go back to main Instructor Dsahboard and select course again"));
+                    exception.ValidationExceptions.Add(new Exception("Invalid Course ID : Go back to main Instructor Dsahboard and select course again"));
                     flag = true;
                 }
             }
-
+            
             // Validation for question
             if (question == null)
             {
-                exception.ValidationExceptions.Add(new Exception("Question Required"));
+                exception.ValidationExceptions.Add(new Exception("Invalid Value : Question Required"));
                 flag = true;
             }
             else
             {
                 if (question.Length > 500)
                 {
-                    exception.ValidationExceptions.Add(new Exception("exceed character count of 500, please rephrase"));
+                    exception.ValidationExceptions.Add(new Exception("Invalid character count : cannot exceed 500 characters, please rephrase"));
                     flag = true;
                 }
             }
@@ -395,14 +397,14 @@ namespace TerraformMinds.Controllers
             // Validation for dueDate
             if (dueDate == null)
             {
-                exception.ValidationExceptions.Add(new Exception("Due Date Required"));
+                exception.ValidationExceptions.Add(new Exception("Invalid Date : Due Date Required"));
                 flag = true;
             }
             else
             {
                 if (DateTime.Parse(dueDate) < DateTime.Now)
                 {
-                    exception.ValidationExceptions.Add(new Exception("Due Date Can not be before today"));
+                    exception.ValidationExceptions.Add(new Exception("Invalid Date : Due Date Can not be set prior to today"));
                     flag = true;
                 }
             }
@@ -410,21 +412,21 @@ namespace TerraformMinds.Controllers
             // Validation for TotalScore
             if (totalScore == null)
             {
-                exception.ValidationExceptions.Add(new Exception("Total Score for Assignment required"));
+                exception.ValidationExceptions.Add(new Exception("Invalid Score : total score for assignment required"));
                 flag = true;
             }
             else
             {
                 if (!int.TryParse(totalScore, out parsedTotalScore))
                 {
-                    exception.ValidationExceptions.Add(new Exception("Numeric Value required for Total Score"));
+                    exception.ValidationExceptions.Add(new Exception("Invalid Value : Numeric Value required for total score"));
                     flag = true;
                 }
                 else
                 {
                     if (!((parsedTotalScore > -1) && (parsedTotalScore < 101)))
                     {
-                        exception.ValidationExceptions.Add(new Exception("Enter Total Score between 0 and 100"));
+                        exception.ValidationExceptions.Add(new Exception("Invalid value : enter total score between 0 and 100"));
                         flag = true;
                     }
                 }
@@ -441,7 +443,7 @@ namespace TerraformMinds.Controllers
 
                     if(DateTime.Parse(dueDate) < course.StartDate)
                     {
-                        exception.ValidationExceptions.Add(new Exception("Due date for an assignment cannot be before course start date"));
+                        exception.ValidationExceptions.Add(new Exception("Invalid Due date : due date for an assignment cannot be before course start date"));
                         flag = true;
                     }
 
@@ -486,7 +488,7 @@ namespace TerraformMinds.Controllers
             // Validation for submitID
             if (!int.TryParse(submitID, out parsedId))
             {
-                exception.ValidationExceptions.Add(new Exception("Invalid Course ID , Go back to course page and try again"));
+                exception.ValidationExceptions.Add(new Exception("Invalid Course ID : Go back to course page and try again"));
 
             }
             else
@@ -533,36 +535,39 @@ namespace TerraformMinds.Controllers
             // Validation for submitID
             if (!int.TryParse(submitId, out parsedId))
             {
-                exception.ValidationExceptions.Add(new Exception("Invalid submission ID , Go back to Course list and try again"));
+                exception.ValidationExceptions.Add(new Exception("Invalid submission ID : go back to course list and try again"));
                 flag = true;
             }
 
             // Validation for Total Score
             if (!int.TryParse(totalScore, out parsedTotalScore))
             {
-                exception.ValidationExceptions.Add(new Exception("TotalScore not provided , Go back to Course list and try again"));
+                exception.ValidationExceptions.Add(new Exception("Invalid value: total score required"));
                 flag = true;
             }
 
 
             // Validation for remarks
-            if (remarks.Length > 500 && remarks != null)
+            if(remarks!=null)
+            { 
+            if (remarks.Length > 500)
             {
-                exception.ValidationExceptions.Add(new Exception("Exceed character count of 500, please rephrase"));
+                exception.ValidationExceptions.Add(new Exception("Invalid value : cannot exceed character count of 500, please rephrase"));
                 flag = true;
+            }
             }
 
             // Validation for Score obtained
             if (!int.TryParse(scoreObtained, out parsedScoreObtained))
             {
-                exception.ValidationExceptions.Add(new Exception("Numeric Value required for Score Obtained"));
+                exception.ValidationExceptions.Add(new Exception("Invalud value : numeric Value required for score obtained"));
                 flag = true;
             }
             else
             {
                 if (!((parsedScoreObtained > -1) && (parsedScoreObtained < parsedTotalScore + 1)))
                 {
-                    exception.ValidationExceptions.Add(new Exception($"Enter Total Score between 0 and {parsedTotalScore}"));
+                    exception.ValidationExceptions.Add(new Exception($"Invalid value : enter total score between 0 and {parsedTotalScore}"));
                     flag = true;
                 }
             }

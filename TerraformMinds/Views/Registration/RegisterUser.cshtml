@@ -36,25 +36,25 @@
 
 
                 <div class="form-group">
-                    <label for="FirstName"></label>
+                    <label for="FirstName">First Name</label>
                     <input asp-for="FirstName" class="form-control shadow-sm" placeholder="First Name" data-val="true" data-val-required="First Name is required !" data-val-maxlength-max="50" data-val-maxlength="Name Cannot exceed 50 characters" />
                     <span asp-validation-for="FirstName" class="text-danger" data-valmsg-for="FirstName" data-valmsg-replace="true"></span>
                 </div>
 
-                <div class="form-group">
-                    <label for="LastName"></label>
+                <div class="form-group" >
+                    <label for="LastName"> Last Name</label>
                     <input asp-for="LastName" class="form-control shadow-sm" placeholder="Last Name" data-val-required="Last Name is required" data-val-maxlength-max="50" data-val-maxlength="Name Cannot exceed 50 characters" />
                     <span asp-validation-for="LastName" class="text-danger" data-valmsg-for="LastName" data-valmsg-replace="true"></span>
                 </div>
 
-                <div class="form-group">
-                    <label for="EMail"></label>
+                <div class="form-group" >
+                    <label for="EMail">Email</label>
                     <input asp-for="EMail" class="form-control shadow-sm" placeholder="Email" data-val-required="Email is required" data-val-maxlength-max="50" data-val-maxlength="Email Cannot exceed 50 characters" data-val-regex="Incorrect Email Adress" data-val-regex-pattern="^[\w-!$*%^\.]+@@([\w-]+\.)+[\w-]{2,4}$" />
                     <span asp-validation-for="EMail" class="text-danger" data-valmsg-for="EMail" data-valmsg-replace="true"></span>
                 </div>
 
-                <div class="form-group">
-                    <label for="Password"></label>
+                <div class="form-group" >
+                    <label for="Password" >Password</label>
                     <input asp-for="Password" type="password" class="form-control shadow-sm" placeholder="Password" data-val-required="Password is required" data-val-maxlength-max="50" data-val-maxlength="Password Cannot exceed 50 characters" />
                     <span asp-validation-for="Password" class="text-danger" data-valmsg-for="Password" data-valmsg-replace="true"></span>
                 </div>

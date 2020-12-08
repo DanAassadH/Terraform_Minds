@@ -28,11 +28,11 @@ namespace TerraformMinds.Controllers
                 try
                 {
                     Register(FirstName, LastName, EMail, Password, Role);
-                    ViewBag.Message = $"Successfully Registered, Sign In to view dashboard";
+                    ViewBag.Message = $"You are Successfully Registered, Sign In to view dashboard";
                 }
                 catch (ValidationException e)
                 {
-                    ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                    ViewBag.Message = "There is an issue(s) with the submission, please see the following details:";
                     ViewBag.Exception = e;
                     ViewBag.Error = true;
                 }
@@ -67,53 +67,53 @@ namespace TerraformMinds.Controllers
             // Validation for First Name 
             if (string.IsNullOrWhiteSpace(firstName))
             {
-                exception.ValidationExceptions.Add(new Exception("First Name Not Provided"));
+                exception.ValidationExceptions.Add(new Exception("Invalid value : First Name Not Provided"));
                 flag = true;
             }
             else if (firstName.Length > 50)
             {
-                exception.ValidationExceptions.Add(new Exception("First Name Cannot exceed 50 characters"));
+                exception.ValidationExceptions.Add(new Exception("Invalid value : First Name Cannot exceed 50 characters"));
                 flag = true;
             }
 
             // Validation for Last Name 
             if (string.IsNullOrWhiteSpace(lastName))
             {
-                exception.ValidationExceptions.Add(new Exception("Last Name Not Provided"));
+                exception.ValidationExceptions.Add(new Exception("Invalid value : Last Name Not Provided"));
                 flag = true;
             }
             else if (lastName.Length > 50)
             {
-                exception.ValidationExceptions.Add(new Exception("Last Name Cannot exceed 50 characters"));
+                exception.ValidationExceptions.Add(new Exception("Invalid value : Last Name Cannot exceed 50 characters"));
                 flag = true;
             }
 
             // Validation for Email
             if (string.IsNullOrWhiteSpace(email))
             {
-                exception.ValidationExceptions.Add(new Exception("Email Not Provided"));
+                exception.ValidationExceptions.Add(new Exception("Invalid value : Email Not Provided"));
                 flag = true;
             }
             else if (email.Length > 50)
             {
-                exception.ValidationExceptions.Add(new Exception("Email Cannot exceed 50 characters"));
+                exception.ValidationExceptions.Add(new Exception("Invalid value : Email Cannot exceed 50 characters"));
                 flag = true;
             }
             else if (!Regex.IsMatch(email, @"^[\w-!$*%^\.]+@([\w-]+\.)+[\w-]{2,4}$"))
             {
-                exception.ValidationExceptions.Add(new Exception("Incorrect Email Address  "));
+                exception.ValidationExceptions.Add(new Exception("Invalid value : Incorrect Email Address  "));
                 flag = true;
             }
 
             // Validation for Password
             if (string.IsNullOrWhiteSpace(password))
             {
-                exception.ValidationExceptions.Add(new Exception("Password Not Provided"));
+                exception.ValidationExceptions.Add(new Exception("Invalid value : Password Not Provided"));
                 flag = true;
             }
             else if (password.Length > 50)
             {
-                exception.ValidationExceptions.Add(new Exception("Password Cannot exceed 50 characters"));
+                exception.ValidationExceptions.Add(new Exception(" Invalid value : Password Cannot exceed 50 characters"));
                 flag = true;
             }
 
