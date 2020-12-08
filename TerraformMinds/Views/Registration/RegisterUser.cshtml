@@ -3,7 +3,11 @@
     ViewData["Title"] = "RegisterUser";
 }
 
+
+
+
 <div class="container d-flex justify-content-center">
+
 
     <div class="card  align-self-center py-5 border-0" style="width: 380px;">
 
@@ -15,17 +19,24 @@
             <form action="/Registration/RegisterUser" method="POST">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+
+
                 @if (ViewBag.Message != null)
                 {
                     <p class="alert-@(ViewBag.Error != null ? "danger" : "success")">@(ViewBag.Message)</p>
 
-                    <ul class="list-group">
-                        @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
-                        {
-                            <li class="list-group-item list-group-item-danger">@(e.Message)</li>
-                        }
-                    </ul>
+                    if (ViewBag.Error != null)
+                    {
+                        <ul class="list-group">
+                            @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+                            {
+                                <li class="list-group-item list-group-item-danger">@(e.Message)</li>
+                            }
+                        </ul>
+                    }
                 }
+
+
 
                 <div class="form-group">
                     <label for="FirstName">First Name</label>
@@ -54,13 +65,18 @@
                 <div class="form-group">
                     <fieldset>
                         <legend for="Role"><small>Select A Role</small></legend>
-                        <input asp-for="Role" type="radio" value="3" data-val-required="Please Select One" />
-                        <label for="choc">Student</label> <br />
-                        <input asp-for="Role" type="radio" value="2" data-val-required="Please Select One" />
-                        <label for="choc">Instructor</label>
+
+                        <input asp-for="Role" type="radio" value="3" id="Student" data-val-required="Please Select One" />
+                        <label for="Student">Student</label> <br />
+
+                        <input asp-for="Role" type="radio" value="2" id="Instructor" data-val-required="Please Select One" />
+                        <label for="Instructor">Instructor</label> <br />
+
                         <span asp-validation-for="Role" class="text-danger" data-valmsg-for="Role" data-valmsg-replace="true"></span>
+
                     </fieldset>
                 </div>
+
 
                 <div class="form-group d-flex justify-content-center py-5">
                     <input type="submit" value=" Register " class="btn btn-pink round" />
@@ -85,10 +101,31 @@
 
 
 
+
 @* Client Side Validation https://www.blinkingcaret.com/2016/03/23/manually-use-mvc-client-side-validation/
     Regex Validation https://regexr.com/3e48o *@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+
+
+
+@*<form action="http://example.com/donut" method="post">
+        <div class="form-group">
+            <fieldset>
+                <legend for="Role"><small>Select A Role</small></legend>
+
+                <input asp-for="Role" type="radio" value="3" data-val-required="Please Select One" />
+                <label for="Role">Student</label> <br />
+
+                <input asp-for="Role" type="radio" value="2" data-val-required="Please Select One" />
+                <label for="Role">Instructor</label>
+
+                <span asp-validation-for="Role" class="text-danger" data-valmsg-for="Role" data-valmsg-replace="true"></span>
+
+            </fieldset>
+        </div>
+    </form>*@
 
