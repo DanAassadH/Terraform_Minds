@@ -350,21 +350,21 @@ namespace TerraformMinds.Controllers
                                 {
                                     exception.ValidationExceptions.Add(new Exception("Invalid Start Date: Course start date cannot be after end date."));
                                 }
-                                else
-                                {
-                                    if (course.StartDate < DateTime.Today)
-                                    {
-                                        exception.ValidationExceptions.Add(new Exception("Invalid Start Date: Course start date cannot be set prior to todays date."));
-                                    }
+                                //else
+                                //{
+                                //    if (course.StartDate < DateTime.Today)
+                                //    {
+                                //        exception.ValidationExceptions.Add(new Exception("Invalid Start Date: Course start date cannot be set prior to todays date."));
+                                //    }
 
-                                    else
-                                    {
-                                        if (course.EndDate < DateTime.Today)
-                                        {
-                                            exception.ValidationExceptions.Add(new Exception("Invalid End Date: Course end date cannot be set prior to todays date."));
-                                        }
-                                    }
-                                }
+                                //    else
+                                //    {
+                                //        if (course.EndDate < DateTime.Today)
+                                //        {
+                                //            exception.ValidationExceptions.Add(new Exception("Invalid End Date: Course end date cannot be set prior to todays date."));
+                                //        }
+                                //    }
+                                //}
                             }
                         }
 
