@@ -19,10 +19,13 @@
 
 
     <div class="card text-center">
-        <img class="card-img" src="~/images/banner-fun-desktop.png" alt="A Photo collection of artwork inspired by Ted Hamilton's art">
+        <img class="card-img" src="~/images/banner-fun-tablet.png" alt="A Photo collection of artwork inspired by Ted Hamilton's art">
+        @if(User.Identity.Name==null)
+        {
         <div class="card-img-overlay ">
             <a asp-controller="Registration" asp-action="Index" class="btn btn-yellow btn-lg round ">Create a free account</a>
         </div>
+        }
     </div>
 </div>
 
@@ -86,7 +89,7 @@
 
     <div class="site-cards card-deck">
         <div class="teacher-count card">
-            <img src="~/images/teacher-male.jpg" class="teacher-circle shadow-lg" alt="Image of teacher waving"/>
+            <img src="~/images/teacher-male.jpg" class="teacher-circle shadow-lg" alt="Image of teacher waving" />
             <div class="card-body">
                 <p class="card-text">@(ViewBag.InstructorCount)+</p>
                 <p class="card-text">Dedicated Teachers</p>
@@ -94,7 +97,7 @@
         </div>
 
         <div class="course-count card">
-            <img src="~/images/english-textbook.jpg" class="course-circle shadow-lg" alt="Image of textbooks"/>
+            <img src="~/images/english-textbook.jpg" class="course-circle shadow-lg" alt="Image of textbooks" />
             <div class="card-body">
                 <p class="card-text">@(ViewBag.CourseCount)+</p>
                 <p class="card-text">Courses to choose from</p>
@@ -102,7 +105,7 @@
         </div>
 
         <div class="student-count card">
-            <img src="~/images/modern-students.jpg" class="student-circle" alt="Image of students"/>
+            <img src="~/images/modern-students.jpg" class="student-circle" alt="Image of students" />
             <div class="card-body">
                 <p class="card-text">@(ViewBag.StudentCount)+</p>
                 <p class="card-text">Grade K-12 Happy Students</p>
@@ -110,12 +113,14 @@
         </div>
     </div>
 
+    @if (User.Identity.Name == null)
+    {
+        <div class="container mb-5">
+            <h2 class="pl-5 m-5">Getting Started is Easy!</h2>
+            <p class=" pl-5 m-5">Create your teachers account and start teaching your favourite subjects</p>
+            <p class=" pl-5 m-5">Or Register your child in any of the courses in a few easy steps</p>
+            <p class="pl-5"><a asp-controller="Registration" asp-action="Index" class="btn btn-yellow btn-lg round ml-5">Create your Account</a> </p>
 
-    <div class="container mb-5">
-        <h2 class="pl-5 m-5">Getting Started is Easy!</h2>
-        <p class=" pl-5 m-5">Create your teachers account and start teaching your favourite subjects</p>
-        <p class=" pl-5 m-5">Or Register your child in any of the courses in a few easy steps</p>
-        <p class="pl-5"><a asp-controller="Registration" asp-action="Index" class="btn btn-yellow btn-lg round ml-5">Create your Account</a> </p>
-
+        </div>
+    }
     </div>
-</div>
