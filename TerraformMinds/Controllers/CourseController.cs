@@ -61,7 +61,7 @@ namespace TerraformMinds.Controllers
 
             else
             {
-                ViewBag.Courses = GetCoursesAll();
+                ViewBag.Courses = GetCurrentCourses();
                 ViewBag.Filter = false;
             }
             return View("CourseList");
@@ -117,32 +117,18 @@ namespace TerraformMinds.Controllers
         }
 
         /// <summary>
-        /// Add all courses from database into a list of courses
+        /// Add all current courses, where course end date is > todays date, and add them to a list.
         /// </summary>
-        /// <returns>A lsit of courses</returns>
-        public List<Course> GetCoursesAll()
+        /// <returns>A list of current courses based on course end date > today's date</returns>
+        public List<Course> GetCurrentCourses()
         {
             List<Course> courseList;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                courseList = context.Courses.Include(x => x.User).OrderBy(x => x.Subject).ToList();
+                courseList = context.Courses.Where(x => x.EndDate > DateTime.Today || x.EndDate == null).Include(x => x.User).OrderBy(x => x.Subject).ToList();
             }
             return courseList;
         }
-
-        ///// <summary>
-        ///// Add all current courses, where course end date is > todays date, and add them to a list.
-        ///// </summary>
-        ///// <returns>A list of current courses based on course end date > today's date</returns>
-        //public List<Course> GetCurrentCourses()
-        //{
-        //    List<Course> courseList;
-        //    using (LearningManagementContext context = new LearningManagementContext())
-        //    {
-        //        courseList = context.Courses.Where(x => x.EndDate > DateTime.Today || x.EndDate == null).Include(x => x.User).ToList();
-        //    }
-        //    return courseList;
-        //}
 
         /// <summary>
         /// Filter Setting for course list. Will filter the list of courses based on selected grade level
