@@ -158,9 +158,9 @@ namespace TerraformMinds.Controllers
                 using (LearningManagementContext context = new LearningManagementContext())
                 {
                     //Sql Query : 
-                    //SELECT a.`UserID`, a.`CourseName`, a.`Subject`, a.`CourseDescription` , c.FirstName FROM `Course` a , `student` b , `user` c WHERE a.ID=b.CourseID And a.UserID=c.ID AND b.UserID = 6
+                    //SELECT a.`UserID`, a.`CourseName`, a.`Subject`, a.`CourseDescription` , c.FirstName FROM `Course` a , `student` b , `user` c WHERE a.ID=b.CourseID And a.UserID=c.ID AND b.UserID = 6(id)
 
-                    studentsCourses = context.Courses.Include(x => x.User).Where(x => x.Students.Any(y => y.CourseID == x.ID)).Where(x => x.Students.Any(y => y.UserID == int.Parse(User.Identity.Name))).ToList();
+                    studentsCourses = context.Courses.Include(x => x.User).Where(x => x.Students.Any(y => y.CourseID == x.ID)).Where(x => x.Students.Any(y => y.UserID == int.Parse(User.Identity.Name))).OrderBy(x=>x.Subject).ToList();
                 }
             }
             else
@@ -206,7 +206,7 @@ namespace TerraformMinds.Controllers
 
                     if (confirmStudent != null)
                     {
-                        courseDetail = context.Courses.Where(x => x.ID == parsedId/* && x.UserID == userId*/).SingleOrDefault();
+                        courseDetail = context.Courses.Where(x => x.ID == parsedId).SingleOrDefault();
                     }
                     else
                     {
@@ -388,7 +388,7 @@ namespace TerraformMinds.Controllers
                     //Sql Query : 
                     //SELECT a.* , b.* FROM `submitted` a , `assignment` b WHERE a.AssignmentID = b.ID AND a.StudentID = 5 (id)
 
-                    studentsAssignment = context.Submissions.Include(x => x.Assignment).Where(x => x.Assignment.ID == x.AssignmentID).Where(x => x.StudentID == parsedId).ToList();
+                    studentsAssignment = context.Submissions.Include(x => x.Assignment).Where(x => x.Assignment.ID == x.AssignmentID).Where(x => x.StudentID == parsedId).OrderBy(x=>x.DateSubmitted).ToList();
                 }
             }
             else
