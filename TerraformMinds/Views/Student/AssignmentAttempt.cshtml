@@ -95,7 +95,7 @@
                                 <input type="hidden" name="CourseID" value="@(ViewBag.AssignmentDetails.CourseID)" />
                                 <div class="form-group">
                                     <label for="Answer">Type Your Answer here </label>
-                                    <input asp-for="Answer" class="form-control " placeholder="Answer" data-val="true" data-val-required="Answer is required" data-val-maxlength-max="2000" data-val-maxlength="Email Cannot exceed 2000 characters" />
+                                    <textarea asp-for="Answer" class="form-control " placeholder="Answer" data-val="true" data-val-required="Answer is required" data-val-maxlength-max="2000" data-val-maxlength="Email Cannot exceed 2000 characters"></textarea>
                                     <span asp-validation-for="Answer" class="text-danger" data-valmsg-for="Answer" data-valmsg-replace="true"></span>
                                 </div>
 
