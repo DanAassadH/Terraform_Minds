@@ -11,20 +11,16 @@ using TerraformMinds.Models.Exceptions;
 
 namespace TerraformMinds.Controllers
 {
-    /* DOC STRING 
-     * @ Param =
-     * 
-     * @ summary = 
-     * 
-     * @ return = 
-     */
-
     public class AdministratorController : Controller
     {
-
-        /* ------------------------------------------Administrator Main Actions -----------------------------------------------------*/
         ValidationException exception = new ValidationException();
 
+        /* ------------------------------------------Administrator Main Actions -----------------------------------------------------*/
+
+        /// <summary>
+        /// Administrator Dashboard View
+        /// </summary>
+        /// <returns>Goes to Administrator Dashboard View</returns>
         [Authorize(Roles = "Administrator")]
         public IActionResult AdministratorDashboard()
         {
@@ -32,7 +28,7 @@ namespace TerraformMinds.Controllers
         }
 
         /********************************
-         * ADMINISTRATOR COURSE COMMANDS
+         * ADMINISTRATOR COURSE ACTIONS
          ********************************/
         /// <summary>
         /// This CourseCreate is a GET function that will do two things:
@@ -48,7 +44,7 @@ namespace TerraformMinds.Controllers
         /// <param name="endDate"></param>
         /// <param name="currentCapacity"></param>
         /// <param name="maxCapacity"></param>
-        /// <returns></returns>
+        /// <returns>Populates input fields, if properties were found</returns>
         [Authorize(Roles = "Administrator")]
         public IActionResult CourseCreate(string instructor, string courseName, string subject, string courseDescription, string gradeLevel, DateTime? startDate, DateTime? endDate, int currentCapacity, int maxCapacity)
         {
@@ -89,9 +85,12 @@ namespace TerraformMinds.Controllers
         /// This CourseCreate is a POST function that will add the properties to the database
         /// 
         /// Validation occurs to check:
-        /// 1) Current Capacity is LESS THAN Max Capacity
+        /// 1) Current Capacity is LESS THAN Maximum Capacity
         /// 2) Start Date cannot be past the End Date
-        /// 3) Cannot have a duplicate Course Name
+        /// 3) End Date cannot be past todays date
+        /// 4) Start Date cannot be prior to todays date
+        /// 5) Cannot have a duplicate Course Name
+        /// 6) Maximum capacity cannot be <= 0
         /// </summary>
         /// <param name="instructor"></param>
         /// <param name="courseName"></param>
@@ -103,7 +102,7 @@ namespace TerraformMinds.Controllers
         /// <param name="currentCapacity"></param>
         /// <param name="maxCapacity"></param>
         /// <param name="course"></param>
-        /// <returns></returns>
+        /// <returns>Updates database if successful; populates input fields if errors founds</returns>
         // POST: Course/CourseCreate
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -214,9 +213,13 @@ namespace TerraformMinds.Controllers
         }
 
         /// <summary>
-        /// Populates a list of courses in View/CourseList 
+        /// Populates a list of courses in CourseList View
+        /// Course List view can change based on filters selected.
+        /// Course List can be filtered by Grade Level, Subject or both
         /// </summary>
-        /// <returns>Showcases a list of courses in View.CourseList</returns>
+        /// <param name="subjectFilter"></param>
+        /// <param name="gradeFilter"></param>
+        /// <returns>A list of courses in CourseList View</returns>
         [Authorize(Roles = "Administrator")]
         public IActionResult CourseList(string subjectFilter, string gradeFilter)
         {
@@ -255,7 +258,7 @@ namespace TerraformMinds.Controllers
         }
 
         /// <summary>
-        /// GET command that checks if the courseID is valid, if it is pre-populate input fields found in Views/CourseEdit
+        /// GET command that checks if the courseID is valid, if it is valid pre-populate input fields found in Views/CourseEdit
         /// based on database information
         /// </summary>
         /// <param name="id"></param>
@@ -408,10 +411,11 @@ namespace TerraformMinds.Controllers
         }
 
         /// <summary>
-        /// 
+        /// GET command that checks if the course id is valid, if it is valid pre-populate input fields found in Views/CourseEdit
+        /// based on database information
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>Populated data based on course id</returns>
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CourseDelete(int? id)
         {
@@ -435,7 +439,11 @@ namespace TerraformMinds.Controllers
                 return View(course);
             }
         }
-
+        /// <summary>
+        /// POST: Deletes the course record. 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Deletes the course record</returns>
         [HttpPost, ActionName("CourseDelete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
@@ -479,7 +487,7 @@ namespace TerraformMinds.Controllers
         /* ------------------------------------------Administrator Main Data -----------------------------------------------------*/
 
         /// <summary>
-        /// Creates a list of courses using LINQ queries to select information from the database.
+        /// Creates a list of courses using LINQ queries to select course information from the database.
         /// Used Include to join User table
         /// </summary>
         /// <returns> A list of Courses based on data from the database</returns>
@@ -488,37 +496,53 @@ namespace TerraformMinds.Controllers
             List<Course> courseList;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                courseList = context.Courses.Include(x => x.User).ToList();
+                courseList = context.Courses.Include(x => x.User).OrderBy(x => x.Subject).ToList();
             }
             return courseList;
         }
 
+        /// <summary>
+        /// Filters list of all courses by selected grade level
+        /// </summary>
+        /// <param name="gradeFilter"></param>
+        /// <returns>A list of courses by selected grade</returns>
         public List<Course> GetCoursesByGrade(string gradeFilter)
         {
             List<Course> courseListByGrade;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                courseListByGrade = context.Courses.Where(x => x.GradeLevel == gradeFilter).Include(x => x.User).ToList();
+                courseListByGrade = context.Courses.Where(x => x.GradeLevel == gradeFilter).Include(x => x.User).OrderBy(x => x.Subject).ToList();
             }
             return courseListByGrade;
         }
 
+        /// <summary>
+        /// Filters list of course by selected course subject
+        /// </summary>
+        /// <param name="subjectFilter"></param>
+        /// <returns>A list of courses by selected subject</returns>
         public List<Course> GetCoursesBySubject(string subjectFilter)
         {
             List<Course> courseListBySubject;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                courseListBySubject = context.Courses.Where(x => x.Subject == subjectFilter).Include(x => x.User).ToList();
+                courseListBySubject = context.Courses.Where(x => x.Subject == subjectFilter).Include(x => x.User).OrderBy(x => x.Subject).ToList();
             }
             return courseListBySubject;
         }
 
+        /// <summary>
+        /// Filters list of courses by selected course grade level and subject
+        /// </summary>
+        /// <param name="subjectFilter"></param>
+        /// <param name="gradeFilter"></param>
+        /// <returns>A list of courses by selected grade level and subject</returns>
         public List<Course> GetCoursesByGradeAndSubject(string subjectFilter, string gradeFilter)
         {
             List<Course> courseListBySubject;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                courseListBySubject = context.Courses.Where(x => x.Subject == subjectFilter && x.GradeLevel == gradeFilter).Include(x => x.User).ToList();
+                courseListBySubject = context.Courses.Where(x => x.Subject == subjectFilter && x.GradeLevel == gradeFilter).Include(x => x.User).OrderBy(x => x.Subject).ToList();
             }
             return courseListBySubject;
         }
@@ -548,6 +572,11 @@ namespace TerraformMinds.Controllers
 
         /* ------------------------------------------Administrator Instructor Actions -----------------------------------------------------*/
 
+        /// <summary>
+        /// Populates InstructorDetail view based on instructorID
+        /// </summary>
+        /// <param name="instructorID"></param>
+        /// <returns>Instructor details on InstructorDetail View</returns>
         [Authorize(Roles = "Administrator")]
         public IActionResult InstructorDetail(int instructorID)
         {
@@ -566,6 +595,10 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Populates a list of instructors on InstructorList View
+        /// </summary>
+        /// <returns>A list of instructors in InstructorList View</returns>
         [Authorize(Roles = "Administrator")]
         public IActionResult InstructorList()
         {
@@ -576,16 +609,25 @@ namespace TerraformMinds.Controllers
 
         /* ------------------------------------------Administrator Instructor Data -----------------------------------------------------*/
 
+        /// <summary>
+        /// Uses LINQ quieries to populate a list of instructors based on the users role. In this case role of instructors is set to an identifier of 2.
+        /// </summary>
+        /// <returns>A list of instructors</returns>
         public List<User> GetInstructors()
         {
             List<User> instructorList;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                instructorList = context.Users.Where(x => x.Role == 2).ToList();
+                instructorList = context.Users.Where(x => x.Role == 2).OrderBy(x => x.FirstName).ToList();
             }
             return instructorList;
         }
 
+        /// <summary>
+        /// Uses LINQ queries to get an instructor based on the user ID.
+        /// </summary>
+        /// <param name="instructorID"></param>
+        /// <returns>An instructor based on user id</returns>
         public User GetInstructorByID(int instructorID)
         {
             using (LearningManagementContext context = new LearningManagementContext())
@@ -601,18 +643,29 @@ namespace TerraformMinds.Controllers
             }
         }
 
+        /// <summary>
+        /// Uses LINQ queries to return a list of courses that a particular instructor, based on user id, that the instructor is teaching.
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>A list of courses an instructor is teaching</returns>
         public List<Course> GetCoursesByInstructorID(int userID)
         {
             List<Course> teachingCourses;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                teachingCourses = context.Courses.Where(x => x.UserID == userID).Include(x => x.User).ToList();
+                teachingCourses = context.Courses.Where(x => x.UserID == userID).Include(x => x.User).OrderBy(x => x.Subject).ToList();
 
                 return teachingCourses;
             }
         }
 
         /* ------------------------------------------Administrator Student Actions -----------------------------------------------------*/
+
+        /// <summary>
+        /// Populates StudentDetail view based on studentID
+        /// </summary>
+        /// <param name="studentID"></param>
+        /// <returns>Student details on StudentDetail View</returns>
         public IActionResult StudentDetail(int studentID)
         {
             try
@@ -631,6 +684,10 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Populates StudentList view with a list of students
+        /// </summary>
+        /// <returns>A list of students in the StudentList View</returns>
         [Authorize(Roles = "Administrator")]
         public IActionResult StudentList()
         {
@@ -640,6 +697,13 @@ namespace TerraformMinds.Controllers
         }
 
         /* ------------------------------------------Administrator Student Data -----------------------------------------------------*/
+        
+        /// <summary>
+        /// Uses LINQ queries to find a given student by their user id
+        /// If student not found, add exception to ValidationExceptions list
+        /// </summary>
+        /// <param name="studentID"></param>
+        /// <returns>A student based on user id</returns>
         public User GetStudentByID(int studentID)
         {
             using (LearningManagementContext context = new LearningManagementContext())
@@ -655,6 +719,11 @@ namespace TerraformMinds.Controllers
             }
         }
 
+        /// <summary>
+        /// Uses LINQ queiries to aet a list of courses that a given student, based on the students user id, is enrolled in
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>A list of enrolled courses per given student</returns>
         public List<Course> GetEnrolledCoursesByStudentID(int userID)
         {
             List<Course> enrolledCourses;
@@ -674,17 +743,20 @@ namespace TerraformMinds.Controllers
                 }
 
                 // Get all additional course info that the student is enrolled in.
-                enrolledCourses = context.Courses.Where(x => courseIDs.Contains(x.ID)).Include(x => x.User).ToList();
+                enrolledCourses = context.Courses.Where(x => courseIDs.Contains(x.ID)).Include(x => x.User).OrderBy(x => x.Subject).ToList();
                 return enrolledCourses;
             }
         }
-
+        /// <summary>
+        /// Using LINQ queries to add students to a list of students
+        /// </summary>
+        /// <returns>A lsit of students</returns>
         public List<User> GetStudents()
         {
             List<User> studentList;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                studentList = context.Users.Where(x => x.Role == 3).Include(x => x.Students).ToList();
+                studentList = context.Users.Where(x => x.Role == 3).Include(x => x.Students).OrderBy(x => x.FirstName).ToList();
             }
             return studentList;
         }

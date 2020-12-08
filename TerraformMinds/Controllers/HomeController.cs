@@ -19,7 +19,10 @@ namespace TerraformMinds.Controllers
             _logger = logger;
         }
 
-        // UN-COMMENT ONCE WE HAVE OVER 10 Instructors, Students and Courses.
+        /// <summary>
+        /// Counts the total amount of courses, instructors, and students.
+        /// </summary>
+        /// <returns>Displays number count rounded down to the nearest even number.</returns>
         public IActionResult Index()
         {
             ViewBag.CourseCount = RoundDown(CourseCount().Count());
@@ -29,15 +32,10 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
-      /*  public IActionResult Index()
-        {
-            ViewBag.CourseCount = CourseCount().Count();
-            ViewBag.InstructorCount = InstructorCount().Count();
-            ViewBag.StudentCount = StudentCount().Count();
-
-            return View();
-        }*/
-
+        /// <summary>
+        /// Loads to About view page
+        /// </summary>
+        /// <returns>About View</returns>
         public IActionResult About()
         {
             return View();
@@ -49,6 +47,10 @@ namespace TerraformMinds.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        /// <summary>
+        /// Adds all courses found in database into a list of courses
+        /// </summary>
+        /// <returns>A list of courses</returns>
         public List<Course> CourseCount()
         {
             List<Course> coursesCount;
@@ -60,6 +62,10 @@ namespace TerraformMinds.Controllers
             return coursesCount;
         }
 
+        /// <summary>
+        /// Adds all instructors found in database into a list of instructors
+        /// </summary>
+        /// <returns>A list of instructors</returns>
         public List<User> InstructorCount()
         {
             List<User> instructorCount;
@@ -71,6 +77,10 @@ namespace TerraformMinds.Controllers
             return instructorCount;
         }
 
+        /// <summary>
+        /// Adds all students found in database into a list of students
+        /// </summary>
+        /// <returns>A list of students</returns>
         public List<User> StudentCount()
         {
             List<User> studentCount;
@@ -82,6 +92,11 @@ namespace TerraformMinds.Controllers
             return studentCount;
         }
 
+        /// <summary>
+        /// Checks if value is even, if not round down to nearest even number
+        /// </summary>
+        /// <param name="toRound"></param>
+        /// <returns>An even number</returns>
         public int RoundDown(int toRound)
         {
             if(toRound % 2 == 0)

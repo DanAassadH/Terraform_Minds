@@ -14,11 +14,23 @@ namespace TerraformMinds.Controllers
     {
         ValidationException exception = new ValidationException();
 
+        /// <summary>
+        /// Goes to Index View
+        /// </summary>
+        /// <returns>Index View</returns>
         public IActionResult Index()
         {
             return View();
         }
 
+        /// <summary>
+        /// Populates a list of courses in CourseList View
+        /// Course List view can change based on filters selected.
+        /// Course List can be filtered by Grade Level, Subject or both
+        /// </summary>
+        /// <param name="subjectFilter"></param>
+        /// <param name="gradeFilter"></param>
+        /// <returns>A list of courses in CourseList View</returns>
         public IActionResult CourseList(string gradeFilter, string subjectFilter)
         {
             var gradeLevels = new List<string>() { "Kindergarten", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12" };
@@ -49,12 +61,18 @@ namespace TerraformMinds.Controllers
 
             else
             {
-                ViewBag.Courses = GetCoursesAll();
+                ViewBag.Courses = GetCurrentCourses();
                 ViewBag.Filter = false;
             }
             return View("CourseList");
         }
 
+        /// <summary>
+        /// Populates CourseDetail View based on courseID
+        /// If errors were found show erros in CourseDetail View
+        /// </summary>
+        /// <param name="courseID"></param>
+        /// <returns>CourseDetail View</returns>
         public IActionResult CourseDetail(int courseID)
         {
             try
@@ -70,12 +88,19 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
-        public IActionResult Enroll (int courseID, int userIdentity)
+        /// <summary>
+        /// Populates Course detail, with enroll function, in CourseDetail View
+        /// If errors are found, show errors in CourseDetail View
+        /// </summary>
+        /// <param name="courseID"></param>
+        /// <param name="userIdentity"></param>
+        /// <returns>Course Detail, with enroll function, in CourseDetail View</returns>
+        public IActionResult Enroll (int courseID)
         {
 
             try
             {
-                RegisterCourse(courseID, userIdentity);
+                RegisterCourse(courseID);
                 ViewBag.Message = $"Course successfully  registered";
                 ViewBag.CourseDetails = GetCourseByID(courseID);
             }
@@ -91,57 +116,71 @@ namespace TerraformMinds.Controllers
             return View("CourseDetail");
         }
 
-        
-        public List<Course> GetCoursesAll()
+        /// <summary>
+        /// Add all current courses, where course end date is > todays date, and add them to a list.
+        /// </summary>
+        /// <returns>A list of current courses based on course end date > today's date</returns>
+        public List<Course> GetCurrentCourses()
         {
             List<Course> courseList;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                courseList = context.Courses.Include(x => x.User).ToList();
+                courseList = context.Courses.Where(x => x.EndDate > DateTime.Today || x.EndDate == null).Include(x => x.User).OrderBy(x => x.Subject).ToList();
             }
             return courseList;
         }
 
-        //public List<Course> GetCurrentCourses()
-        //{
-        //    List<Course> courseList;
-        //    using (LearningManagementContext context = new LearningManagementContext())
-        //    {
-        //        courseList = context.Courses.Where(x => x.EndDate > DateTime.Today || x.EndDate == null).Include(x => x.User).ToList();
-        //    }
-        //    return courseList;
-        //}
-
+        /// <summary>
+        /// Filter Setting for course list. Will filter the list of courses based on selected grade level
+        /// </summary>
+        /// <param name="gradeFilter"></param>
+        /// <returns>A list of courses based on selected grade level</returns>
         public List<Course> GetCoursesByGrade(string gradeFilter)
         {
             List<Course> courseListByGrade;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                courseListByGrade = context.Courses.Where(x => x.GradeLevel == gradeFilter).Include(x => x.User).ToList();
+                courseListByGrade = context.Courses.Where(x => x.GradeLevel == gradeFilter).Include(x => x.User).OrderBy(x => x.Subject).ToList();
             }
             return courseListByGrade;
         }
 
+        /// <summary>
+        /// Filter setting for course list. Will filter the list of courses based on selected course subject
+        /// </summary>
+        /// <param name="subjectFilter"></param>
+        /// <returns>A list of courses based on selected subject</returns>
         public List<Course> GetCoursesBySubject(string subjectFilter)
         {
             List<Course> courseListBySubject;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                courseListBySubject = context.Courses.Where(x => x.Subject == subjectFilter).Include(x => x.User).ToList();
+                courseListBySubject = context.Courses.Where(x => x.Subject == subjectFilter).Include(x => x.User).OrderBy(x => x.Subject).ToList();
             }
             return courseListBySubject;
         }
 
+        /// <summary>
+        /// Filter setting for course list. Will filter the list of courses based on selected grade level and subject
+        /// </summary>
+        /// <param name="subjectFilter"></param>
+        /// <param name="gradeFilter"></param>
+        /// <returns>A list of courses based on selected grade level and subject</returns>
         public List<Course> GetCoursesByGradeAndSubject(string subjectFilter, string gradeFilter)
         {
             List<Course> courseListBySubject;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                courseListBySubject = context.Courses.Where(x => x.Subject == subjectFilter && x.GradeLevel == gradeFilter).Include(x => x.User).ToList();
+                courseListBySubject = context.Courses.Where(x => x.Subject == subjectFilter && x.GradeLevel == gradeFilter).Include(x => x.User).OrderBy(x => x.Subject).ToList();
             }
             return courseListBySubject;
         }
 
+        /// <summary>
+        /// Finds a course based on its course ID
+        /// </summary>
+        /// <param name="courseID"></param>
+        /// <returns>A course based on its course ID</returns>
         public Course GetCourseByID(int courseID)
         {
             using (LearningManagementContext context = new LearningManagementContext())
@@ -160,7 +199,14 @@ namespace TerraformMinds.Controllers
             }
         }
 
-        public void RegisterCourse(int courseID, int userIndentity)
+        /// <summary>
+        /// Update command for when a student enrolls in a course based on the course ID and if the user is logged in under the correct role of student.
+        /// 
+        /// If there are validation exceptions, add them to validation exception list.
+        /// </summary>
+        /// <param name="courseID"></param>
+        /// <param name="userIndentity"></param>
+        public void RegisterCourse(int courseID)
         {
             using (LearningManagementContext context = new LearningManagementContext())
             {

@@ -123,9 +123,9 @@
                         <table class="table table-striped table-hover table-responsive table-sm table-width">
                             <thead>
                                 <tr>
+                                    <th>Subject</th>
                                     <th>Instructor</th>
                                     <th>Course Name</th>
-                                    <th>Subject</th>
                                     <th>Course Description</th>
                                     <th>Grade </th>
                                     <th>Start Date</th>
@@ -137,9 +137,9 @@
                             @foreach (Course course in ViewBag.Courses)
                             {
                                 <tr>
+                                    <td>@(course.Subject)</td>
                                     <td>@(course.User.FirstName + " " + course.User.LastName)</td>
                                     <td>@(course.CourseName)</td>
-                                    <td>@(course.Subject)</td>
                                     <td>@(course.CourseDescription)</td>
                                     <td>@(course.GradeLevel)</td>
                                     <td>@((course.StartDate == null ? "TBA" : ((DateTime)course.StartDate).ToString("yyyy-MM-dd")))</td>
