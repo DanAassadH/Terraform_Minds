@@ -190,18 +190,14 @@
                                     {
                                         <div class="card m-4 shadow-lg" style="min-width:200px; max-width: 220px;">
 
-                                            <div class="card-header text-center">
+                                            <div class="card-header text-right">
 
-                                                <p class="card-text"><small>Due Date</small></p>
-                                                <p class="card-text"><small>@assignment.DueDate.ToLongDateString()</small></p>
+                                                <p class="card-text"><small>Due Date : @assignment.DueDate.ToLongDateString()</small></p>
+
                                             </div>
 
 
                                             <div class="card-body">
-
-                                                <hr class="my-1">
-
-                                                <p>Question : <small>@assignment.Question</small></p>
 
                                                 <div class="text-right">
 
@@ -209,6 +205,10 @@
                                                         <small>Total Score : @assignment.TotalScore</small>
                                                     </p>
                                                 </div>
+
+                                                <hr class="my-1">
+
+                                                <p>Question : <small>@assignment.Question</small></p>
 
                                             </div>
 
