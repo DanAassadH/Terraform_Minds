@@ -102,7 +102,7 @@
                                         {
                                            <h5 class="card-text">
                                                 <a asp-controller="Instructor" asp-action="AssignmentMark"
-                                                   asp-route-submitId="@assignment.ID">
+                                                   asp-route-submitId="@assignment.ID" asp-route-courseId="@ViewBag.CourseId">
                                                     Mark <i class="fas fa-edit"></i>
                                                 </a>
                                             </h5>

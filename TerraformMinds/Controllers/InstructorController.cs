@@ -162,11 +162,12 @@ namespace TerraformMinds.Controllers
         /// <param name="ScoreObtained"></param>
         /// <returns>View of the assignment answer </returns>
         [Authorize(Roles = "Instructor")]
-        public IActionResult AssignmentMark(string submitId, string Remarks, string ScoreObtained, string TotalScore)
+        public IActionResult AssignmentMark(string submitId, string Remarks, string ScoreObtained, string TotalScore, string courseId)
         {
 
             try
             {
+                ViewBag.BackCourseID = courseId;
                 ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
                 ViewBag.SubmittedAssignmentAnswer = GetSubmittedAssignmentBySubmitID(submitId);
 
@@ -342,6 +343,7 @@ namespace TerraformMinds.Controllers
         /// <summary>
         /// Function to insert assignment values by instructor into assignment table 
         /// Validation # 1 : Due Date for assignment Cannot be before Course start date
+        /// Validation # 2 : Due date for assignment cannot be set before today
         /// </summary>
         /// <param name="question"></param>
         /// <param name="dueDate"></param>
@@ -546,10 +548,13 @@ namespace TerraformMinds.Controllers
 
 
             // Validation for remarks
-            if (remarks.Length > 500 && remarks != null)
+            if(remarks!=null)
+            { 
+            if (remarks.Length > 500)
             {
                 exception.ValidationExceptions.Add(new Exception("Invalid value : cannot exceed character count of 500, please rephrase"));
                 flag = true;
+            }
             }
 
             // Validation for Score obtained
