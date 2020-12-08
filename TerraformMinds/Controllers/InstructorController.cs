@@ -205,7 +205,7 @@ namespace TerraformMinds.Controllers
             {
                 using (LearningManagementContext context = new LearningManagementContext())
                 {
-                    instructorsCourses = context.Courses.Where(x => x.UserID == int.Parse(UserId)).ToList();
+                    instructorsCourses = context.Courses.Where(x => x.UserID == int.Parse(UserId)).OrderBy(x=>x.Subject).ToList();
                 }
             }
             else
@@ -285,7 +285,7 @@ namespace TerraformMinds.Controllers
                     // sql query : get all the students enrolled in this course
                     //SELECT a.FirstName, a.LastName FROM `user` a , student b WHERE a.ID=b.UserID AND CourseID = -2(id)
 
-                    studentNames = context.Users.Where(x => x.Students.Any(y => y.UserID == x.ID)).Where(x => x.Students.Any(y => y.CourseID == parsedId)).ToList();
+                    studentNames = context.Users.Where(x => x.Students.Any(y => y.UserID == x.ID)).Where(x => x.Students.Any(y => y.CourseID == parsedId)).OrderBy(x=>x.FirstName).ToList();
                 }
             }
             else
@@ -344,6 +344,7 @@ namespace TerraformMinds.Controllers
         /// Function to insert assignment values by instructor into assignment table 
         /// Validation # 1 : Due Date for assignment Cannot be before Course start date
         /// Validation # 2 : Due date for assignment cannot be set before today
+        /// Validation # 3 : Due date cannot be after Course end date
         /// </summary>
         /// <param name="question"></param>
         /// <param name="dueDate"></param>
@@ -446,8 +447,15 @@ namespace TerraformMinds.Controllers
                         exception.ValidationExceptions.Add(new Exception("Invalid Due date : due date for an assignment cannot be before course start date"));
                         flag = true;
                     }
+                    else
+                    if (DateTime.Parse(dueDate) > course.EndDate)
+                    {
+                        exception.ValidationExceptions.Add(new Exception($"Invalid Due date : due date for an assignment cannot be later than course end date {course.EndDate}"));
+                        flag = true;
+                    }
 
-                    if(flag == false)
+
+                    if (flag == false)
                     { 
                     // Add Values in assignment Table if all validations are passed
                     context.Assignments.Add(new Assignment()

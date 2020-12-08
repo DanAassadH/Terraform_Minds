@@ -21,7 +21,6 @@ namespace TerraformMinds.Controllers
             return RedirectToAction("SignIn");
 
         }
-
         /// <summary>
         /// Action to sign in already existing user and send them to appropriate dashboard according to their role
         /// </summary>
@@ -36,7 +35,6 @@ namespace TerraformMinds.Controllers
             User user;
             if (Request.Method == "POST")
             {
-
                 try
                 {
                     user = ValidateSignIn(EMail, Password);
@@ -57,7 +55,6 @@ namespace TerraformMinds.Controllers
                             {
                                 var principal = new ClaimsPrincipal(identity);
                                 var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                                // return RedirectToAction("Student", "Rolecheck");
                                 return RedirectToAction("StudentDashboard", "Student");
                             }
                         }
@@ -75,7 +72,6 @@ namespace TerraformMinds.Controllers
                             {
                                 var principal = new ClaimsPrincipal(identity);
                                 var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                                // return RedirectToAction("Instructor", "Rolecheck");
                                 return RedirectToAction("InstructorDashboard", "Instructor");
                             }
                         }
@@ -92,11 +88,9 @@ namespace TerraformMinds.Controllers
                             {
                                 var principal = new ClaimsPrincipal(identity);
                                 var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                                //  return RedirectToAction("Admin", "Rolecheck");
                                 return RedirectToAction("AdministratorDashboard", "Administrator");
                             }
                         }
-
                     }
                     else
                     {
@@ -110,8 +104,6 @@ namespace TerraformMinds.Controllers
                     ViewBag.Exception = e;
                     ViewBag.Error = true;
                 }
-
-
             }
 
             return View();
@@ -122,7 +114,7 @@ namespace TerraformMinds.Controllers
         /// Action to signout user and redirect them to home page
         /// </summary>
         /// <returns></returns>
-       public IActionResult Signout()
+        public IActionResult Signout()
         {
             var login = HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
@@ -145,7 +137,7 @@ namespace TerraformMinds.Controllers
             // Trim the values 
             Password = Password?.Trim();
             EMail = EMail?.Trim();
-      
+
             string password;
             User validUser = null;
             bool flag = false;
@@ -175,7 +167,7 @@ namespace TerraformMinds.Controllers
                 flag = true;
 
             }
-            else if(Password.Length > 50)
+            else if (Password.Length > 50)
             {
                 exception.ValidationExceptions.Add(new Exception("Invalid value : Maximum Character limit for password is 50"));
                 flag = true;
@@ -187,7 +179,7 @@ namespace TerraformMinds.Controllers
                 throw exception;
             }
 
-            if (flag==false)
+            if (flag == false)
             {
                 // Add Password Hash here
                 password = HashAndSaltPassowrd(Password, EMail.ToUpper());
@@ -196,7 +188,7 @@ namespace TerraformMinds.Controllers
                     // Validating User
                     validUser = context.Users.Where(x => x.EMail.ToUpper().Equals(EMail.ToUpper()) && x.Password.Equals(password)).SingleOrDefault();
                 }
-               
+
             }
             return validUser;
         }

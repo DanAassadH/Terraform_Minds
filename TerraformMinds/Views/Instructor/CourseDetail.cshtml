@@ -29,18 +29,19 @@
 
                             <a class="nav-link teal-text" asp-controller="Instructor" asp-action="CourseList"><i class="fas fa-book"></i> <span class="d-none d-md-inline"> My Courses</span></a>
                         </li>
+                        @if (ViewBag.SingleCourseDetail.EndDate > DateTime.Now)
+                        {
+                            <li class="nav-item  py-md-2">
 
-                        <li class="nav-item  py-md-2">
+                                <a class="nav-link teal-text" asp-controller="Instructor" asp-action="AssignmentCreate" asp-route-id="@(ViewBag.SingleCourseDetail.ID)"><i class="fas fa-plus-circle"></i><span class="d-none d-md-inline"> Create New Assignment</span></a>
+                            </li>
+                        }
+                            <li class="nav-item  py-md-2">
 
-                            <a class="nav-link teal-text" asp-controller="Instructor" asp-action="AssignmentCreate" asp-route-id="@(ViewBag.SingleCourseDetail.ID)"><i class="fas fa-plus-circle"></i><span class="d-none d-md-inline"> Create New Assignment</span></a>
-                        </li>
+                                <a class="nav-link teal-text" asp-action="Signout" asp-controller="SignIn"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline">Sign Out</span></a>
+                            </li>
 
-                        <li class="nav-item  py-md-2">
-
-                            <a class="nav-link teal-text" asp-action="Signout" asp-controller="SignIn"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline">Sign Out</span></a>
-                        </li>
-
-                    </ul>
+                        </ul>
                 </div>
             </nav>
         </aside>
@@ -160,7 +161,7 @@
                             }
                             else
                             {
-                                <p><strong>No student enrolled in this course yet</strong></p>
+                                <p><strong>No student enrolled in this course </strong></p>
                             }
 
                         </div>
@@ -192,7 +193,8 @@
 
                                             <div class="card-header text-right">
 
-                                                <p class="card-text"><small>Due Date : @assignment.DueDate.ToLongDateString()</small></p>
+                                                <p class="card-text"><small>Due Date </small></p>
+                                                <p class="card-text"><small>@assignment.DueDate.ToLongDateString()</small></p>
 
                                             </div>
 
@@ -220,16 +222,19 @@
                             }
                             else
                             {
-                                <p><strong>No Assignments for this  course yet</strong></p>
+                                <p><strong>No Assignments for this  course </strong></p>
                             }
 
                         </div>
 
+                        @if(ViewBag.SingleCourseDetail.EndDate > DateTime.Now)
+                        { 
                         <div class="card-footer text-muted text-right">
                             <a class="btn btn-yellow round" asp-controller="Instructor" asp-action="AssignmentCreate" asp-route-id="@(ViewBag.SingleCourseDetail.ID)">
                                 Create New Assignment
                             </a>
                         </div>
+                        }
                     </div>
 
                 }@*-------------------------------------- End starting if -------------------------------------------------*@
