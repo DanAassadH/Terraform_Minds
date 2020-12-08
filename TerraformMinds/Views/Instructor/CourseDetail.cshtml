@@ -5,20 +5,15 @@
 
 @*----------------------------------------------Instructors Course Detail ------------------------------------------------------*@
 
-
-
 <div class="container-fluid">
     <div class="row min-vh-100 flex-column flex-md-row">
-
         <!--Start Side panel-->
         <aside class="col-12 col-md-3 p-0 bg-light border-right border-8 ">
             <nav class="navbar navbar-expand navbar-light bg-light flex-md-column flex-row align-items-md-center p-0  ">
                 <div class="collapse navbar-collapse p-0 py-md-5 ">
                     <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-around">
                         <li class="nav-item  py-md-2">
-
                             <h5> <span class="d-none d-md-inline font-weight-bold">Dashboard Menu</span></h5>
-
                         </li>
 
                         <li class="nav-item  py-md-2">
@@ -26,35 +21,27 @@
                         </li>
 
                         <li class="nav-item  py-md-2">
-
                             <a class="nav-link teal-text" asp-controller="Instructor" asp-action="CourseList"><i class="fas fa-book"></i> <span class="d-none d-md-inline"> My Courses</span></a>
                         </li>
                         @if (ViewBag.SingleCourseDetail.EndDate > DateTime.Now)
                         {
                             <li class="nav-item  py-md-2">
-
                                 <a class="nav-link teal-text" asp-controller="Instructor" asp-action="AssignmentCreate" asp-route-id="@(ViewBag.SingleCourseDetail.ID)"><i class="fas fa-plus-circle"></i><span class="d-none d-md-inline"> Create New Assignment</span></a>
                             </li>
                         }
-                            <li class="nav-item  py-md-2">
-
-                                <a class="nav-link teal-text" asp-action="Signout" asp-controller="SignIn"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline">Sign Out</span></a>
-                            </li>
-
-                        </ul>
+                        <li class="nav-item  py-md-2">
+                            <a class="nav-link teal-text" asp-action="Signout" asp-controller="SignIn"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline">Sign Out</span></a>
+                        </li>
+                    </ul>
                 </div>
             </nav>
         </aside>
         <!--End Side panel-->
         <!--Start Main -->
         <main class="col bg-faded py-3 flex-grow-1">
-
             <div class="text-right mt-4">
-
                 <h3>Welcome @ViewBag.UserInformation.FirstName @ViewBag.UserInformation.LastName</h3>
-
             </div>
-
 
             <div class="jumbotron bg-white flex-row">
                 <h2 class="display-3">Course Detail</h2>
@@ -77,19 +64,13 @@
                 @if (ViewBag.SingleCourseDetail != null)
                 {
                     <div class="card m-5 shadow-lg">
-
                         <div class="card-header bg-@(ViewBag.SingleCourseDetail.Subject)">
-
                             <h3 class="card-text"> @(ViewBag.SingleCourseDetail.Subject)</h3>
-
                         </div>
-
 
                         <div class="card-body">
                             <h4 class="card-title">@(ViewBag.SingleCourseDetail.CourseName)</h4>
-
                             <p class="card-text">@(ViewBag.SingleCourseDetail.CourseDescription)</p>
-
                             <hr class="my-1">
 
                             <div class="text-right">
@@ -105,7 +86,6 @@
                                     <small>End date : @((ViewBag.SingleCourseDetail.EndDate == null ? "TBA" : ((DateTime)ViewBag.SingleCourseDetail.EndDate).ToLongDateString()))</small>
                                 </p>
 
-
                                 @if (ViewBag.SingleCourseDetail.CurrentCapacity == ViewBag.SingleCourseDetail.MaxCapacity)
                                 {
                                     <p>  <small> Capacity : FULL</small></p>
@@ -114,36 +94,25 @@
                                 {
                                     <p><small> Capacity : @(ViewBag.SingleCourseDetail.CurrentCapacity + "/" + ViewBag.SingleCourseDetail.MaxCapacity)</small></p>
                                 }
-
                             </div>
-
                         </div>
-
                     </div>
 
                     @*-------------------------------Students Information -------------------------------------------*@
 
                     <div class="card m-5 shadow-lg">
-
                         <div class="card-header bg-@(ViewBag.SingleCourseDetail.Subject)">
-
                             <h4 class="card-text">Students Details</h4>
-
                         </div>
-
 
                         <div class="card-body">
                             <p class="card-text">Click on student name to view and mark assignments submitted by them</p>
-
                             @if (ViewBag.StudentsForCourse != null && ViewBag.StudentsForCourse.Count > 0)
                             {
-
                                 <div class="card-deck">
-
                                     @foreach (User student in ViewBag.StudentsForCourse)
                                     {
                                         <div class="card m-4 shadow-lg" style="min-width:80px; max-width: 100px;">
-
                                             <div class="card-body text-center">
                                                 <i class="card-text fas fa-user-graduate fa-2x"></i>
                                                 <p class="card-text">
@@ -152,88 +121,62 @@
                                                     </small>
                                                 </p>
                                             </div>
-
                                         </div>
                                     }
-
                                 </div>
-
                             }
                             else
                             {
                                 <p><strong>No student enrolled in this course </strong></p>
                             }
-
                         </div>
                     </div>
 
                     @*--------------------------------------Assignments Information -------------------------------------------------*@
 
-
                     <div class="card m-5 shadow-lg">
-
                         <div class="card-header bg-@(ViewBag.SingleCourseDetail.Subject)">
-
                             <h4 class="card-text">Assignments</h4>
-
                         </div>
 
-
                         <div class="card-body">
-
-
                             @if (ViewBag.AssignmentsForCourse != null && ViewBag.AssignmentsForCourse.Count > 0)
                             {
-
                                 <div class="card-deck">
-
                                     @foreach (Assignment assignment in ViewBag.AssignmentsForCourse)
                                     {
                                         <div class="card m-4 shadow-lg" style="min-width:200px; max-width: 220px;">
-
                                             <div class="card-header text-right">
-
                                                 <p class="card-text"><small>Due Date </small></p>
                                                 <p class="card-text"><small>@assignment.DueDate.ToLongDateString()</small></p>
-
                                             </div>
 
-
                                             <div class="card-body">
-
                                                 <div class="text-right">
-
                                                     <p class="card-text">
                                                         <small>Total Score : @assignment.TotalScore</small>
                                                     </p>
                                                 </div>
 
                                                 <hr class="my-1">
-
                                                 <p>Question : <small>@assignment.Question</small></p>
-
                                             </div>
-
                                         </div>
                                     }
-
                                 </div>
-
                             }
                             else
                             {
                                 <p><strong>No Assignments for this  course </strong></p>
                             }
-
                         </div>
-
-                        @if(ViewBag.SingleCourseDetail.EndDate > DateTime.Now)
-                        { 
-                        <div class="card-footer text-muted text-right">
-                            <a class="btn btn-yellow round" asp-controller="Instructor" asp-action="AssignmentCreate" asp-route-id="@(ViewBag.SingleCourseDetail.ID)">
-                                Create New Assignment
-                            </a>
-                        </div>
+                        @if (ViewBag.SingleCourseDetail.EndDate > DateTime.Now)
+                        {
+                            <div class="card-footer text-muted text-right">
+                                <a class="btn btn-yellow round" asp-controller="Instructor" asp-action="AssignmentCreate" asp-route-id="@(ViewBag.SingleCourseDetail.ID)">
+                                    Create New Assignment
+                                </a>
+                            </div>
                         }
                     </div>
 
@@ -243,12 +186,7 @@
                 {
                     <h3 class="ml-5">Course Details Not Available. Please go back to Main and try again</h3>
                 }
-
-
-
-
             </div>    <!--End Container -->
-
         </main>
         <!--End Main -->
     </div>

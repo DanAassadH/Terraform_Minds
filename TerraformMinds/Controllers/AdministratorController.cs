@@ -24,6 +24,7 @@ namespace TerraformMinds.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult AdministratorDashboard()
         {
+            ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
             return View();
         }
 
@@ -48,7 +49,8 @@ namespace TerraformMinds.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult CourseCreate(string instructor, string courseName, string subject, string courseDescription, string gradeLevel, DateTime? startDate, DateTime? endDate, int currentCapacity, int maxCapacity)
         {
-            using(LearningManagementContext context = new LearningManagementContext())
+            ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
+            using (LearningManagementContext context = new LearningManagementContext())
             {
                 // Create a list based on first name and last name from the User table that has a role equal to 2 (which is "Instructor")
                 var instructors = new SelectList(context.Users.Where(x => x.Role == 2)
@@ -111,6 +113,7 @@ namespace TerraformMinds.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CourseCreate(string instructor, string courseName, string subject, string courseDescription, string gradeLevel, DateTime? startDate, DateTime? endDate, int currentCapacity, int maxCapacity, [Bind("ID,UserID,CourseName,Subject,CourseDescription,GradeLevel,StartDate,EndDate,MaxCapacity")] Course course)
         {
+            ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
             using (LearningManagementContext context = new LearningManagementContext())
             {
 
@@ -223,6 +226,7 @@ namespace TerraformMinds.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult CourseList(string subjectFilter, string gradeFilter)
         {
+            ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
             var gradeLevels = new List<string>() { "Kindergarten", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12" };
             var gradeLevelList = new SelectList(gradeLevels.ToDictionary(g => g, g => g), "Key", "Value", gradeLevels);
             ViewBag.GradeLevels = gradeLevelList;
@@ -266,6 +270,7 @@ namespace TerraformMinds.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CourseEdit(int? id)
         {
+            ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
             using (LearningManagementContext context = new LearningManagementContext())
             {
                 if (id == null)
@@ -322,6 +327,7 @@ namespace TerraformMinds.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CourseEdit(int id, [Bind("ID,UserID,CourseName,Subject,CourseDescription,GradeLevel,StartDate,EndDate,CurrentCapacity,MaxCapacity")] Course course)
         {
+            ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
             course.CourseName = course.CourseName != null ? course.CourseName.Trim() : null;
             course.Subject = course.Subject != null ? course.Subject.Trim() : null;
             course.CourseDescription = course.CourseDescription != null ? course.CourseDescription.Trim() : null;
@@ -419,6 +425,7 @@ namespace TerraformMinds.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CourseDelete(int? id)
         {
+            ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
             using (LearningManagementContext context = new LearningManagementContext())
             {
                 if (id == null)
@@ -449,6 +456,7 @@ namespace TerraformMinds.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
             using (LearningManagementContext context = new LearningManagementContext())
             {
                 var course = await context.Courses.FindAsync(id);
@@ -582,6 +590,7 @@ namespace TerraformMinds.Controllers
         {
             try
             {
+                ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
                 User instructor = GetInstructorByID(instructorID);
                 ViewBag.Instructor = instructor;
                 ViewBag.InstructorCourses = GetCoursesByInstructorID(instructor.ID);
@@ -602,12 +611,13 @@ namespace TerraformMinds.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult InstructorList()
         {
+            ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
             ViewBag.Instructors = GetInstructors();
 
             return View();
         }
 
-        /* ------------------------------------------Administrator Instructor Data -----------------------------------------------------*/
+        /* -----------------------------------Administrator Instructor Data -----------------------------------------------------*/
 
         /// <summary>
         /// Uses LINQ quieries to populate a list of instructors based on the users role. In this case role of instructors is set to an identifier of 2.
@@ -659,7 +669,7 @@ namespace TerraformMinds.Controllers
             }
         }
 
-        /* ------------------------------------------Administrator Student Actions -----------------------------------------------------*/
+        /* ---------------------------------Administrator Student Actions -----------------------------------------------------*/
 
         /// <summary>
         /// Populates StudentDetail view based on studentID
@@ -670,6 +680,7 @@ namespace TerraformMinds.Controllers
         {
             try
             {
+                ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
                 User student = GetStudentByID(studentID);
                 ViewBag.Student = student;
                 ViewBag.StudentCourses = GetEnrolledCoursesByStudentID(student.ID);
@@ -691,12 +702,13 @@ namespace TerraformMinds.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult StudentList()
         {
+            ViewBag.UserInformation = SharedFunctionsController.GetUserNameBySignInID(User.Identity.Name);
             ViewBag.Students = GetStudents();
 
             return View();
         }
 
-        /* ------------------------------------------Administrator Student Data -----------------------------------------------------*/
+        /* ------------------------------------Administrator Student Data -----------------------------------------------------*/
         
         /// <summary>
         /// Uses LINQ queries to find a given student by their user id

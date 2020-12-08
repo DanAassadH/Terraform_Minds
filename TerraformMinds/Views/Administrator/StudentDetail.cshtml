@@ -60,7 +60,7 @@
 
             <div class="text-right mt-4">
 
-                <h3>Welcome</h3>
+                <h3>Welcome @ViewBag.UserInformation.FirstName @ViewBag.UserInformation.LastName</h3>
 
             </div>
 
@@ -111,7 +111,7 @@
 
                                         <h5 class="card-title">Course Name :  @(studentCourses.CourseName)</h5>
 
-                                        <p class="card-text">Description : @(studentCourses.CourseDescription)</p>
+                                        <p class="card-text"><small>Description : @(studentCourses.CourseDescription)</small></p>
 
 
                                         <p class="card-text">

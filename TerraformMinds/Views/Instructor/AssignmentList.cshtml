@@ -3,9 +3,6 @@
     ViewData["Title"] = "AssignmentList";
 }
 
-
-
-
 <div class="container-fluid">
     <div class="row min-vh-100 flex-column flex-md-row">
 
@@ -15,9 +12,7 @@
                 <div class="collapse navbar-collapse p-0 py-md-5 ">
                     <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-around">
                         <li class="nav-item  py-md-2">
-
                             <h5> <span class="d-none d-md-inline font-weight-bold">Dashboard Menu</span></h5>
-
                         </li>
 
                         <li class="nav-item  py-md-2">
@@ -25,21 +20,17 @@
                         </li>
 
                         <li class="nav-item  py-md-2">
-
                             <a class="nav-link teal-text" asp-controller="Instructor" asp-action="CourseList"><i class="fas fa-book"></i> <span class="d-none d-md-inline"> My Courses</span></a>
                         </li>
 
                         <li class="nav-item  py-md-2">
-
                             <a class="nav-link teal-text" asp-controller="Instructor" asp-action="CourseDetail"
                                asp-route-id="@ViewBag.CourseId"><i class="fas fa-chevron-circle-left"></i> <span class="d-none d-md-inline"> Course Detail</span></a>
                         </li>
 
                         <li class="nav-item  py-md-2">
-
                             <a class="nav-link teal-text" asp-action="Signout" asp-controller="SignIn"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline">Sign Out</span></a>
                         </li>
-
                     </ul>
                 </div>
             </nav>
@@ -47,21 +38,17 @@
         <!--End Side panel-->
         <!--Start Main -->
         <main class="col bg-faded py-3 flex-grow-1">
-
             <div class="text-right mt-4">
-
                 <h3>Welcome @ViewBag.UserInformation.FirstName @ViewBag.UserInformation.LastName</h3>
-
             </div>
 
             <div class="jumbotron bg-white">
                 <h4 class="display-4">Student Details</h4>
-
                 <hr class="my-4">
                 <p>Here you will find the list of all the assignments submitted by this student.</p>
                 <p>
-                    <a class="teal-text"asp-controller="Instructor" asp-action="CourseDetail"
-                               asp-route-id="@ViewBag.CourseId">
+                    <a class="teal-text" asp-controller="Instructor" asp-action="CourseDetail"
+                       asp-route-id="@ViewBag.CourseId">
                         Click Here
                     </a>
                     to go to back to Course detail
@@ -78,29 +65,20 @@
                 </ul>
             }
 
-
             @*--------------------------Details about Assignments for student----------------------------*@
 
-
             <div class="card mx-5 shadow-lg">
-
                 <div class="card-body">
-
-
                     @if (ViewBag.SubmittedAssignments != null && ViewBag.SubmittedAssignments.Count > 0)
                     {
-
                         <div class="card-deck">
-
                             @foreach (Submit assignment in ViewBag.SubmittedAssignments)
                             {
-                                <div class="card m-4 shadow-lg" style="min-width:280px; max-width: 300px;">
-
+                                <div class="card m-4 shadow-lg" style="min-width:280px; max-width: 290px;">
                                     <div class="card-header text-right">
-
                                         @if (assignment.ScoreObtained == null)
                                         {
-                                           <h5 class="card-text">
+                                            <h5 class="card-text">
                                                 <a asp-controller="Instructor" asp-action="AssignmentMark"
                                                    asp-route-submitId="@assignment.ID" asp-route-courseId="@ViewBag.CourseId">
                                                     Mark <i class="fas fa-edit"></i>
@@ -113,12 +91,10 @@
                                         }
                                     </div>
 
-
                                     <div class="card-body">
-                                        <h4 class="card-title"><strong>Question : </strong>@assignment.Assignment.Question</h4>
+                                        <h4 class="card-title"><strong>Question : </strong><small>@assignment.Assignment.Question</small></h4>
                                         <p><strong>Answer : </strong><small> @assignment.Answer</small></p>
                                         <p class="card-text"><strong>Instructors remarks : </strong><small>@assignment.Remarks</small></p>
-
                                         <hr class="my-1">
 
                                         <div class="text-right">
@@ -130,20 +106,15 @@
                                                 <small>Date Due : @assignment.Assignment.DueDate.ToLongDateString()</small>
                                             </p>
                                         </div>
-
                                     </div>
-
                                 </div>
                             }
-
                         </div>
-
                     }
                     else
                     {
                         <p><strong>No Assignment For This Student </strong></p>
                     }
-
                 </div>
             </div>  <!--End Card Div -->
         </main>

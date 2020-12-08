@@ -58,11 +58,8 @@
         </aside>
 
         <main class="col bg-faded py-3 flex-grow-1">
-
             <div class="text-right mt-4">
-
-                <h3>Welcome</h3>
-
+                <h3>Welcome @ViewBag.UserInformation.FirstName @ViewBag.UserInformation.LastName</h3>
             </div>
 
             <div class="jumbotron bg-white">
@@ -72,8 +69,8 @@
                     <a class="teal-text" asp-controller="Administrator" asp-action="CourseList">
                         Back to Course List
                     </a>
-
                 </p>
+ 
             </div>
             <div class="card mx-5 px-md-5 shadow border-0">
                 @if (ViewBag.Message != null)

@@ -3,20 +3,15 @@
     ViewData["Title"] = "AssignmentMark";
 }
 
-
-
 <div class="container-fluid">
     <div class="row min-vh-100 flex-column flex-md-row">
-
         <!--Start Side panel-->
         <aside class="col-12 col-md-3 p-0 bg-light border-right border-8 ">
             <nav class="navbar navbar-expand navbar-light bg-light flex-md-column flex-row align-items-md-center p-0  ">
                 <div class="collapse navbar-collapse p-0 py-md-5 ">
                     <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-around">
                         <li class="nav-item  py-md-2">
-
                             <h5> <span class="d-none d-md-inline font-weight-bold">Dashboard Menu</span></h5>
-
                         </li>
 
                         <li class="nav-item  py-md-2">
@@ -24,15 +19,12 @@
                         </li>
 
                         <li class="nav-item  py-md-2">
-
                             <a class="nav-link teal-text" asp-controller="Instructor" asp-action="CourseList"><i class="fas fa-book"></i> <span class="d-none d-md-inline"> My Courses</span></a>
                         </li>
 
                         <li class="nav-item  py-md-2">
-
                             <a class="nav-link teal-text" asp-action="Signout" asp-controller="SignIn"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline">Sign Out</span></a>
                         </li>
-
                     </ul>
                 </div>
             </nav>
@@ -40,13 +32,9 @@
         <!--End Side panel-->
         <!--Start Main -->
         <main class="col bg-faded py-3 flex-grow-1">
-
             <div class="text-right mt-4">
-
                 <h3>Welcome @ViewBag.UserInformation.FirstName @ViewBag.UserInformation.LastName</h3>
-
             </div>
-
 
             <div class="jumbotron bg-white flex-row">
                 <h4 class="display-3">Mark Assignment</h4>
@@ -56,14 +44,11 @@
                        asp-route-id="@(ViewBag.BackCourseID)">
                         Back
                     </a>
-
                     to course details page
                 </p>
-
             </div>
 
             <div class="container">
-
                 @if (ViewBag.Error != null)
                 {
                     <ul class="list-group">
@@ -74,103 +59,78 @@
                     </ul>
                 }
 
+                <div class="card m-5 shadow-lg">
+                    <div class="card-header">
+                        <h4 class="card-text">Assignment</h4>
+                    </div>
 
+                    @if (ViewBag.SubmitYes == null)
+                    {
+                        <div class="card-body">
+                            <h5 class="card-title">Question :  @ViewBag.SubmittedAssignmentAnswer.Assignment.Question</h5>
+                            <p class="card-text">
+                                <small> Answer :  @ViewBag.SubmittedAssignmentAnswer.Answer</small>
+                            </p>
+                            <hr class="my-1">
 
+                            <div class="text-right">
+                                <p class="card-text">
+                                    <small>Date submitted : @ViewBag.SubmittedAssignmentAnswer.DateSubmitted.ToLongDateString()</small>
+                                </p>
+                                <p class="card-text">
+                                    <small>
+                                        Due Date :  @ViewBag.SubmittedAssignmentAnswer.Assignment.DueDate.ToLongDateString()
+                                    </small>
+                                </p>
+                                <p class="card-text">
+                                    <small>  Total Score :  @ViewBag.SubmittedAssignmentAnswer.Assignment.TotalScore</small>
+                                </p>
+                            </div>
 
+                            <hr class="mt-1">
+                            <form action="/Instructor/AssignmentMark" method="POST">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" name="submitId" value="@ViewBag.SubmittedAssignmentAnswer.ID" />
+                                <input type="hidden" name="TotalScore" value="@ViewBag.SubmittedAssignmentAnswer.Assignment.TotalScore" />
+                                <input type="hidden" name="courseId" value="@(ViewBag.BackCourseID)" />
 
+                                <div class="form-group">
+                                    <label for="ScoreObtained">Score Obtained</label>
+                                    <input asp-for="ScoreObtained" class="form-control" placeholder="Score Obtained" data-val="true" data-val-required="Enter Score Obtained" data-val-range="Score Obtained should be between 0 and Total Score" data-val-range-max=" @ViewBag.SubmittedAssignmentAnswer.Assignment.TotalScore" data-val-range-min="0" />
+                                    <span asp-validation-for="ScoreObtained" class="text-danger" data-valmsg-for="ScoreObtained" data-valmsg-replace="true"></span>
+                                </div>
 
-            <div class="card m-5 shadow-lg">
+                                <div class="form-group">
+                                    <label for="Remarks">Teachers Remarks</label>
+                                    <textarea asp-for="Remarks" class="form-control" placeholder="Remarks" data-val="true" data-val-maxlength-max="500" data-val-maxlength="Please Keep remarks to 500 characters"></textarea>
+                                    <span asp-validation-for="Remarks" class="text-danger" data-valmsg-for="Remarks" data-valmsg-replace="true"></span>
+                                </div>
 
-                <div class="card-header">
-
-                    <h4 class="card-text">Assignment</h4>
-
+                                <div class="form-group">
+                                    <input type="submit" value="Submit" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="card-body">
+                            <p>Assignment Marked successfully</p>
+                            <p>
+                                <a class="teal-text" asp-controller="Instructor" asp-action="CourseDetail"
+                                   asp-route-id="@(ViewBag.BackCourseID)">
+                                    Back
+                                </a>
+                                to course details page
+                            </p>
+                        </div>
+                    }
                 </div>
-
-                @if (ViewBag.SubmitYes == null)
-                {
-            <div class="card-body">
-                <h5 class="card-title">Question :  @ViewBag.SubmittedAssignmentAnswer.Assignment.Question</h5>
-
-                <p class="card-text">
-                    <small> Answer :  @ViewBag.SubmittedAssignmentAnswer.Answer</small>
-                </p>
-
-
-                <hr class="my-1">
-
-                <div class="text-right">
-                    <p class="card-text">
-                        <small>Date submitted : @ViewBag.SubmittedAssignmentAnswer.DateSubmitted.ToLongDateString()</small>
-                    </p>
-                    <p class="card-text">
-                        <small>
-                            Due Date :  @ViewBag.SubmittedAssignmentAnswer.Assignment.DueDate.ToLongDateString()
-                        </small>
-                    </p>
-                    <p class="card-text">
-                        <small>  Total Score :  @ViewBag.SubmittedAssignmentAnswer.Assignment.TotalScore</small>
-                    </p>
-
-                </div>
-
-                <hr class="mt-1">
-
-
-                <form action="/Instructor/AssignmentMark" method="POST">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                    <input type="hidden" name="submitId" value="@ViewBag.SubmittedAssignmentAnswer.ID" />
-                    <input type="hidden" name="TotalScore" value="@ViewBag.SubmittedAssignmentAnswer.Assignment.TotalScore" />
-                    <input type="hidden" name="courseId" value="@(ViewBag.BackCourseID)" />
-
-                    <div class="form-group">
-                        <label for="ScoreObtained">Score Obtained</label>
-                        <input asp-for="ScoreObtained" class="form-control" placeholder="Score Obtained" data-val="true" data-val-required="Enter Score Obtained" data-val-range="Score Obtained should be between 0 and Total Score" data-val-range-max=" @ViewBag.SubmittedAssignmentAnswer.Assignment.TotalScore" data-val-range-min="0" />
-                        <span asp-validation-for="ScoreObtained" class="text-danger" data-valmsg-for="ScoreObtained" data-valmsg-replace="true"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Remarks">Teachers Remarks</label>
-                        <textarea asp-for="Remarks" class="form-control" placeholder="Remarks" data-val="true" data-val-maxlength-max="500" data-val-maxlength="Please Keep remarks to 500 characters"></textarea>
-                        <span asp-validation-for="Remarks" class="text-danger" data-valmsg-for="Remarks" data-valmsg-replace="true"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="submit" value="Submit" class="btn btn-primary" />
-                    </div>
-
-                </form>
-
-            </div>
-                }
-                else
-                {
-                    <div class="card-body">
-
-                        <p>Assignment Marked successfully</p>
-                        <p>
-                            <a class="teal-text" asp-controller="Instructor" asp-action="CourseDetail"
-                               asp-route-id="@(ViewBag.BackCourseID)">
-                                Back
-                            </a>
-
-                            to course details page
-                        </p>
-
-                    </div>
-                }
-
-            </div>
-
             </div>    <!--End Container -->
-
         </main>
         <!--End Main -->
     </div>
 </div>
-
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
