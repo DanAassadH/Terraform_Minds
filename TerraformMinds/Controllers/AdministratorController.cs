@@ -348,20 +348,20 @@ namespace TerraformMinds.Controllers
                             {
                                 if (course.StartDate > course.EndDate)
                                 {
-                                    exception.ValidationExceptions.Add(new Exception("Invalid Start Date: Course Start Date cannot be after End Date."));
+                                    exception.ValidationExceptions.Add(new Exception("Invalid Start Date: Course start date cannot be after end date."));
                                 }
                                 else
                                 {
                                     if (course.StartDate < DateTime.Today)
                                     {
-                                        exception.ValidationExceptions.Add(new Exception("Invalid Start Date: Course Start Date cannot be set prior to todays date."));
+                                        exception.ValidationExceptions.Add(new Exception("Invalid Start Date: Course start date cannot be set prior to todays date."));
                                     }
 
                                     else
                                     {
                                         if (course.EndDate < DateTime.Today)
                                         {
-                                            exception.ValidationExceptions.Add(new Exception("Invalid End Date: Course End Date cannot be set prior to todays date."));
+                                            exception.ValidationExceptions.Add(new Exception("Invalid End Date: Course end date cannot be set prior to todays date."));
                                         }
                                     }
                                 }
@@ -392,7 +392,7 @@ namespace TerraformMinds.Controllers
                     }
                     catch (ValidationException e)
                     {
-                        ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                        ViewBag.Message = "There is an issue(s) with the submission, please see the following details:";
                         ViewBag.Exception = e;
                         ViewBag.Error = true;
                     }
@@ -574,7 +574,7 @@ namespace TerraformMinds.Controllers
             }
             catch(ValidationException e)
             {
-                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Message = "There is an issue(s) with the submission, please see the following details:";
                 ViewBag.Exception = e;
                 ViewBag.Error = true;
             }
@@ -607,7 +607,7 @@ namespace TerraformMinds.Controllers
             {
                 if(!context.Users.Any(x => x.ID == instructorID))
                 {
-                    exception.ValidationExceptions.Add(new Exception("Error: Cannot find Instructor"));
+                    exception.ValidationExceptions.Add(new Exception("Error: Cannot find instructor"));
                     throw exception;
                 }
 
@@ -639,7 +639,7 @@ namespace TerraformMinds.Controllers
             }
             catch (ValidationException e)
             {
-                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Message = "There is an issue(s) with the submission, please see the following details:";
                 ViewBag.Exception = e;
                 ViewBag.Error = true;
             }
