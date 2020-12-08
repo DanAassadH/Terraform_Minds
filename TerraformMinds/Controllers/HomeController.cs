@@ -20,23 +20,23 @@ namespace TerraformMinds.Controllers
         }
 
         // UN-COMMENT ONCE WE HAVE OVER 10 Instructors, Students and Courses.
-        //public IActionResult Index()
-        //{
-        //    ViewBag.CourseCount = RoundDown(CourseCount().Count());
-        //    ViewBag.InstructorCount = RoundDown(InstructorCount().Count());
-        //    ViewBag.StudentCount = RoundDown(StudentCount().Count());
-
-        //    return View();
-        //}
-
         public IActionResult Index()
+        {
+            ViewBag.CourseCount = RoundDown(CourseCount().Count());
+            ViewBag.InstructorCount = RoundDown(InstructorCount().Count());
+            ViewBag.StudentCount = RoundDown(StudentCount().Count());
+
+            return View();
+        }
+
+      /*  public IActionResult Index()
         {
             ViewBag.CourseCount = CourseCount().Count();
             ViewBag.InstructorCount = InstructorCount().Count();
             ViewBag.StudentCount = StudentCount().Count();
 
             return View();
-        }
+        }*/
 
         public IActionResult Privacy()
         {
@@ -84,13 +84,13 @@ namespace TerraformMinds.Controllers
 
         public int RoundDown(int toRound)
         {
-            if(toRound % 10 == 0)
+            if(toRound % 2 == 0)
             {
                 return toRound;
             }
             else
             {
-                return toRound - toRound % 10;
+                return toRound - toRound % 2;
             }
         }
     }
