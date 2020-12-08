@@ -7,7 +7,6 @@
 <div class="container-fluid">
     <div class="row min-vh-100 flex-column flex-md-row">
 
-        <!--Start Side panel-->
         <aside class="col-12 col-md-3 p-0 bg-light border-right border-8 ">
             <nav class="navbar navbar-expand navbar-light bg-light flex-md-column flex-row align-items-md-center p-0  ">
                 <div class="collapse navbar-collapse p-0 py-md-5 ">
@@ -55,8 +54,7 @@
                 </div>
             </nav>
         </aside>
-        <!--End Side panel-->
-        <!--Start Main -->
+
         <main class="col bg-faded py-3 flex-grow-1">
 
             <div class="text-right mt-4">
@@ -78,7 +76,6 @@
             <div class="card mx-5 px-md-5 shadow border-0">
                 @if (ViewBag.Message != null)
                 {
-                    @*TERNARY EXPRESSION*@
                     <p class="alert-@(ViewBag.Error != null ? "danger" : "success")">@(ViewBag.Message)</p>
 
                     @if (ViewBag.Error != null)
@@ -174,7 +171,6 @@
             </div>
 
         </main>
-        <!--End Main -->
     </div>
 </div>
 
