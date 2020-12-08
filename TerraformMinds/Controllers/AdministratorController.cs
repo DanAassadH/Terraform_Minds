@@ -217,6 +217,8 @@ namespace TerraformMinds.Controllers
         /// Course List view can change based on filters selected.
         /// Course List can be filtered by Grade Level, Subject or both
         /// </summary>
+        /// <param name="subjectFilter"></param>
+        /// <param name="gradeFilter"></param>
         /// <returns>A list of courses in CourseList View</returns>
         [Authorize(Roles = "Administrator")]
         public IActionResult CourseList(string subjectFilter, string gradeFilter)
