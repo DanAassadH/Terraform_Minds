@@ -496,7 +496,7 @@ namespace TerraformMinds.Controllers
             List<Course> courseList;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                courseList = context.Courses.Include(x => x.User).ToList();
+                courseList = context.Courses.Include(x => x.User).OrderBy(x => x.Subject).ToList();
             }
             return courseList;
         }
@@ -511,7 +511,7 @@ namespace TerraformMinds.Controllers
             List<Course> courseListByGrade;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                courseListByGrade = context.Courses.Where(x => x.GradeLevel == gradeFilter).Include(x => x.User).ToList();
+                courseListByGrade = context.Courses.Where(x => x.GradeLevel == gradeFilter).Include(x => x.User).OrderBy(x => x.Subject).ToList();
             }
             return courseListByGrade;
         }
@@ -526,7 +526,7 @@ namespace TerraformMinds.Controllers
             List<Course> courseListBySubject;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                courseListBySubject = context.Courses.Where(x => x.Subject == subjectFilter).Include(x => x.User).ToList();
+                courseListBySubject = context.Courses.Where(x => x.Subject == subjectFilter).Include(x => x.User).OrderBy(x => x.Subject).ToList();
             }
             return courseListBySubject;
         }
@@ -542,7 +542,7 @@ namespace TerraformMinds.Controllers
             List<Course> courseListBySubject;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                courseListBySubject = context.Courses.Where(x => x.Subject == subjectFilter && x.GradeLevel == gradeFilter).Include(x => x.User).ToList();
+                courseListBySubject = context.Courses.Where(x => x.Subject == subjectFilter && x.GradeLevel == gradeFilter).Include(x => x.User).OrderBy(x => x.Subject).ToList();
             }
             return courseListBySubject;
         }
@@ -618,7 +618,7 @@ namespace TerraformMinds.Controllers
             List<User> instructorList;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                instructorList = context.Users.Where(x => x.Role == 2).ToList();
+                instructorList = context.Users.Where(x => x.Role == 2).OrderBy(x => x.FirstName).ToList();
             }
             return instructorList;
         }
@@ -653,7 +653,7 @@ namespace TerraformMinds.Controllers
             List<Course> teachingCourses;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                teachingCourses = context.Courses.Where(x => x.UserID == userID).Include(x => x.User).ToList();
+                teachingCourses = context.Courses.Where(x => x.UserID == userID).Include(x => x.User).OrderBy(x => x.Subject).ToList();
 
                 return teachingCourses;
             }
@@ -743,7 +743,7 @@ namespace TerraformMinds.Controllers
                 }
 
                 // Get all additional course info that the student is enrolled in.
-                enrolledCourses = context.Courses.Where(x => courseIDs.Contains(x.ID)).Include(x => x.User).ToList();
+                enrolledCourses = context.Courses.Where(x => courseIDs.Contains(x.ID)).Include(x => x.User).OrderBy(x => x.Subject).ToList();
                 return enrolledCourses;
             }
         }
@@ -756,7 +756,7 @@ namespace TerraformMinds.Controllers
             List<User> studentList;
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                studentList = context.Users.Where(x => x.Role == 3).Include(x => x.Students).ToList();
+                studentList = context.Users.Where(x => x.Role == 3).Include(x => x.Students).OrderBy(x => x.FirstName).ToList();
             }
             return studentList;
         }
