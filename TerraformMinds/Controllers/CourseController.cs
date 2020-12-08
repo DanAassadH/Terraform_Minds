@@ -95,12 +95,12 @@ namespace TerraformMinds.Controllers
         /// <param name="courseID"></param>
         /// <param name="userIdentity"></param>
         /// <returns>Course Detail, with enroll function, in CourseDetail View</returns>
-        public IActionResult Enroll (int courseID, int userIdentity)
+        public IActionResult Enroll (int courseID)
         {
 
             try
             {
-                RegisterCourse(courseID, userIdentity);
+                RegisterCourse(courseID);
                 ViewBag.Message = $"Course successfully  registered";
                 ViewBag.CourseDetails = GetCourseByID(courseID);
             }
@@ -130,6 +130,10 @@ namespace TerraformMinds.Controllers
             return courseList;
         }
 
+        ///// <summary>
+        ///// Add all current courses, where course end date is > todays date, and add them to a list.
+        ///// </summary>
+        ///// <returns>A list of current courses based on course end date > today's date</returns>
         //public List<Course> GetCurrentCourses()
         //{
         //    List<Course> courseList;
@@ -216,7 +220,7 @@ namespace TerraformMinds.Controllers
         /// </summary>
         /// <param name="courseID"></param>
         /// <param name="userIndentity"></param>
-        public void RegisterCourse(int courseID, int userIndentity)
+        public void RegisterCourse(int courseID)
         {
             using (LearningManagementContext context = new LearningManagementContext())
             {
