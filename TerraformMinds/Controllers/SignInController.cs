@@ -106,7 +106,7 @@ namespace TerraformMinds.Controllers
                 }
                 catch (ValidationException e)
                 {
-                    ViewBag.Message = "Something went wrong";
+                    ViewBag.Message = "There is an issue(s) with the submission, please see the following details:";
                     ViewBag.Exception = e;
                     ViewBag.Error = true;
                 }
@@ -154,30 +154,30 @@ namespace TerraformMinds.Controllers
             /// Validation for email
             if (string.IsNullOrWhiteSpace(EMail))
             {
-                exception.ValidationExceptions.Add(new Exception("EMail Required"));
+                exception.ValidationExceptions.Add(new Exception("Invalid value : EMail Required"));
                 flag = true;
             }
             else if (EMail.Length > 50)
             {
-                exception.ValidationExceptions.Add(new Exception("Maximum Character limit for Email is 50"));
+                exception.ValidationExceptions.Add(new Exception("Invalid value : Maximum Character limit for Email is 50"));
                 flag = true;
             }
             else if (!Regex.IsMatch(EMail, @"^[\w-!$*%^\.]+@([\w-]+\.)+[\w-]{2,4}$"))
             {
-                exception.ValidationExceptions.Add(new Exception("Incorrect Email Address  "));
+                exception.ValidationExceptions.Add(new Exception("Invalid value : Incorrect Email Address"));
                 flag = true;
             }
 
             // Validation for password
             if (string.IsNullOrWhiteSpace(Password))
             {
-                exception.ValidationExceptions.Add(new Exception("Password Required"));
+                exception.ValidationExceptions.Add(new Exception("Invalid value : Password Required"));
                 flag = true;
 
             }
             else if(Password.Length > 50)
             {
-                exception.ValidationExceptions.Add(new Exception("Maximum Character limit for password is 50"));
+                exception.ValidationExceptions.Add(new Exception("Invalid value : Maximum Character limit for password is 50"));
                 flag = true;
             }
 
@@ -225,7 +225,6 @@ namespace TerraformMinds.Controllers
                 prf: KeyDerivationPrf.HMACSHA1,
                 iterationCount: 10000,
                 numBytesRequested: 256 / 8));
-
 
             return hashed;
         }

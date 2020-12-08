@@ -26,7 +26,7 @@ namespace TerraformMinds.Controllers
             }
             catch (ValidationException e)
             {
-                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Message = "There is an issue(s) with the submission, please see the following details:";
                 ViewBag.Exception = e;
                 ViewBag.Error = true;
             }
@@ -51,7 +51,7 @@ namespace TerraformMinds.Controllers
             }
             catch (ValidationException e)
             {
-                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Message = "There is an issue(s) with the submission, please see the following details:";
                 ViewBag.Exception = e;
                 ViewBag.Error = true;
             }
@@ -96,7 +96,7 @@ namespace TerraformMinds.Controllers
             }
             catch (ValidationException e)
             {
-                ViewBag.Message = "There exist problem(s) with your submission, see below.";
+                ViewBag.Message = "There is an issue(s) with the submission, please see the following details:";
                 ViewBag.Exception = e;
                 ViewBag.Error = true;
             }
@@ -134,7 +134,7 @@ namespace TerraformMinds.Controllers
             }
             catch (ValidationException e)
             {
-                ViewBag.Message = "There exist problem(s) with your submission";
+                ViewBag.Message = "There is an issue(s) with the submission, please see the following details:";
                 ViewBag.Exception = e;
                 ViewBag.Error = true;
             }
@@ -165,7 +165,7 @@ namespace TerraformMinds.Controllers
             }
             else
             {
-                exception.ValidationExceptions.Add(new Exception("Something went wrong please Logout and try again"));
+                exception.ValidationExceptions.Add(new Exception("Invalid operation : please logout and try again"));
             }
 
             if (exception.ValidationExceptions.Count > 0)
@@ -194,7 +194,7 @@ namespace TerraformMinds.Controllers
             // check if id is non integer
             if (!int.TryParse(id, out parsedId))
             {
-                exception.ValidationExceptions.Add(new Exception("Course Details Not Available. Please go back to Main dashboard and try again"));
+                exception.ValidationExceptions.Add(new Exception("Invalid ID : course details not available, please go back to Main dashboard and try again"));
             }
             else
             {
@@ -210,7 +210,7 @@ namespace TerraformMinds.Controllers
                     }
                     else
                     {
-                        exception.ValidationExceptions.Add(new Exception("You are not registered in this course yet , Go back to main Student Dsahboard and select another course "));
+                        exception.ValidationExceptions.Add(new Exception("Invalid operation : you are not enrolled in this course"));
                     }
                 }
             }
@@ -247,7 +247,7 @@ namespace TerraformMinds.Controllers
             }
             else
             {
-                exception.ValidationExceptions.Add(new Exception("Invalid Assignemnt ID , Go back to main Student Dashboard and select again"));
+                exception.ValidationExceptions.Add(new Exception("Invalid Assignemnt ID : go back to main Student Dashboard and select again"));
             }
 
             if (exception.ValidationExceptions.Count > 0)
@@ -286,7 +286,7 @@ namespace TerraformMinds.Controllers
             {
                 if (!int.TryParse(id, out parsedId))
                 {
-                    exception.ValidationExceptions.Add(new Exception("Invalid Course ID , Go back to main Instructor Dsahboard and select course again"));
+                    exception.ValidationExceptions.Add(new Exception("Invalid Course ID : Go back to main instructor dsahboard and select course again"));
                     flag = true;
                 }
             }
@@ -294,14 +294,14 @@ namespace TerraformMinds.Controllers
             // Validation for answer
             if (answer == null)
             {
-                exception.ValidationExceptions.Add(new Exception("Answer Required"));
+                exception.ValidationExceptions.Add(new Exception("Invalid Value : Answer Required"));
                 flag = true;
             }
             else
             {
                 if (answer.Length > 2000)
                 {
-                    exception.ValidationExceptions.Add(new Exception("exceed character count of 2000, please rephrase"));
+                    exception.ValidationExceptions.Add(new Exception("Invalid value : cannot exceed character count of 2000, please rephrase"));
                     flag = true;
                 }
             }
@@ -352,7 +352,7 @@ namespace TerraformMinds.Controllers
 
                 if(studentID == null)
                 {
-                    exception.ValidationExceptions.Add(new Exception("Unable to access this record"));
+                    exception.ValidationExceptions.Add(new Exception("Invalid operation : Unable to access this record"));
                 }
                 else
                 {
@@ -393,7 +393,7 @@ namespace TerraformMinds.Controllers
             }
             else
             {
-                exception.ValidationExceptions.Add(new Exception("Something went wrong please go to main dashboard and try again"));
+                exception.ValidationExceptions.Add(new Exception("Invalid operation : please go to main dashboard and try again"));
             }
 
             if (exception.ValidationExceptions.Count > 0)
