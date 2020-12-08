@@ -79,7 +79,7 @@
 
                         <div class="card-header bg-@(ViewBag.SingleCourseDetail.Subject)">
 
-                            <h2 class="card-text"> @(ViewBag.SingleCourseDetail.Subject)</h2>
+                            <h3 class="card-text"> @(ViewBag.SingleCourseDetail.Subject)</h3>
 
                         </div>
 
@@ -143,12 +143,8 @@
                                     {
                                         <div class="card m-4 shadow-lg" style="min-width:80px; max-width: 100px;">
 
-                                            <div class="card-header text-right">
-
-                                                <h5 class="card-text"><i class="fas fa-user-graduate"></i></h5>
-                                            </div>
-
-                                            <div class="card-body">
+                                            <div class="card-body text-center">
+                                                <i class="card-text fas fa-user-graduate fa-2x"></i>
                                                 <p class="card-text">
                                                     <small>
                                                         <a asp-controller="Instructor" asp-action="AssignmentList" asp-route-cid="@(ViewBag.SingleCourseDetail.ID)" asp-route-uid="@(student.ID)">@student.FirstName  @student.LastName</a>
@@ -194,14 +190,18 @@
                                     {
                                         <div class="card m-4 shadow-lg" style="min-width:200px; max-width: 220px;">
 
-                                            <div class="card-header text-right">
+                                            <div class="card-header text-center">
 
-                                                <hp class="card-text"><small>Due Date : @assignment.DueDate.ToLongDateString()</small></hp>
-
+                                                <p class="card-text"><small>Due Date</small></p>
+                                                <p class="card-text"><small>@assignment.DueDate.ToLongDateString()</small></p>
                                             </div>
 
 
                                             <div class="card-body">
+
+                                                <hr class="my-1">
+
+                                                <p>Question : <small>@assignment.Question</small></p>
 
                                                 <div class="text-right">
 
@@ -209,10 +209,6 @@
                                                         <small>Total Score : @assignment.TotalScore</small>
                                                     </p>
                                                 </div>
-
-                                                <hr class="my-1">
-
-                                                <p>Question : <small>@assignment.Question</small></p>
 
                                             </div>
 
