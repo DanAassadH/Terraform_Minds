@@ -78,6 +78,10 @@
         color: #5E9AC1 !important;
     }
 
+/*---------------------------------------- Active link for page-------------------------------------------*/
+.active {
+    color: #5E9AC1 !important;
+}
 
 /*----------------------------------------- Card Header colors accourding to course sbujects---------------------------*/
 .bg-English {
