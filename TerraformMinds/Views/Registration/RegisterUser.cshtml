@@ -3,11 +3,7 @@
     ViewData["Title"] = "RegisterUser";
 }
 
-
-
-
 <div class="container d-flex justify-content-center">
-
 
     <div class="card  align-self-center py-5 border-0" style="width: 380px;">
 
@@ -18,8 +14,6 @@
         <div class="card-body">
             <form action="/Registration/RegisterUser" method="POST">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-
 
                 @if (ViewBag.Message != null)
                 {
@@ -33,39 +27,40 @@
                     </ul>
                 }
 
-
-
                 <div class="form-group">
                     <label for="FirstName">First Name</label>
                     <input asp-for="FirstName" class="form-control shadow-sm" placeholder="First Name" data-val="true" data-val-required="First Name is required !" data-val-maxlength-max="50" data-val-maxlength="Name Cannot exceed 50 characters" />
                     <span asp-validation-for="FirstName" class="text-danger" data-valmsg-for="FirstName" data-valmsg-replace="true"></span>
                 </div>
 
-                <div class="form-group" >
+                <div class="form-group">
                     <label for="LastName"> Last Name</label>
                     <input asp-for="LastName" class="form-control shadow-sm" placeholder="Last Name" data-val-required="Last Name is required" data-val-maxlength-max="50" data-val-maxlength="Name Cannot exceed 50 characters" />
                     <span asp-validation-for="LastName" class="text-danger" data-valmsg-for="LastName" data-valmsg-replace="true"></span>
                 </div>
 
-                <div class="form-group" >
+                <div class="form-group">
                     <label for="EMail">Email</label>
                     <input asp-for="EMail" class="form-control shadow-sm" placeholder="Email" data-val-required="Email is required" data-val-maxlength-max="50" data-val-maxlength="Email Cannot exceed 50 characters" data-val-regex="Incorrect Email Adress" data-val-regex-pattern="^[\w-!$*%^\.]+@@([\w-]+\.)+[\w-]{2,4}$" />
                     <span asp-validation-for="EMail" class="text-danger" data-valmsg-for="EMail" data-valmsg-replace="true"></span>
                 </div>
 
-                <div class="form-group" >
-                    <label for="Password" >Password</label>
+                <div class="form-group">
+                    <label for="Password">Password</label>
                     <input asp-for="Password" type="password" class="form-control shadow-sm" placeholder="Password" data-val-required="Password is required" data-val-maxlength-max="50" data-val-maxlength="Password Cannot exceed 50 characters" />
                     <span asp-validation-for="Password" class="text-danger" data-valmsg-for="Password" data-valmsg-replace="true"></span>
                 </div>
 
                 <div class="form-group">
-                    <label for="Role">Select A Role</label><br />
-                    <input asp-for="Role" type="radio" value="3" data-val-required="Please Select One" /> Student<br />
-                    <input asp-for="Role" type="radio" value="2" data-val-required="Please Select One" /> Instructor<br />
-                    <span asp-validation-for="Role" class="text-danger" data-valmsg-for="Role" data-valmsg-replace="true"></span>
+                    <fieldset>
+                        <legend for="Role"><small>Select A Role</small></legend>
+                        <input asp-for="Role" type="radio" value="3" data-val-required="Please Select One" />
+                        <label for="choc">Student</label> <br />
+                        <input asp-for="Role" type="radio" value="2" data-val-required="Please Select One" />
+                        <label for="choc">Instructor</label>
+                        <span asp-validation-for="Role" class="text-danger" data-valmsg-for="Role" data-valmsg-replace="true"></span>
+                    </fieldset>
                 </div>
-
 
                 <div class="form-group d-flex justify-content-center py-5">
                     <input type="submit" value=" Register " class="btn btn-pink round" />
@@ -90,10 +85,10 @@
 
 
 
-
 @* Client Side Validation https://www.blinkingcaret.com/2016/03/23/manually-use-mvc-client-side-validation/
     Regex Validation https://regexr.com/3e48o *@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
