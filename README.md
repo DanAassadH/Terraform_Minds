@@ -36,11 +36,17 @@ The application has 3 primary roles
 Depending on your role there are varying instructions on how to use the app.
 Please navigate to the role you would like to learn about.
 
-## Administrator
+For 'How to Use' Home Page, please navigate to the 'Home Page' section.
 
-## Instructor
+### Home Page
+On the Home Page
 
-## Student
+### Role - Administrator
+As an administrator, 
+
+### Role - Instructor
+
+### Role -Student
 
 ## Test Cases
 Please view the following document for Application Test Cases
