@@ -25,45 +25,56 @@
                 {
                     <p class="alert-@(ViewBag.Error != null ? "danger" : "success")">@(ViewBag.Message)</p>
 
-                    <ul class="list-group">
-                        @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
-                        {
-                            <li class="list-group-item list-group-item-danger">@(e.Message)</li>
-                        }
-                    </ul>
+                    if (ViewBag.Error != null)
+                    {
+                        <ul class="list-group">
+                            @foreach (Exception e in ViewBag.Exception.ValidationExceptions)
+                            {
+                                <li class="list-group-item list-group-item-danger">@(e.Message)</li>
+                            }
+                        </ul>
+                    }
                 }
 
 
 
                 <div class="form-group">
                     <label for="FirstName">First Name</label>
-                    <input asp-for="FirstName" class="form-control shadow-sm" placeholder="First Name" data-val="true" data-val-required="First Name is required !" data-val-maxlength-max="50" data-val-maxlength="Name Cannot exceed 50 characters" />
+                    <input asp-for="FirstName" class="form-control shadow-sm" placeholder="First Name" data-val="true" data-val-required="First Name is required" data-val-maxlength-max="50" data-val-maxlength="Name Cannot exceed 50 characters" />
                     <span asp-validation-for="FirstName" class="text-danger" data-valmsg-for="FirstName" data-valmsg-replace="true"></span>
                 </div>
 
-                <div class="form-group" >
+                <div class="form-group">
                     <label for="LastName"> Last Name</label>
                     <input asp-for="LastName" class="form-control shadow-sm" placeholder="Last Name" data-val-required="Last Name is required" data-val-maxlength-max="50" data-val-maxlength="Name Cannot exceed 50 characters" />
                     <span asp-validation-for="LastName" class="text-danger" data-valmsg-for="LastName" data-valmsg-replace="true"></span>
                 </div>
 
-                <div class="form-group" >
+                <div class="form-group">
                     <label for="EMail">Email</label>
                     <input asp-for="EMail" class="form-control shadow-sm" placeholder="Email" data-val-required="Email is required" data-val-maxlength-max="50" data-val-maxlength="Email Cannot exceed 50 characters" data-val-regex="Incorrect Email Adress" data-val-regex-pattern="^[\w-!$*%^\.]+@@([\w-]+\.)+[\w-]{2,4}$" />
                     <span asp-validation-for="EMail" class="text-danger" data-valmsg-for="EMail" data-valmsg-replace="true"></span>
                 </div>
 
-                <div class="form-group" >
-                    <label for="Password" >Password</label>
+                <div class="form-group">
+                    <label for="Password">Password</label>
                     <input asp-for="Password" type="password" class="form-control shadow-sm" placeholder="Password" data-val-required="Password is required" data-val-maxlength-max="50" data-val-maxlength="Password Cannot exceed 50 characters" />
                     <span asp-validation-for="Password" class="text-danger" data-valmsg-for="Password" data-valmsg-replace="true"></span>
                 </div>
 
                 <div class="form-group">
-                    <label for="Role">Select A Role</label><br />
-                    <input asp-for="Role" type="radio" value="3" data-val-required="Please Select One" /> Student<br />
-                    <input asp-for="Role" type="radio" value="2" data-val-required="Please Select One" /> Instructor<br />
-                    <span asp-validation-for="Role" class="text-danger" data-valmsg-for="Role" data-valmsg-replace="true"></span>
+                    <fieldset>
+                        <legend for="Role"><small>Select A Role</small></legend>
+
+                        <input asp-for="Role" type="radio" value="3" id="Student" data-val-required="Please Select One" />
+                        <label for="Student">Student</label> <br />
+
+                        <input asp-for="Role" type="radio" value="2" id="Instructor" data-val-required="Please Select One" />
+                        <label for="Instructor">Instructor</label> <br />
+
+                        <span asp-validation-for="Role" class="text-danger" data-valmsg-for="Role" data-valmsg-replace="true"></span>
+
+                    </fieldset>
                 </div>
 
 
@@ -97,3 +108,24 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+
+
+
+@*<form action="http://example.com/donut" method="post">
+        <div class="form-group">
+            <fieldset>
+                <legend for="Role"><small>Select A Role</small></legend>
+
+                <input asp-for="Role" type="radio" value="3" data-val-required="Please Select One" />
+                <label for="Role">Student</label> <br />
+
+                <input asp-for="Role" type="radio" value="2" data-val-required="Please Select One" />
+                <label for="Role">Instructor</label>
+
+                <span asp-validation-for="Role" class="text-danger" data-valmsg-for="Role" data-valmsg-replace="true"></span>
+
+            </fieldset>
+        </div>
+    </form>*@
+

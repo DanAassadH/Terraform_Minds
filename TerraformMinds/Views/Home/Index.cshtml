@@ -2,12 +2,12 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div>
 
-    <div class="bg-light">
-        <h1 class=" pt-5 px-5 font-weight-bold text-center">One Stop Learning Solution</h1>
+<div class="bg-light">
+    <div class=" container">
+        <h1 class=" pt-5 px-5 font-weight-bold text-left">One Stop Learning Solution</h1>
         <div class="d-flex justify-content-between ">
-            <div class="w-75 p-5 text-center">
+            <div class="w-75 p-5 text-left">
                 <p>Bringing quality education to your doorstep</p>
                 <p>Learning opportunities for students from Kindergarten to Grade 12</p>
             </div>
@@ -24,15 +24,14 @@
             <a asp-controller="Registration" asp-action="Index" class="btn btn-yellow btn-lg round ">Create a free account</a>
         </div>
     </div>
-
 </div>
 
 
 <div class="container">
 
-    <div class="Card my-5">
-        <h2 class="text-center">State of the art Learning Management System</h2>
-        <div class="p-5 mx-5 text-center">
+    <div class="Card m-5">
+        <h2 class="p-md-5 px-sm-0 mx-5 text-left">State of the art Learning Management System</h2>
+        <div class="p-md-5 px-sm-0 mx-5 text-left">
             <p>Terraform Minds provides learning opportunities for students ranging from Kindergarten to Grade 12 who are looking to learn or expand their knowledge in Mathematics, Sciences, Language Arts and Social Studies</p>
             <p>We also provide great options for teachers to share their knowledge with our students</p>
         </div>
@@ -49,7 +48,7 @@
                 <div class="col-md-8">
                     <div class="card-body text-lg-center">
                         <h2 class="card-title">What Do We Teach</h2>
-                        <p class="card-text">We deliver current course curriculum that aims to teach and improve student’s knowledge in mathematics, sciences, language arts, and social studies.</p>
+                        <p class="card-text text-left">We deliver current course curriculum that aims to teach and improve student’s knowledge in mathematics, sciences, language arts, and social studies.</p>
                     </div>
                 </div>
             </div>
@@ -60,7 +59,7 @@
                 <div class="col-md-7">
                     <div class="card-body text-lg-center">
                         <h2 class="card-title">Why Choose Terraform Minds</h2>
-                        <p class="card-text ">We have plenty of courses that range in a variety of subjects that can easily be found and registered for in a few simple clicks.</p>
+                        <p class="card-text text-left ">We have plenty of courses that range in a variety of subjects that can easily be found and registered for in a few simple clicks.</p>
                         <a asp-controller="Course" asp-action="CourseList" class="btn btn-yellow btn-lg round ">View Courses</a>
                     </div>
                 </div>
@@ -78,7 +77,7 @@
                 <div class="col-md-7">
                     <div class="card-body text-lg-center">
                         <h2 class="card-title">Easy Access</h2>
-                        <p class="card-text">COVID-19 brings many new challenges and uncertainties that may cause disruptions in learning. With Terraform Minds, you can bring the learning home with flexible online courses and modules that keep students engaged and motivated.</p>
+                        <p class="card-text text-left">COVID-19 brings many new challenges and uncertainties that may cause disruptions in learning. With Terraform Minds, you can bring the learning home with flexible online courses and modules that keep students engaged and motivated.</p>
                     </div>
                 </div>
             </div>
@@ -111,10 +110,12 @@
         </div>
     </div>
 
-    <div class="text-center mb-5">
-        <h2 class=" m-5">Getting Started is Easy!</h2>
-        <p>Create your teachers account and start teaching your favourite subjects</p>
-        <p>Or Register your child in any of the courses in a few easy steps</p>
-        <a asp-controller="Registration" asp-action="Index" class="btn btn-yellow btn-lg round">Create your Account</a>
+
+    <div class="container mb-5">
+        <h2 class="pl-5 m-5">Getting Started is Easy!</h2>
+        <p class=" pl-5 m-5">Create your teachers account and start teaching your favourite subjects</p>
+        <p class=" pl-5 m-5">Or Register your child in any of the courses in a few easy steps</p>
+        <p class="pl-5"><a asp-controller="Registration" asp-action="Index" class="btn btn-yellow btn-lg round ml-5">Create your Account</a> </p>
+
     </div>
 </div>

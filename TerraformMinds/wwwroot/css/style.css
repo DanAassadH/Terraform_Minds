@@ -1,8 +1,8 @@
 ﻿/*---------------------------------------- General Styles-------------------------------------------*/
 /* ------------------------------------- Yellow Button------------------------------------------------*/
-* {
+/** {
     outline: 1px solid #FF0000;
-}
+}*/
 
 .btn {
     padding: 5px 15px;
@@ -78,6 +78,10 @@
         color: #5E9AC1 !important;
     }
 
+/*---------------------------------------- Active link for page-------------------------------------------*/
+.active {
+    color: #5E9AC1 !important;
+}
 
 /*----------------------------------------- Card Header colors accourding to course sbujects---------------------------*/
 .bg-English {
@@ -89,12 +93,31 @@
 }
 
 .bg-Science {
-    background-color: #838AC0;
+    background-color: #C6CAE7;
 }
 
 .bg-Social {
     background-color: #FFDA53;
 }
+/*----------------------------------------- Adjust table width on Tablet size---------------------------*/
+@media screen and ( min-width: 760px) {
+    .table-width {
+        width:500px;
+    }
+}
+
+@media screen and ( min-width: 900px) {
+    .table-width {
+        width: 600px;
+    }
+}
+
+@media screen and ( min-width: 1100px) {
+    .table-width {
+        width: Auto;
+    }
+}
+
 
 /*-----------------------------------------Nav Bar ----------------------------------------------------*/
 
@@ -109,6 +132,9 @@
     font-size: 20px;
 }
 
+.active1 {
+    color: #ffffff;
+}
 
     .navbar-nav .nav-item .nav-link:hover {
         color: #49BCD9;

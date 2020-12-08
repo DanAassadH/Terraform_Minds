@@ -24,7 +24,7 @@
 
                         <li class="nav-item  py-md-2">
 
-                            <a class="nav-link teal-text" asp-controller="Administrator" asp-action="InstructorList"><i class="fas fa-chalkboard-teacher"></i> <span class="d-none d-md-inline"> Instructor List</span></a>
+                            <a class="nav-link teal-text active" asp-controller="Administrator" asp-action="InstructorList"><i class="fas fa-chalkboard-teacher"></i> <span class="d-none d-md-inline"> Instructor List</span></a>
                         </li>
 
 
@@ -86,7 +86,7 @@
 
             @if (ViewBag.Instructors != null && ViewBag.Instructors.Count > 0)
             {
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover table-width table-responsive">
                     <thead>
                         <tr>
                             <th>Full Name</th>
