@@ -48,11 +48,5 @@ namespace TerraformMinds.Models
         [ForeignKey(nameof(StudentID))]
         [InverseProperty(nameof(Models.Student.Submissions))]
         public virtual Student Student { get; set; }
-
-        /*        //****************
-                // Student Link
-                //****************
-                [InverseProperty(nameof(Student.Submit))]
-                public virtual ICollection<Student> Students { get; set; } */
     }
 }

@@ -55,8 +55,7 @@
                 </div>
             </nav>
         </aside>
-        <!--End Side panel-->
-        <!--Start Main -->
+
         <main class="col bg-faded py-3 flex-grow-1">
 
             <div class="text-right mt-4">
@@ -88,7 +87,6 @@
 
                     @if (ViewBag.Message != null)
                     {
-                        @*TERNARY EXPRESSION*@
                         <p class="alert-@(ViewBag.Error != null ? "danger" : "success")">@(ViewBag.Message)</p>
 
                         @if (ViewBag.Error != null)
@@ -181,10 +179,10 @@
                     }
 
 
-                </div> <!--End Card-->
+                </div>
 
-            </div> <!--End Container-->
+            </div>
         </main>
-        <!--End Main -->
+
     </div>
 </div>

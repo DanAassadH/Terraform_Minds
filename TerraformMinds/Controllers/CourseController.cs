@@ -70,7 +70,7 @@ namespace TerraformMinds.Controllers
             return View();
         }
 
-        public IActionResult Register (int courseID, int userIdentity)
+        public IActionResult Enroll (int courseID, int userIdentity)
         {
 
             try

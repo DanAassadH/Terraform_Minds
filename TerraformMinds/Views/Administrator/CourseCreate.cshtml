@@ -56,8 +56,7 @@
                 </div>
             </nav>
         </aside>
-        <!--End Side panel-->
-        <!--Start Main -->
+
         <main class="col bg-faded py-3 flex-grow-1">
 
             <div class="text-right mt-4">
@@ -79,7 +78,6 @@
             <div class="card mx-5 px-md-5 shadow border-0">
                 @if (ViewBag.Message != null)
                 {
-                    @*TERNARY EXPRESSION*@
                     <p class="alert-@(ViewBag.Error != null ? "danger" : "success")">@(ViewBag.Message)</p>
 
                     @if (ViewBag.Error != null)
@@ -146,11 +144,8 @@
                         <input type="submit" value="Create" class="btn btn-pink round" />
                     </div>
                 </form>
-
             </div>
-
         </main>
-        <!--End Main -->
     </div>
 </div>
 

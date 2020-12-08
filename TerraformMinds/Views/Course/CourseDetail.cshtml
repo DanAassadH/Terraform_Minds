@@ -34,13 +34,13 @@
 
             <div class="card-header bg-white">
 
-                <h2 class="card-text">Course Details</h2>
+                <h1 class="card-text">Course Details</h1>
 
             </div>
 
 
             <div class="card-body">
-                <h5 class="card-title">Course Name: @(ViewBag.CourseDetails.CourseName)</h5>
+                <h2 class="card-title">Course Name: @(ViewBag.CourseDetails.CourseName)</h2>
 
                 <p class="card-text">Subject : @(ViewBag.CourseDetails.Subject)</p>
 
@@ -87,13 +87,22 @@
             <div class="card-footer bg-white">
 
                 <a asp-action="CourseList" asp-controller="Course" class="btn btn-yellow round mx-5 my-1">Back to Courses</a>
-                <a asp-action="Register" asp-controller="Course" asp-route-courseID="@(ViewBag.CourseDetails.ID)" class="btn btn-yellow round mx-5 my-1">Enroll</a>
+                @if (User.Identity.Name != null)
+                {
+                    <a asp-action="Enroll" asp-controller="Course" asp-route-courseID="@(ViewBag.CourseDetails.ID)" class="btn btn-yellow round mx-5 my-1">Enroll</a>
+                }
+
+                else
+                {
+                    <a asp-controller="SignIn" asp-action="Index" class="btn btn-yellow round mx-5 my-1">Sign-in to Enroll</a>
+                }
+
 
             </div>
         }
         else
         {
-            <h1>Details</h1>
+            <h2>Details</h2>
             <p>An error occured trying to populate course information. <a asp-action="CourseList" asp-controller="Course">Click here to return to the course list.</a></p>
         }
 
@@ -101,12 +110,4 @@
 
 
 </div> <!--End Container-->
-@*@if (User.Identity.Name == null)
-    {
-        <a asp-action="Index" asp-controller="SignIn">SignIn to Enroll</a>
-    }
-    else
-    {
-        <a asp-action="Register" asp-controller="Course" asp-route-courseID="@(ViewBag.CourseDetails.ID)" class="badge-pill badge-warning">Enroll</a>
-    }*@
 
