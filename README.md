@@ -13,7 +13,7 @@ To build a web-based learning management system that provides an online course l
 ## Problem Solution
 We have utilized C#, Entity Framework, ASP.NET, and MVC in order to create our learning management system.
 
-## Features
+## Features and In-scope items
 - Sign-in and Register
 - Course List
   - Enroll in courses
@@ -29,6 +29,11 @@ We have utilized C#, Entity Framework, ASP.NET, and MVC in order to create our l
 - Student Dashboard
   - View enrolled courses
   - Attempt assignments
+  
+## Out-of-Scope Items
+- Quizzes
+- Resources
+- Grading
 
 # Installation Instruction
 Please navigate into the project folder
