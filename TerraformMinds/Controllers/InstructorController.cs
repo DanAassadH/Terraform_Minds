@@ -120,7 +120,6 @@ namespace TerraformMinds.Controllers
                 ViewBag.Error = true;
             }
 
-
             return View();
         }
 
@@ -164,7 +163,6 @@ namespace TerraformMinds.Controllers
         [Authorize(Roles = "Instructor")]
         public IActionResult AssignmentMark(string submitId, string Remarks, string ScoreObtained, string TotalScore, string courseId)
         {
-
             try
             {
                 ViewBag.BackCourseID = courseId;
@@ -205,7 +203,7 @@ namespace TerraformMinds.Controllers
             {
                 using (LearningManagementContext context = new LearningManagementContext())
                 {
-                    instructorsCourses = context.Courses.Where(x => x.UserID == int.Parse(UserId)).OrderBy(x=>x.Subject).ToList();
+                    instructorsCourses = context.Courses.Where(x => x.UserID == int.Parse(UserId)).OrderBy(x => x.Subject).ToList();
                 }
             }
             else
@@ -221,13 +219,11 @@ namespace TerraformMinds.Controllers
         }
 
 
-
         /// <summary>
         /// Function to grab details of the signle course whose ID is provided by instructor
         /// </summary>
         /// <param name="id"></param>
         /// <returns> details of a single course</returns>
-
         public Course GetCourseDetailsByID(string id) // Passing Course ID
         {
             ValidationException exception = new ValidationException();
@@ -252,15 +248,12 @@ namespace TerraformMinds.Controllers
                 exception.ValidationExceptions.Add(new Exception("Invalid ID : Go back to main Instructor Dsahboard and select course again"));
             }
 
-
             if (exception.ValidationExceptions.Count > 0)
             {
                 throw exception;
             }
-
             return courseDetail;
         }
-
 
         /// <summary>
         /// Gets List of students in a course for the instructor
@@ -273,26 +266,22 @@ namespace TerraformMinds.Controllers
             List<User> studentNames = null;
 
             int parsedId;
-
             id = !string.IsNullOrWhiteSpace(id) ? id.Trim() : null;
-
 
             if (int.TryParse(id, out parsedId))
             {
                 using (LearningManagementContext context = new LearningManagementContext())
                 {
-
                     // sql query : get all the students enrolled in this course
                     //SELECT a.FirstName, a.LastName FROM `user` a , student b WHERE a.ID=b.UserID AND CourseID = -2(id)
 
-                    studentNames = context.Users.Where(x => x.Students.Any(y => y.UserID == x.ID)).Where(x => x.Students.Any(y => y.CourseID == parsedId)).OrderBy(x=>x.FirstName).ToList();
+                    studentNames = context.Users.Where(x => x.Students.Any(y => y.UserID == x.ID)).Where(x => x.Students.Any(y => y.CourseID == parsedId)).OrderBy(x => x.FirstName).ToList();
                 }
             }
             else
             {
                 exception.ValidationExceptions.Add(new Exception("Invalid Course ID : Go back to main Instructor Dsahboard and select course again"));
             }
-
 
             if (exception.ValidationExceptions.Count > 0)
             {
@@ -341,7 +330,7 @@ namespace TerraformMinds.Controllers
         }
 
         /// <summary>
-        /// Function to insert assignment values by instructor into assignment table 
+        /// Function to insert assignment values by instructor into assignment table
         /// Validation # 1 : Due Date for assignment Cannot be before Course start date
         /// Validation # 2 : Due date for assignment cannot be set before today
         /// Validation # 3 : Due date cannot be after Course end date
@@ -354,7 +343,7 @@ namespace TerraformMinds.Controllers
         {
             ValidationException exception = new ValidationException();
 
-            // Trim the values 
+            // Trim the values
             question = question?.Trim();
             dueDate = dueDate?.Trim();
             totalScore = totalScore?.Trim();
@@ -379,7 +368,7 @@ namespace TerraformMinds.Controllers
                     flag = true;
                 }
             }
-            
+
             // Validation for question
             if (question == null)
             {
@@ -442,7 +431,7 @@ namespace TerraformMinds.Controllers
                 {
                     Course course = GetCourseDetailsByID(id);
 
-                    if(DateTime.Parse(dueDate) < course.StartDate)
+                    if (DateTime.Parse(dueDate) < course.StartDate)
                     {
                         exception.ValidationExceptions.Add(new Exception("Invalid Due date : due date for an assignment cannot be before course start date"));
                         flag = true;
@@ -456,20 +445,19 @@ namespace TerraformMinds.Controllers
 
 
                     if (flag == false)
-                    { 
-                    // Add Values in assignment Table if all validations are passed
-                    context.Assignments.Add(new Assignment()
                     {
-                        CourseID = int.Parse(id),
-                        Question = question,
-                        DueDate = DateTime.Parse(dueDate),
-                        TotalScore = int.Parse(totalScore)
+                        // Add Values in assignment Table if all validations are passed
+                        context.Assignments.Add(new Assignment()
+                        {
+                            CourseID = int.Parse(id),
+                            Question = question,
+                            DueDate = DateTime.Parse(dueDate),
+                            TotalScore = int.Parse(totalScore)
 
-                    });
-                    context.SaveChanges();
+                        });
+                        context.SaveChanges();
                     }
                 }
-
             }
 
             if (exception.ValidationExceptions.Count > 0)
@@ -503,7 +491,7 @@ namespace TerraformMinds.Controllers
             {
                 using (LearningManagementContext context = new LearningManagementContext())
                 {
-                    //Sql Query : 
+                    //Sql Query :
                     // SELECT a.* , b.* FROM `submitted` a , `assignment` b WHERE a.AssignmentID = b.ID And a.ID = 5
 
                     studentsAssignment = context.Submissions.Include(x => x.Assignment).Where(x => x.Assignment.ID == x.AssignmentID).Where(x => x.ID == int.Parse(submitID)).SingleOrDefault();
@@ -556,13 +544,13 @@ namespace TerraformMinds.Controllers
 
 
             // Validation for remarks
-            if(remarks!=null)
-            { 
-            if (remarks.Length > 500)
+            if (remarks != null)
             {
-                exception.ValidationExceptions.Add(new Exception("Invalid value : cannot exceed character count of 500, please rephrase"));
-                flag = true;
-            }
+                if (remarks.Length > 500)
+                {
+                    exception.ValidationExceptions.Add(new Exception("Invalid value : cannot exceed character count of 500, please rephrase"));
+                    flag = true;
+                }
             }
 
             // Validation for Score obtained

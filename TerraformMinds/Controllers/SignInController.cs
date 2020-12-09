@@ -120,7 +120,6 @@ namespace TerraformMinds.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
         /* ----------------------------------------------- Data ----------------------------------------*/
 
         /// <summary>
@@ -192,7 +191,6 @@ namespace TerraformMinds.Controllers
             }
             return validUser;
         }
-
 
         /// <summary>
         /// Convert password to a Hash of random characters Using a known salt

@@ -5,8 +5,6 @@
 
 @*----------------------------------------------Students Course List ------------------------------------------------------*@
 
-
-
 <div class="container-fluid">
     <div class="row min-vh-100 flex-column flex-md-row">
 
@@ -16,9 +14,7 @@
                 <div class="collapse navbar-collapse p-0 py-md-5 ">
                     <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-around">
                         <li class="nav-item  py-md-2">
-
                             <h5> <span class="d-none d-md-inline font-weight-bold">Dashboard Menu</span></h5>
-
                         </li>
 
                         <li class="nav-item  py-md-2">
@@ -26,7 +22,6 @@
                         </li>
 
                         <li class="nav-item  py-md-2">
-
                             <a class="nav-link teal-text active" asp-controller="Student" asp-action="CourseList" asp-route-id="@User.Identity.Name"><i class="fas fa-book"></i> <span class="d-none d-md-inline"> My Courses</span></a>
                         </li>
 
@@ -42,13 +37,9 @@
         <!--End Side panel-->
         <!--Start Main -->
         <main class="col py-3 flex-grow-1">
-
             <div class="text-right mt-4 ">
                 <h3>Welcome @ViewBag.UserInformation.FirstName @ViewBag.UserInformation.LastName</h3>
             </div>
-
-
-
 
             <div class="jumbotron bg-white flex-row">
                 <h2 class="display-3">Course List</h2>
@@ -56,8 +47,6 @@
                 <hr class="my-4">
                 <p>Here you will find list of all the courses you are enrolled in</p>
             </div>
-
-
             @if (ViewBag.Error != null)
             {
                 <ul class="list-group">
@@ -68,24 +57,17 @@
                 </ul>
             }
 
-
-
             <div class="container">
 
                 @if (ViewBag.StudentsCourses != null && ViewBag.StudentsCourses.Count > 0)
                 {
                     <div class="card-deck">
-
                         @foreach (Course course in ViewBag.StudentsCourses)
                         {
                             <div class="card m-4 shadow-lg" style="min-width:300px; max-width: 320px;">
-
                                 <div class="card-header bg-@(course.Subject) text-right">
-
                                     <h3 class="card-text">@(course.Subject)</h3>
-
                                 </div>
-
 
                                 <div class="card-body">
                                     <h4 class="card-title">@(course.CourseName)</h4>
@@ -107,33 +89,23 @@
                                             <small>End date : @((course.EndDate == null ? "TBA" : ((DateTime)course.EndDate).ToLongDateString()))</small>
                                         </p>
                                     </div>
-
-                                </div>
+                                                                    </div>
                                 <div class="card-footer text-muted text-right">
                                     <a class="teal-text" asp-controller="Student" asp-action="CourseDetail"
                                        asp-route-id="@(course.ID)">
                                         Details
                                     </a>
-
                                 </div>
-
                             </div>
                         }
-
                     </div>
 
-
                 }
-
                 else
                 {
                     <p class="my-5">You are not enrolled in any course. Go to course page and select one of the course you are interested in</p>
                 }
-
             </div>    <!--End Container -->
-
-
-
         </main>  <!--End Main -->
 
     </div>

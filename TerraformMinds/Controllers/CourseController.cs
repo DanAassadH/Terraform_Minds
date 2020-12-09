@@ -53,7 +53,7 @@ namespace TerraformMinds.Controllers
                 ViewBag.Filter = true;
             }
 
-            else if(courseSubjects.Contains(subjectFilter) && gradeLevels.Contains(gradeFilter))
+            else if (courseSubjects.Contains(subjectFilter) && gradeLevels.Contains(gradeFilter))
             {
                 ViewBag.Courses = GetCoursesByGradeAndSubject(subjectFilter, gradeFilter);
                 ViewBag.Filter = true;
@@ -77,9 +77,9 @@ namespace TerraformMinds.Controllers
         {
             try
             {
-                ViewBag.CourseDetails = GetCourseByID(courseID); 
+                ViewBag.CourseDetails = GetCourseByID(courseID);
             }
-            catch(ValidationException e)
+            catch (ValidationException e)
             {
                 ViewBag.Message = "There Exist problem(s) with your submission, see below";
                 ViewBag.Exception = e;
@@ -95,7 +95,7 @@ namespace TerraformMinds.Controllers
         /// <param name="courseID"></param>
         /// <param name="userIdentity"></param>
         /// <returns>Course Detail, with enroll function, in CourseDetail View</returns>
-        public IActionResult Enroll (int courseID)
+        public IActionResult Enroll(int courseID)
         {
 
             try
@@ -105,7 +105,7 @@ namespace TerraformMinds.Controllers
                 ViewBag.CourseDetails = GetCourseByID(courseID);
             }
 
-            catch(ValidationException e)
+            catch (ValidationException e)
             {
                 ViewBag.Message = "There exist problem(s) with your submission, see below.";
                 ViewBag.Exception = e;
@@ -212,10 +212,9 @@ namespace TerraformMinds.Controllers
             {
                 Course enrollCourse = context.Courses.Where(x => x.ID == courseID).SingleOrDefault();
 
-                if(User.Identity.Name == null)
+                if (User.Identity.Name == null)
                 {
                     exception.ValidationExceptions.Add(new Exception("Please sign-in to enroll"));
-                    //throw exception;
                 }
                 else
                 {
@@ -224,14 +223,12 @@ namespace TerraformMinds.Controllers
                     if (userRoll == null)
                     {
                         exception.ValidationExceptions.Add(new Exception("You must be a student to enroll"));
-                        //throw exception;
                     }
                     else
                     {
                         if (context.Students.Any(x => x.CourseID == courseID && x.UserID == int.Parse(User.Identity.Name)))
                         {
                             exception.ValidationExceptions.Add(new Exception("You have already enrolled for this course."));
-                            //throw exception;
                         }
 
                         else
@@ -239,20 +236,18 @@ namespace TerraformMinds.Controllers
                             if (enrollCourse.CurrentCapacity >= enrollCourse.MaxCapacity)
                             {
                                 exception.ValidationExceptions.Add(new Exception("Sorry, the course you are registering for is already full"));
-                                //throw exception;
                             }
                             else
                             {
                                 if (enrollCourse.EndDate <= DateTime.Today)
                                 {
                                     exception.ValidationExceptions.Add(new Exception("Sorry, that course has already ended."));
-                                    //throw exception;
                                 }
                             }
                         }
                     }
                 }
-                
+
                 if (exception.ValidationExceptions.Count > 0)
                 {
                     throw exception;
@@ -263,9 +258,7 @@ namespace TerraformMinds.Controllers
                     UserID = int.Parse(User.Identity.Name),
                     CourseID = courseID,
                 });
-
                 enrollCourse.CurrentCapacity += 1;
-
                 context.SaveChanges();
             }
         }

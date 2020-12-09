@@ -13,7 +13,6 @@ namespace TerraformMinds.Controllers
     {
         /* This file contains list of functions that are resued in more than one controller*/
 
-
         /// <summary>
         /// Function to get the information about user using their Signed in user ID  
         /// </summary>

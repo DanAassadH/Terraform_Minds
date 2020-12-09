@@ -77,8 +77,7 @@ namespace TerraformMinds.Controllers
                 ViewBag.GradeLevels = gradeLevelList;
 
                 ViewBag.GradeLevel = gradeLevel;
-                //ViewBag.CurrentCapacity = currentCapacity;
-                ViewBag.MaxCapacity = maxCapacity; 
+                ViewBag.MaxCapacity = maxCapacity;
             }
             return View();
         }
@@ -126,7 +125,7 @@ namespace TerraformMinds.Controllers
                 {
                     try
                     {
-                        if(course.MaxCapacity <= 0)
+                        if (course.MaxCapacity <= 0)
                         {
                             exception.ValidationExceptions.Add(new Exception("Invalid Maximum Capacity: Course must have a minimum of 1 student"));
                         }
@@ -152,7 +151,7 @@ namespace TerraformMinds.Controllers
 
                                     else
                                     {
-                                        if(course.EndDate < DateTime.Today)
+                                        if (course.EndDate < DateTime.Today)
                                         {
                                             exception.ValidationExceptions.Add(new Exception("Invalid End Date: Course end date cannot be set prior to todays date"));
                                         }
@@ -281,7 +280,6 @@ namespace TerraformMinds.Controllers
                 var course = await context.Courses.FindAsync(id);
                 if (course == null)
                 {
-                    //return NotFound();
                     ViewBag.CourseExists = false;
                     return View(course);
                 }
@@ -437,7 +435,6 @@ namespace TerraformMinds.Controllers
                     .FirstOrDefaultAsync(m => m.ID == id);
                 if (course == null)
                 {
-                    //return NotFound();
                     ViewBag.CourseExists = false;
                     return View();
                 }
@@ -595,7 +592,7 @@ namespace TerraformMinds.Controllers
                 ViewBag.Instructor = instructor;
                 ViewBag.InstructorCourses = GetCoursesByInstructorID(instructor.ID);
             }
-            catch(ValidationException e)
+            catch (ValidationException e)
             {
                 ViewBag.Message = "There is an issue(s) with the submission, please see the following details:";
                 ViewBag.Exception = e;
@@ -642,7 +639,7 @@ namespace TerraformMinds.Controllers
         {
             using (LearningManagementContext context = new LearningManagementContext())
             {
-                if(!context.Users.Any(x => x.ID == instructorID))
+                if (!context.Users.Any(x => x.ID == instructorID))
                 {
                     exception.ValidationExceptions.Add(new Exception("Error: Cannot find instructor"));
                     throw exception;
@@ -709,7 +706,7 @@ namespace TerraformMinds.Controllers
         }
 
         /* ------------------------------------Administrator Student Data -----------------------------------------------------*/
-        
+
         /// <summary>
         /// Uses LINQ queries to find a given student by their user id
         /// If student not found, add exception to ValidationExceptions list

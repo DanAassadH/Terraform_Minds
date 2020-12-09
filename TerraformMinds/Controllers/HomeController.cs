@@ -99,7 +99,7 @@ namespace TerraformMinds.Controllers
         /// <returns>An even number</returns>
         public int RoundDown(int toRound)
         {
-            if(toRound % 2 == 0)
+            if (toRound % 2 == 0)
             {
                 return toRound;
             }

@@ -17,9 +17,7 @@ namespace TerraformMinds.Controllers
         public IActionResult Index()
         {
             return RedirectToAction("RegisterUser");
-           
         }
-
         public IActionResult RegisterUser(string FirstName, string LastName, string EMail, string Password, string Role)
         {
             /* If else to check if register new user button clicked*/
@@ -35,8 +33,7 @@ namespace TerraformMinds.Controllers
                     ViewBag.Message = "There is an issue(s) with the submission, please see the following details:";
                     ViewBag.Exception = e;
                     ViewBag.Error = true;
-                }
-                
+                }               
             }
                 
             return View();
