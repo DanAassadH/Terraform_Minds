@@ -3,19 +3,14 @@
     ViewData["Title"] = "Student List";
 }
 
-
-
 <div class="container-fluid">
     <div class="row min-vh-100 flex-column flex-md-row">
-
         <aside class="col-12 col-md-3 p-0 bg-light border-right border-8 ">
             <nav class="navbar navbar-expand navbar-light bg-light flex-md-column flex-row align-items-md-center p-0  ">
                 <div class="collapse navbar-collapse p-0 py-md-5 ">
                     <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-around">
                         <li class="nav-item  py-md-2">
-
                             <h5> <span class="d-none d-md-inline font-weight-bold">Dashboard Menu</span></h5>
-
                         </li>
 
                         <li class="nav-item  py-md-2">
@@ -23,41 +18,30 @@
                         </li>
 
                         <li class="nav-item  py-md-2">
-
                             <a class="nav-link teal-text" asp-controller="Administrator" asp-action="InstructorList"><i class="fas fa-chalkboard-teacher"></i> <span class="d-none d-md-inline"> Instructor List</span></a>
                         </li>
 
-
                         <li class="nav-item  py-md-2 ">
-
                             <a class="nav-link teal-text active" asp-controller="Administrator" asp-action="StudentList"><i class="fas fa-user-graduate"></i> <span class="d-none d-md-inline"> Student List</span></a>
                         </li>
 
-
                         <li class="nav-item  py-md-2">
-
                             <a class="nav-link teal-text" asp-controller="Administrator" asp-action="CourseList"><i class="far fa-list-alt"></i> <span class="d-none d-md-inline"> Course List</span></a>
                         </li>
 
                         <li class="nav-item  py-md-2">
-
                             <a class="nav-link teal-text" asp-controller="Administrator" asp-action="CourseCreate"><i class="fas fa-plus-circle"></i> <span class="d-none d-md-inline"> Create Course</span></a>
                         </li>
 
-
-
                         <li class="nav-item  py-md-2">
-
                             <a class="nav-link teal-text" asp-action="Signout" asp-controller="SignIn"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline"> Sign Out</span></a>
                         </li>
-
                     </ul>
                 </div>
             </nav>
         </aside>
 
         <main class="col bg-faded py-3 flex-grow-1">
-
             <div class="text-right mt-4">
 
                 <h3>Welcome @ViewBag.UserInformation.FirstName @ViewBag.UserInformation.LastName</h3>
