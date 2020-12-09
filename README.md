@@ -107,40 +107,55 @@ Please click on the following link and download file to view Application Test Ca
 During the lifetime of this project we consulted many online resources. Their list is as follows.
 Password Hash and Salt
 https://docs.microsoft.com/en-us/aspnet/core/security/anti-request-forgery?view=aspnetcore-5.0
+  
 https://crackstation.net/hashing-security.htm
+
 https://auth0.com/blog/adding-salt-to-hashing-a-better-way-to-store-passwords/
+
 For Client Side input fields Validation:
 https://www.blinkingcaret.com/2016/03/23/manually-use-mvc-client-side-validation/
+
 Regex Expression:
 https://regexr.com/3e48o
-Login Authentication :
+
+Login Authentication:
 https://www.c-sharpcorner.com/article/authentication-and-authorization-in-asp-net-core-mvc-using-cookie/
 https://docs.microsoft.com/en-us/aspnet/core/security/authorization/roles?view=aspnetcore-5.0
 https://docs.microsoft.com/en-us/aspnet/core/security/authentication/cookie?view=aspnetcore-2.2#create-an-authentication-cookie-1
 
-Match Email regex :
+Match Email regex:
 https://www.dotnetperls.com/regex
+
 Bootstrap: 
 https://mdbootstrap.com/docs/jquery/navigation/navbar/
 https://getbootstrap.com/docs/5.0/getting-started/introduction/
+
 Button style:
 https://bootstrapbay.com/blog/bootstrap-button-styles/
+
 Side bar:
 https://www.codeply.com/go/Rgq96HykJ2/sidebar-that-changes-to-navbar
+
 Photo Collage Course Page:
 https://pixabay.com/photos/art-chalk-child-childhood-color-3509511/
 https://pixabay.com/photos/colour-color-colorful-pencil-316776/
 https://unsplash.com/photos/IOzk8YKDhYg
+
 Photo Collage Home page inspired by:
 https://tedharrison.ca/
+
 WebAIM contrast checker:
 https://webaim.org/resources/contrastchecker/
+
 Images compressed using:
 https://tinypng.com/
+
 CSS W3C validator:
 https://jigsaw.w3.org/css-validator/
+
 Wireframes done using:
 https://www.figma.com/
+
 ERD Drawn using: Drawio
 Time Tracking in : Google sheets
 </details>
