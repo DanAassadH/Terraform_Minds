@@ -174,7 +174,7 @@ namespace TerraformMinds.Controllers
                         }
                         context.Add(course);
                         await context.SaveChangesAsync();
-                        return RedirectToAction(nameof(CourseList));
+                        ViewBag.Message = $"Successfully created course!";
                     }
                     catch (ValidationException e)
                     {
