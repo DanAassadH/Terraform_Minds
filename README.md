@@ -39,7 +39,7 @@ Step 1 - Creating the database
 - dotnet ef update database
 
 Step 2 - Database data population:
-- Please locate the .sql file and import it into your databasing program of choice
+- Please locate the SQL folder inside the project folder and import the 'terraform_minds.sql' file into your databasing program of choice
 
 Step 3 - Please install the following packages:
 - dotnet add package Microsoft.EntityFrameworkCore.Design
