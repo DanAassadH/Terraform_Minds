@@ -69,12 +69,6 @@ namespace TerraformMinds.Models
         public virtual ICollection<Student> Students { get; set; } 
 
         //****************
-        // Resource Link
-        //****************
-        [InverseProperty(nameof(Resource.Course))]
-        public virtual ICollection<Resource> Resources { get; set; } 
-
-        //****************
         // Assignment Link
         //****************
         [InverseProperty(nameof(Assignment.Course))]

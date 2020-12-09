@@ -3,14 +3,8 @@
     ViewData["Title"] = "SignIn";
 }
 
-
-
-
 <div class="container d-flex justify-content-center">
-
-
     <div class="card  align-self-center py-5 border-0" style="width: 380px;">
-
         <div class="card-header bg-white border-0">
             <h2>Sign In To Your Terraform Minds Account</h2>
         </div>
@@ -19,13 +13,9 @@
             <form action="/SignIn/SignIn" method="POST">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-
-
                 @if (ViewBag.Message != null)
                 {
-
                     <p class="alert-danger">@(ViewBag.Message)</p>
-
                     if (ViewBag.Error != null)
                     {
                         <ul>
@@ -37,16 +27,12 @@
                     }
                 }
 
-
-
                 <div class="form-group">
                     <label for="EMail">Email</label>
 
                     <input asp-for="EMail" class="form-control shadow-sm" placeholder="Email" data-val="true" data-val-required="Email is required" data-val-maxlength-max="50" data-val-maxlength="Email Cannot exceed 50 characters" data-val-regex="Incorrect Email Adress" data-val-regex-pattern="^[\w-!$*%^\.]+@@([\w-]+\.)+[\w-]{2,4}$" />
 
                     <span asp-validation-for="EMail" class="text-danger" data-valmsg-for="EMail" data-valmsg-replace="true"></span>
-
-
                 </div>
 
                 <div class="form-group">
@@ -55,29 +41,20 @@
                     <span asp-validation-for="Password" class="text-danger" data-valmsg-for="Password" data-valmsg-replace="true"></span>
                 </div>
 
-
                 <div class="form-group d-flex justify-content-center py-5">
                     <input type="submit" value=" Sign In " class="btn btn-pink round" />
                 </div>
-
             </form>
         </div>
 
         <div class="card-footer text-muted bg-white">
             <p><small> Dont have an account </small></p>
-
             <p>
                 <a asp-controller="Registration" asp-action="RegisterUser"><small> Click Here to Register</small></a>
             </p>
         </div>
-
     </div>
-
-
-    
 </div>
-
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
