@@ -13,7 +13,7 @@ To build a web-based learning management system that provides an online course l
 ## Problem Solution
 We have utilized C#, Entity Framework, ASP.NET, and MVC in order to create our learning management system.
 
-## Features
+## Features and In-scope items
 - Sign-in and Register
 - Course List
   - Enroll in courses
@@ -29,6 +29,11 @@ We have utilized C#, Entity Framework, ASP.NET, and MVC in order to create our l
 - Student Dashboard
   - View enrolled courses
   - Attempt assignments
+  
+## Out-of-Scope Items
+- Quizzes
+- Resources
+- Grading
 
 # Installation Instruction
 Please navigate into the project folder
@@ -39,7 +44,7 @@ Step 1 - Creating the database
 - dotnet ef update database
 
 Step 2 - Database data population:
-- Please locate the .sql file and import it into your databasing program of choice
+- Please locate the SQL folder inside the project folder and import the 'terraform_minds.sql' file into your databasing program of choice
 
 Step 3 - Please install the following packages:
 - dotnet add package Microsoft.EntityFrameworkCore.Design
@@ -93,8 +98,8 @@ once logged in, you will now have access to the Student Dashboard where you can 
 - Attempt an assignment
 
 ## Test Cases
-Please view the following document for Application Test Cases
-Test Case: LINK
+Please click on the following link and download file to view Application Test Cases
+[LINK](https://github.com/TECHCareers-by-Manpower/capstone-project-dream-imagine/blob/main/TerraformMinds/Project%20Planning/Dream-Imagine_Test_Plan_Documentation.docx)
 
 # Citations
 <details>
