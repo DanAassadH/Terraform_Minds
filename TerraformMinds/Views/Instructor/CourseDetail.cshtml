@@ -170,7 +170,7 @@
                                 <p><strong>No Assignments for this  course </strong></p>
                             }
                         </div>
-                        @if (ViewBag.SingleCourseDetail.EndDate > DateTime.Now)
+                        @if (ViewBag.SingleCourseDetail.EndDate > DateTime.Now || ViewBag.SingleCourseDetail.EndDate == null)
                         {
                             <div class="card-footer text-muted text-right">
                                 <a class="btn btn-yellow round" asp-controller="Instructor" asp-action="AssignmentCreate" asp-route-id="@(ViewBag.SingleCourseDetail.ID)">
