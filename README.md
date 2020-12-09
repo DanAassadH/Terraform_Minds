@@ -94,7 +94,7 @@ once logged in, you will now have access to the Student Dashboard where you can 
 
 ## Test Cases
 Please view the following document for Application Test Cases
-Test Case: LINK
+Test Case: [a link](https://github.com/TECHCareers-by-Manpower/capstone-project-dream-imagine/blob/main/TerraformMinds/Project%20Planning/Dream-Imagine_Test_Plan_Documentation.docx)
 
 # Citations
 <details>
