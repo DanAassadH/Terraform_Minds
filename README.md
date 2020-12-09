@@ -93,7 +93,7 @@ once logged in, you will now have access to the Student Dashboard where you can 
 - Attempt an assignment
 
 ## Test Cases
-Please click on the following link for Application Test Cases
+Please click on the following link and download file to view Application Test Cases
 [LINK](https://github.com/TECHCareers-by-Manpower/capstone-project-dream-imagine/blob/main/TerraformMinds/Project%20Planning/Dream-Imagine_Test_Plan_Documentation.docx)
 
 # Citations
