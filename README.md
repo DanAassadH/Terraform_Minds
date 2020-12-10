@@ -79,6 +79,8 @@ Once logged in, you will now have access to the Administrator Dashboard where yo
 - View Instructors
 - View Students
 
+For all the records the password is their first Names
+
 ### Role - Instructor
 To become an instructor, please sign into your instructor account. 
 If you are new to the website you can create an instructor account from the Registration page.

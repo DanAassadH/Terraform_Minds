@@ -1,7 +1,7 @@
 -- --------------------------------------------------------
 
 --
--- Dumping data for table `user`
+-- data for table `user`
 --
 
 INSERT INTO `user` (`ID`, `Role`, `EMail`, `Password`, `FirstName`, `LastName`, `JoinDate`) VALUES
@@ -68,7 +68,7 @@ INSERT INTO `user` (`ID`, `Role`, `EMail`, `Password`, `FirstName`, `LastName`, 
 
 -- --------------------------------------------------------
 --
--- Dumping data for table `course`
+-- data for table `course`
 --
 
 INSERT INTO `course` (`ID`, `UserID`, `CourseName`, `Subject`, `StartDate`, `EndDate`, `CourseDescription`, `GradeLevel`, `CurrentCapacity`, `MaxCapacity`) VALUES
@@ -89,7 +89,7 @@ INSERT INTO `course` (`ID`, `UserID`, `CourseName`, `Subject`, `StartDate`, `End
 -- --------------------------------------------------------
 
 --
--- Dumping data for table `student`
+-- data for table `student`
 --
 
 INSERT INTO `student` (`ID`, `UserID`, `CourseID`) VALUES
@@ -99,7 +99,7 @@ INSERT INTO `student` (`ID`, `UserID`, `CourseID`) VALUES
 
 -- --------------------------------------------------------
 --
--- Dumping data for table `assignment`
+-- data for table `assignment`
 --
 
 INSERT INTO `assignment` (`ID`, `CourseID`, `Question`, `DueDate`, `TotalScore`) VALUES
@@ -116,7 +116,7 @@ INSERT INTO `assignment` (`ID`, `CourseID`, `Question`, `DueDate`, `TotalScore`)
 
 -- --------------------------------------------------------
 --
--- Dumping data for table `submitted`
+-- data for table `submitted`
 --
 
 INSERT INTO `submitted` (`ID`, `AssignmentID`, `StudentID`, `DateSubmitted`, `Answer`, `ScoreObtained`, `Remarks`) VALUES
